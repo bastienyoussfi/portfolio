@@ -50,6 +50,13 @@ const info = {
             technologies: "https://skillicons.dev/icons?i=react,github,tailwind,0&perline=5&theme=",
             github: "",
             link: "",
+        },
+        {
+            title: "Blogger Web Application",
+            description: "Portfolio website ",
+            technologies: "https://skillicons.dev/icons?i=react,github,tailwind,mongodb,0&perline=5&theme=",
+            github: "",
+            link: "",
         }
         
     ],
