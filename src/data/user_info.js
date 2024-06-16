@@ -1,8 +1,8 @@
 const info = {
     main: {
         name: "Bastien Youssfi",
-        description: "I am a software engineer with expertise in software development and AI. I have experience in building scalable, secure and reliable web applications using various frameworks and technologies. I enjoy solving complex problems and learning new skills. I am passionate about creating high-quality code that follows best practices and industry standards.",
-        role: "Software Engineer",
+        description: "I am a computer science engineer with expertise in software development, AI and Web Development. I have experience in building scalable, secure and reliable projects using various frameworks and technologies. I enjoy solving complex problems and learning new skills. I am passionate about creating high-quality code that follows best practices and industry standards.",
+        role: "Computer Science Engineer",
         photo: "../photo.jpg",
         email: "bastien.youssfi@gmail.com",
         tracking_id: "G-BNTTBGHXSC"
@@ -12,6 +12,7 @@ const info = {
 		github: "https://github.com/bastienyoussfi",
 		linkedin: "https://linkedin.com/in/bastienyoussfi",
 		instagram: "https://instagram.com/bastienyoussfi",
+        twitter: "https://twitter.com/bastienyoussfi_",
     },
 
     skills: {
@@ -24,38 +25,38 @@ const info = {
             image: "https://skillicons.dev/icons?i=react,express,nodejs,postgres,tailwind,pytorch&perline=6&theme="
         },
         tools: {
-            description: "I am well-versed in utilizing various tools and platforms to enhance the development process, including Git, Github, Netlify, Vercel, Firebase, and Postman.",
-            image: "https://skillicons.dev/icons?i=git,github,netlify,vercel,firebase,postman&perline=6&theme="
+            description: "I am well-versed in utilizing various tools and platforms to enhance the development process, including Git, Github and Netlify.",
+            image: "https://skillicons.dev/icons?i=git,github,netlify&perline=6&theme="
         },
     },
 
     projects: [
         {
 			title: "Physics Engine",
-			description: "Scalable physics engine first made to simulate simple particles interaction using Verlet Integration method.",
+			description: "Scalable physics engine first made to simulate simple particles interaction using Verlet Integration method. This is the first step to create a game engine.",
 			technologies: "https://skillicons.dev/icons?i=cpp,visualstudio,github,0,0&perline=5&theme=",
 			github: "https://github.com/bastienyoussfi/PhysicsEngine",
             link: "https://github.com/bastienyoussfi/PhysicsEngine"
 		},
         {
             title: "Notes App",
-            description: "Simple notes app made using React and Node.js to store and manage notes.",
+            description: "Simple notes app made using React and Node.js to store and manage notes. The app allows users to create, read, update, and delete notes.",
             technologies: "https://skillicons.dev/icons?i=react,nodejs,express,github,0&perline=5&theme=",
             github: "",
             link: "",
         },
         {
             title: "Portfolio",
-            description: "Portfolio website ",
-            technologies: "https://skillicons.dev/icons?i=react,github,tailwind,0&perline=5&theme=",
+            description: "Portfolio website using React and Tailwind CSS. This portfolio showcases my projects, skills, and contact information, and is deployed on Netlify.",
+            technologies: "https://skillicons.dev/icons?i=react,github,tailwind,vite,0&perline=5&theme=",
             github: "",
             link: "",
         },
         {
             title: "Blogger Web Application",
-            description: "Portfolio website ",
+            description: "Blog web application using React, MongoDB, and Tailwind CSS. This app allows users to create, read, update, and delete blog posts. The app is not currently deployed.",
             technologies: "https://skillicons.dev/icons?i=react,github,tailwind,mongodb,0&perline=5&theme=",
-            github: "",
+            github: "https://github.com/bastienyoussfi/blogWebApp",
             link: "",
         }
         

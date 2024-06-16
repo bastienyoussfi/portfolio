@@ -70,18 +70,18 @@ function Homepage() {
                         <div className="p-6 hover:bg-gray-50 transition-all duration-300 hover:dark:bg-[#101e38] md:rounded-xl">
                             <h4 className="text-lg font-medium text-gray-600 dark:text-gray-300">Programming Languages</h4>
                             <p className="leading-7 mt-2 text-base font-light text-gray-500 dark:text-gray-300">{user_info.skills.languages.description}</p>
-                            <img className="w-48 mt-4" src={user_info.skills.languages.image + theme} />
+                            <img className="mt-4" src={user_info.skills.languages.image + theme} />
                         </div>
                         <div className="p-6 hover:bg-gray-50 transition-all duration-300 hover:dark:bg-[#101e38] md:rounded-xl">
                             <h4 className="text-lg font-medium text-gray-600 dark:text-gray-300">Frameworks & Libraries</h4>
                             <p className="leading-7 mt-2 text-base font-light text-gray-500 dark:text-gray-300">{user_info.skills.frameworks.description}</p>
-                            <img className="w-48 mt-4" src={user_info.skills.frameworks.image + theme} />
-                        </div>{/*
+                            <img className="mt-4" src={user_info.skills.frameworks.image + theme} />
+                        </div>{
                         <div className="p-6 hover:bg-gray-50 transition-all duration-300 hover:dark:bg-[#101e38] md:rounded-xl">
                             <h4 className="text-lg font-medium text-gray-600 dark:text-gray-300">Tools & Platforms</h4>
                             <p className="leading-7 mt-2 text-base font-light text-gray-500 dark:text-gray-300">{user_info.skills.tools.description}</p>
-                            <img className="w-48 mt-4" src={user_info.skills.tools.image + theme} />
-                        </div> */}
+                            <img className="mt-4" src={user_info.skills.tools.image + theme} />
+                        </div> }
                     </div>
 
                     {/* Education */}
@@ -98,7 +98,7 @@ function Homepage() {
                                         <div key={index} className="flex gap-4 mt-4">
                                             <img className="h-10 w-10 rounded-full mt-4" src={education.image} />
                                             <div className="w-full">
-                                                <h5 className="font-medium text-gray-600 dark:text-gray-300"><a className="flex gap-2 mt-4 hover:text-blue-600 cursor-pointer transition-all duration-300" href={education.link}>{education.school}</a></h5>
+                                                <h5 className="font-medium text-gray-600 dark:text-gray-300"><a className="flex gap-2 mt-4 hover:text-gray-700 cursor-pointer transition-all duration-300" href={education.link}>{education.school}</a></h5>
                                                 <div className="flex justify-between">
                                                     <p className="text-gray-500 dark:text-gray-300 text-xs w-full">{education.degree}</p>
                                                     <p className="text-gray-500 dark:text-gray-300 text-right w-[50%] text-xs">{education.year}</p>
@@ -121,13 +121,23 @@ function Homepage() {
                     <p className="mt-8 leading-7 text-base text-gray-500 dark:text-gray-300 font-light">{user_info.contact.description}</p>
                 
                     <div className="mt-12">
-                        <a href={user_info.socials.instagram} className="flex gap-4 text-gray-500 dark:text-gray-300 hover:dark:text-gray-300 hover:text-gray-700 transition-all duration-300 mt-4">
+                        <a href={user_info.socials.instagram} 
+                        className="flex gap-4 text-gray-500 dark:text-gray-300 hover:dark:text-blue-600 hover:text-gray-700 transition-all duration-300 mt-4"
+                        target="_blank">
                             <FaInstagram className="self-center text-lg" />
                             <span className="self-center">Follow on Instagram</span>
                         </a>
-                        <a href={user_info.socials.linkedin} className="flex gap-4 text-gray-500 dark:text-gray-300 hover:dark:text-gray-300 hover:text-gray-700 transition-all duration-300 mt-4">
+                        <a href={user_info.socials.linkedin} 
+                        className="flex gap-4 text-gray-500 dark:text-gray-300 hover:dark:text-blue-600 hover:text-gray-700 transition-all duration-300 mt-4"
+                        target="_blank">
                             <FaLinkedin className="self-center text-lg" />
                             <span className="self-center">Follow on Linkedin</span>
+                        </a>
+                        <a href={user_info.socials.twitter} 
+                        className="flex gap-4 text-gray-500 dark:text-gray-300 hover:dark:text-blue-600 hover:text-gray-700 transition-all duration-300 mt-4"
+                        target="_blank">
+                            <FaSquareXTwitter className="self-center text-lg" />
+                            <span className="self-center">Follow on Twitter</span>
                         </a>
                     </div>
 
