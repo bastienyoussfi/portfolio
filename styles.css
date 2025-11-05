@@ -1,0 +1,290 @@
+/* ===================================
+   CUSTOMIZATION VARIABLES
+   Change these to customize your portfolio
+   =================================== */
+
+:root {
+    /* Colors - Light Mode */
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --text-secondary: #666666;
+    --emphasis-bg: #fff4e6;
+    --emphasis-color: #ff9500;
+    --link-color: #1a1a1a;
+    --link-hover: #ff9500;
+
+    /* Typography */
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    --font-size-base: 18px;
+    --font-size-name: clamp(3rem, 8vw, 6rem);
+    --font-size-heading: clamp(1.5rem, 3vw, 2rem);
+    --font-size-body: clamp(1.1rem, 2vw, 1.3rem);
+
+    /* Spacing */
+    --spacing-section: 3rem;
+    --container-max-width: 800px;
+    --side-padding: 10vw;
+
+    /* Animation */
+    --transition-speed: 0.3s;
+    --highlight-animation-duration: 0.8s;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0a0a0a;
+    --text-color: #e5e5e5;
+    --text-secondary: #a0a0a0;
+    --emphasis-bg: #1a1400;
+    --emphasis-color: #ffb84d;
+    --link-color: #e5e5e5;
+    --link-hover: #ffb84d;
+}
+
+/* ===================================
+   BASE STYLES
+   =================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--font-size-base);
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem var(--side-padding);
+}
+
+/* ===================================
+   THEME TOGGLE
+   =================================== */
+
+.theme-toggle {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: transparent;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: transform var(--transition-speed), border-color var(--transition-speed);
+    z-index: 100;
+}
+
+.theme-toggle:hover {
+    transform: rotate(20deg) scale(1.1);
+}
+
+.theme-toggle .sun {
+    display: block;
+}
+
+.theme-toggle .moon {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle .sun {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle .moon {
+    display: block;
+}
+
+/* ===================================
+   LAYOUT
+   =================================== */
+
+.container {
+    max-width: var(--container-max-width);
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   TYPOGRAPHY
+   =================================== */
+
+.name {
+    font-size: var(--font-size-name);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+}
+
+.tagline {
+    font-size: var(--font-size-body);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-section);
+    font-weight: 300;
+}
+
+.about p {
+    font-size: var(--font-size-body);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-section);
+    max-width: 600px;
+}
+
+/* ===================================
+   HIGHLIGHT EFFECT (Hand-drawn style)
+   =================================== */
+
+.highlight {
+    position: relative;
+    color: var(--text-color);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.highlight::before {
+    content: '';
+    position: absolute;
+    left: -0.3em;
+    right: -0.3em;
+    bottom: 0.1em;
+    height: 0.6em;
+    background-color: var(--emphasis-bg);
+    z-index: -1;
+    transform: skew(-2deg) rotate(-1deg);
+    opacity: 0;
+    animation: highlightDraw var(--highlight-animation-duration) ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes highlightDraw {
+    0% {
+        opacity: 0;
+        transform: scaleX(0) skew(-2deg) rotate(-1deg);
+        transform-origin: left;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: scaleX(1) skew(-2deg) rotate(-1deg);
+        transform-origin: left;
+    }
+}
+
+/* Second highlight with delay */
+.about .highlight::before {
+    animation-delay: 1.2s;
+}
+
+/* ===================================
+   LINKS SECTION
+   =================================== */
+
+.links {
+    margin-bottom: var(--spacing-section);
+}
+
+.links h2 {
+    font-size: var(--font-size-heading);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.links ul {
+    list-style: none;
+}
+
+.links li {
+    margin-bottom: 0.5rem;
+}
+
+.link {
+    color: var(--link-color);
+    text-decoration: none;
+    font-size: var(--font-size-body);
+    display: inline-block;
+    position: relative;
+    transition: color var(--transition-speed);
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--link-hover);
+    transition: width var(--transition-speed) ease-out;
+}
+
+.link:hover {
+    color: var(--link-hover);
+}
+
+.link:hover::after {
+    width: 100%;
+}
+
+/* ===================================
+   FOOTER
+   =================================== */
+
+footer {
+    margin-top: var(--spacing-section);
+}
+
+.footnote {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
+    :root {
+        --side-padding: 5vw;
+        --spacing-section: 2rem;
+    }
+
+    body {
+        padding: 2rem var(--side-padding);
+    }
+
+    .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+    }
+}
