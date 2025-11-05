@@ -71,7 +71,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem var(--side-padding);
+    padding: 2rem;
 }
 
 /* ===================================
@@ -139,7 +139,6 @@ body {
 .container {
     max-width: var(--container-max-width);
     width: 100%;
-    animation: fadeIn 1s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -238,16 +237,6 @@ mark::before {
     animation-delay: 1.3s;
 }
 
-/* Hover effect for interactivity */
-mark:hover {
-    background-image: linear-gradient(
-        to right,
-        var(--highlight-color-mid),
-        var(--highlight-color-mid),
-        var(--highlight-color-mid)
-    );
-}
-
 /* ===================================
    LINKS SECTION
    =================================== */
@@ -292,7 +281,6 @@ mark:hover {
 
 .link:hover {
     color: var(--link-hover);
-    transform: translateX(4px);
 }
 
 .link:hover::after {
@@ -326,10 +314,6 @@ footer {
     :root {
         --side-padding: 5vw;
         --spacing-section: 2rem;
-    }
-
-    body {
-        padding: 2rem var(--side-padding);
     }
 
     .theme-toggle {
