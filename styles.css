@@ -8,10 +8,13 @@
     --bg-color: #ffffff;
     --text-color: #1a1a1a;
     --text-secondary: #666666;
-    --emphasis-bg: #fff4e6;
-    --emphasis-color: #ff9500;
     --link-color: #1a1a1a;
     --link-hover: #ff9500;
+
+    /* Highlight Colors - Light Mode */
+    --highlight-color-start: rgba(255, 225, 0, 0.1);
+    --highlight-color-mid: rgba(255, 225, 0, 0.7);
+    --highlight-color-end: rgba(255, 225, 0, 0.3);
 
     /* Typography */
     --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
@@ -22,22 +25,26 @@
 
     /* Spacing */
     --spacing-section: 3rem;
+    --spacing-tight: 0.5rem;
     --container-max-width: 800px;
     --side-padding: 10vw;
 
     /* Animation */
     --transition-speed: 0.3s;
-    --highlight-animation-duration: 0.8s;
+    --highlight-animation-duration: 1s;
 }
 
 [data-theme="dark"] {
     --bg-color: #0a0a0a;
     --text-color: #e5e5e5;
     --text-secondary: #a0a0a0;
-    --emphasis-bg: #1a1400;
-    --emphasis-color: #ffb84d;
     --link-color: #e5e5e5;
     --link-hover: #ffb84d;
+
+    /* Highlight Colors - Dark Mode */
+    --highlight-color-start: rgba(255, 200, 0, 0.15);
+    --highlight-color-mid: rgba(255, 200, 0, 0.4);
+    --highlight-color-end: rgba(255, 200, 0, 0.2);
 }
 
 /* ===================================
@@ -75,30 +82,46 @@ body {
     position: fixed;
     top: 2rem;
     right: 2rem;
-    background: transparent;
-    border: 2px solid var(--text-color);
+    background: var(--text-color);
+    border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    transition: transform var(--transition-speed), border-color var(--transition-speed);
+    transition: transform var(--transition-speed),
+                background-color var(--transition-speed),
+                opacity var(--transition-speed);
     z-index: 100;
+    opacity: 0.3;
 }
 
 .theme-toggle:hover {
-    transform: rotate(20deg) scale(1.1);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.theme-toggle .sun,
+.theme-toggle .moon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: transform var(--transition-speed);
 }
 
 .theme-toggle .sun {
     display: block;
+    background: var(--bg-color);
+    box-shadow: 0 0 0 2px var(--bg-color);
 }
 
 .theme-toggle .moon {
     display: none;
+    background: var(--bg-color);
+    position: relative;
+    box-shadow: 6px -6px 0 -2px var(--text-color);
 }
 
 [data-theme="dark"] .theme-toggle .sun {
@@ -138,69 +161,91 @@ body {
     font-size: var(--font-size-name);
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-    line-height: 1.1;
+    margin-bottom: var(--spacing-tight);
+    line-height: 1.05;
 }
 
 .tagline {
     font-size: var(--font-size-body);
     color: var(--text-secondary);
-    margin-bottom: var(--spacing-section);
+    margin-bottom: calc(var(--spacing-section) * 1.5);
     font-weight: 300;
+    line-height: 1.5;
 }
 
 .about p {
     font-size: var(--font-size-body);
     color: var(--text-secondary);
-    margin-bottom: var(--spacing-section);
+    margin-bottom: calc(var(--spacing-section) * 1.5);
     max-width: 600px;
+    line-height: 1.6;
 }
 
 /* ===================================
    HIGHLIGHT EFFECT (Hand-drawn style)
+   Source inspiration: https://stackoverflow.com/questions/33451683/pen-highlighter-effect-in-css
+   Posted by Max Hoffmann
+   Retrieved 05/11/2025, License - CC BY-SA 4.0
    =================================== */
 
-.highlight {
-    position: relative;
+mark {
+    margin: 0 -0.4em;
+    padding: 0.1em 0.4em;
+    border-radius: 0.8em 0.3em;
+    background: transparent;
+    background-image: linear-gradient(
+        to right,
+        var(--highlight-color-start),
+        var(--highlight-color-mid) 4%,
+        var(--highlight-color-end)
+    );
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
     color: var(--text-color);
     font-weight: 500;
-    white-space: nowrap;
+    position: relative;
+    transition: background-image var(--transition-speed);
 }
 
-.highlight::before {
+/* Animation: Draw in the highlight from left to right */
+mark::before {
     content: '';
     position: absolute;
-    left: -0.3em;
-    right: -0.3em;
-    bottom: 0.1em;
-    height: 0.6em;
-    background-color: var(--emphasis-bg);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: var(--bg-color);
+    border-radius: 0.8em 0.3em;
     z-index: -1;
-    transform: skew(-2deg) rotate(-1deg);
-    opacity: 0;
-    animation: highlightDraw var(--highlight-animation-duration) ease-out forwards;
+    animation: highlightReveal var(--highlight-animation-duration) ease-out forwards;
     animation-delay: 0.5s;
 }
 
-@keyframes highlightDraw {
+@keyframes highlightReveal {
     0% {
-        opacity: 0;
-        transform: scaleX(0) skew(-2deg) rotate(-1deg);
+        transform: scaleX(1);
         transform-origin: left;
     }
-    50% {
-        opacity: 1;
-    }
     100% {
-        opacity: 1;
-        transform: scaleX(1) skew(-2deg) rotate(-1deg);
+        transform: scaleX(0);
         transform-origin: left;
     }
 }
 
-/* Second highlight with delay */
-.about .highlight::before {
-    animation-delay: 1.2s;
+/* Second highlight with longer delay */
+.about mark::before {
+    animation-delay: 1.3s;
+}
+
+/* Hover effect for interactivity */
+mark:hover {
+    background-image: linear-gradient(
+        to right,
+        var(--highlight-color-mid),
+        var(--highlight-color-mid),
+        var(--highlight-color-mid)
+    );
 }
 
 /* ===================================
@@ -213,7 +258,7 @@ body {
 
 .links h2 {
     font-size: var(--font-size-heading);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     font-weight: 600;
 }
 
@@ -222,7 +267,7 @@ body {
 }
 
 .links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
 }
 
 .link {
@@ -231,7 +276,7 @@ body {
     font-size: var(--font-size-body);
     display: inline-block;
     position: relative;
-    transition: color var(--transition-speed);
+    transition: color var(--transition-speed), transform var(--transition-speed);
 }
 
 .link::after {
@@ -247,10 +292,16 @@ body {
 
 .link:hover {
     color: var(--link-hover);
+    transform: translateX(4px);
 }
 
 .link:hover::after {
     width: 100%;
+}
+
+/* Highlight arrow in blog link */
+.link:last-child {
+    font-weight: 500;
 }
 
 /* ===================================
