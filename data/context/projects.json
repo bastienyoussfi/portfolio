@@ -30,51 +30,6 @@
     "order": 2
   },
   {
-    "id": "product-finder-ai",
-    "title": "Product Finder AI — TYCO/Johnson Controls",
-    "description": "Enterprise semantic product search engine for TYCO/Johnson Controls' catalog using AI embeddings.",
-    "longDescription": "Product Finder AI is an enterprise search tool built for TYCO/Johnson Controls that enables sales teams and engineers to find products across a massive catalog using natural language queries instead of rigid part-number lookups. The system uses Mistral for semantic embeddings and a FastAPI backend to serve search results with contextual relevance ranking. The project required deep understanding of the client's product taxonomy and domain-specific terminology to tune retrieval quality.",
-    "category": "ai",
-    "technologies": ["Python", "FastAPI", "Mistral API", "Semantic Search", "Embeddings"],
-    "role": "AI Engineer",
-    "status": "completed",
-    "year": 2025,
-    "metrics": [],
-    "links": {},
-    "featured": true,
-    "order": 3
-  },
-  {
-    "id": "law-firm-knowledge-base",
-    "title": "Law Firm Information Capitalization Tool",
-    "description": "Knowledge base system for a law firm built from meeting transcriptions, Teams calls, and Outlook emails on sovereign French infrastructure.",
-    "longDescription": "An information capitalization platform designed for a French law firm to centralize institutional knowledge scattered across Teams meeting transcriptions, Outlook email threads, and internal notes. The system ingests, processes, and indexes these heterogeneous sources into a searchable knowledge base with RAG capabilities, enabling lawyers to query past case discussions, client communications, and internal decisions in natural language. A key constraint was hosting on sovereign French infrastructure to comply with legal sector data residency requirements.",
-    "category": "ai",
-    "technologies": ["RAG", "NestJS", "TypeScript", "PostgreSQL", "Microsoft Graph API", "Docker", "French Sovereign Cloud"],
-    "role": "Freelance AI & Full-Stack Engineer",
-    "status": "in-development",
-    "year": 2025,
-    "metrics": [],
-    "links": {},
-    "featured": true,
-    "order": 4
-  },
-  {
-    "id": "gosselin-whatsapp-agent",
-    "title": "GOSSELIN — WhatsApp AI Order Agent",
-    "description": "AI-powered WhatsApp agent for a bakery enabling automated order management via conversational interface.",
-    "longDescription": "Built for GOSSELIN, a bakery business, this project delivers an AI-powered WhatsApp agent that handles customer order intake through natural conversation. Customers message the bakery on WhatsApp and interact with the agent to place, modify, or check orders. The backend runs on NestJS with PostgreSQL for order persistence, paired with a React admin interface for the bakery team to monitor and manage incoming orders in real time. The project was delivered as a freelance mission end-to-end.",
-    "category": "ai",
-    "technologies": ["NestJS", "TypeScript", "React", "PostgreSQL", "WhatsApp Business API", "LLM"],
-    "role": "Freelance Full-Stack & AI Engineer",
-    "status": "completed",
-    "year": 2025,
-    "metrics": [],
-    "links": {},
-    "featured": false,
-    "order": 5
-  },
-  {
     "id": "voicy",
     "title": "Voicy",
     "description": "Automated B2B voice prospecting agents using AI-generated speech and telephony.",
@@ -120,21 +75,6 @@
     "order": 8
   },
   {
-    "id": "sia-use-case-catalog",
-    "title": "Sia Use Case Catalog",
-    "description": "Internal catalog platform for organizing and showcasing AI/data use cases across Sia Partners.",
-    "longDescription": "The Sia Use Case Catalog is an internal tool built at Sia Partners to centralize and showcase the firm's portfolio of AI and data use cases. It enables consultants and sales teams to quickly find relevant case studies, filter by industry or technology, and reuse materials for client pitches. The project involved data modeling for use case metadata, a search and filtering interface, and integration with internal knowledge systems.",
-    "category": "fullstack",
-    "technologies": ["React", "TypeScript", "NestJS", "PostgreSQL"],
-    "role": "Consultant & Developer — Sia Partners",
-    "status": "completed",
-    "year": 2023,
-    "metrics": [],
-    "links": {},
-    "featured": false,
-    "order": 9
-  },
-  {
     "id": "autoscribe",
     "title": "Autoscribe — Steamulo",
     "description": "Automatic meeting transcription pipeline built during early career at Steamulo.",
@@ -148,21 +88,6 @@
     "links": {},
     "featured": false,
     "order": 10
-  },
-  {
-    "id": "veolia-call-summarization",
-    "title": "Veolia Call Summarization — Sia Partners",
-    "description": "AI-powered call summarization and classification system for Veolia.",
-    "longDescription": "A call summarization and classification project for Veolia, delivered through Sia Partners. The system processes recorded customer and operational calls, generates concise AI summaries, and classifies them by topic, urgency, and department. This enables Veolia teams to quickly triage and act on high volumes of inbound communications without manually reviewing each recording.",
-    "category": "ai",
-    "technologies": ["Python", "LLM", "Speech-to-Text", "Classification"],
-    "role": "AI Engineer — Sia Partners",
-    "status": "completed",
-    "year": 2025,
-    "metrics": [],
-    "links": {},
-    "featured": false,
-    "order": 11
   },
   {
     "id": "portfolio-site",
