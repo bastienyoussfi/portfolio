@@ -178,26 +178,6 @@ export default function ChatHero() {
           </div>
         </div>
 
-        <div className="chat-idle-wrap">
-          <div className="chat-idle">
-            <div className="chat-idle__cat">
-              <SpriteCanvas animation="idle" scale={2} />
-            </div>
-            <div className="chat-idle__prompts">
-              {PROMPTS.map((p, i) => (
-                <button
-                  key={p.text}
-                  className={`prompt-pill ${p.featured ? 'prompt-pill--featured' : ''}`}
-                  style={{ animationDelay: `${i * 60}ms` }}
-                  onClick={() => sendMessage(PROMPT_MESSAGES[p.text] ?? p.text)}
-                >
-                  {p.icon}
-                  {p.text}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className={`chat-messages-area ${isActive ? 'chat-messages-area--visible' : ''}`}>
@@ -225,24 +205,44 @@ export default function ChatHero() {
 
       {error && <div className="chat-error">{error}</div>}
 
-      <div className={`chat-input ${!isActive ? 'chat-input--centered' : ''}`}>
-        <div className="chat-input__field">
-          <div className="chat-input__bounty">
-            <SpriteCanvas animation="idle" scale={0.75} />
-          </div>
-          <textarea
-            ref={textareaRef}
-            className="chat-input__textarea"
-            rows={1}
-            placeholder={`Ask Bounty about ${bio.name.split(' ')[0]}…`}
-            onKeyDown={handleKeyDown}
-            onInput={handleInput}
-            disabled={isLoading}
-          />
+      <div className={`chat-center ${isActive ? 'chat-center--active' : ''}`}>
+        <div className="chat-idle__cat">
+          <SpriteCanvas animation="idle" scale={2} />
         </div>
-        <button className="chat-input__send" onClick={handleSend} disabled={isLoading} aria-label="Send message">
-          {sendIcon}
-        </button>
+
+        <div className={`chat-input ${!isActive ? 'chat-input--centered' : ''}`}>
+          <div className="chat-input__field">
+            <div className="chat-input__bounty">
+              <SpriteCanvas animation="idle" scale={0.75} />
+            </div>
+            <textarea
+              ref={textareaRef}
+              className="chat-input__textarea"
+              rows={1}
+              placeholder={`Ask Bounty about ${bio.name.split(' ')[0]}…`}
+              onKeyDown={handleKeyDown}
+              onInput={handleInput}
+              disabled={isLoading}
+            />
+            <button className="chat-input__send" onClick={handleSend} disabled={isLoading} aria-label="Send message">
+              {sendIcon}
+            </button>
+          </div>
+        </div>
+
+        <div className="chat-idle__prompts">
+          {PROMPTS.map((p, i) => (
+            <button
+              key={p.text}
+              className={`prompt-pill ${p.featured ? 'prompt-pill--featured' : ''}`}
+              style={{ animationDelay: `${i * 60}ms` }}
+              onClick={() => sendMessage(PROMPT_MESSAGES[p.text] ?? p.text)}
+            >
+              {p.icon}
+              {p.text}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )
