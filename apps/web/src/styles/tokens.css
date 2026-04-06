@@ -1,0 +1,110 @@
+:root {
+  /* ── Surface ── */
+  --bg:         #fafafa;
+  --card:       #ffffff;
+  --well:       #f9f9fb;
+  --well-2:     #f4f4f8;
+
+  /* ── Text ── */
+  --text-1:     #1c1c1e;
+  --text-2:     #3a3a3c;
+  --text-3:     #8e8e93;
+  --text-4:     #c7c7cc;
+  --text-5:     #d5d5da;
+
+  /* ── Borders & Fills ── */
+  --sep:        rgba(60, 60, 67, 0.06);
+  --fill-1:     rgba(120, 120, 128, 0.08);
+  --fill-2:     rgba(120, 120, 128, 0.05);
+  --fill-3:     rgba(120, 120, 128, 0.03);
+
+  /* ── Accent Palette ── */
+  --blue:       #007aff;
+  --blue-light: rgba(0, 122, 255, 0.08);
+  --green:      #34c759;
+  --green-light: rgba(52, 199, 89, 0.08);
+  --orange:     #ff9500;
+  --orange-light: rgba(255, 149, 0, 0.08);
+  --red:        #ff3b30;
+  --red-light:  rgba(255, 59, 48, 0.08);
+  --purple:     #af52de;
+  --purple-light: rgba(175, 82, 222, 0.08);
+  --teal:       #5ac8fa;
+  --indigo:     #5856d6;
+  --indigo-light: rgba(88, 86, 214, 0.08);
+
+  /* ── Border Radii ── */
+  --r:          16px;
+  --r-inner:    12px;
+  --r-sm:       10px;
+  --r-xs:       8px;
+
+  /* ── Shadows ── */
+  --shadow:       0 0 0 0.5px rgba(0,0,0,0.02), 0 0.5px 1px rgba(0,0,0,0.015), 0 2px 8px rgba(0,0,0,0.025);
+  --shadow-hover: 0 0 0 0.5px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.025), 0 8px 28px rgba(0,0,0,0.055);
+  --shadow-well:  inset 0 0.5px 1px rgba(0,0,0,0.02);
+  --shadow-tag:   0 1px 3px rgba(0,0,0,0.02);
+  --shadow-chat:  0 0 0 0.5px rgba(0,0,0,0.03), 0 2px 12px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.03);
+
+  /* ── Motion ── */
+  --spring:     cubic-bezier(.4, 1.6, .6, 1);
+  --ease-out:   cubic-bezier(.25, 1, .5, 1);
+  --dur-hover:  0.35s;
+  --dur-press:  0.1s;
+  --dur-row:    0.12s;
+  --dur-rise:   0.45s;
+  --dur-tag:    0.2s;
+  --stagger:    40ms;
+
+  /* ── Typography ── */
+  --font-body:  'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+
+  /* ── Layout ── */
+  --max-w:      920px;
+  --page-px:    24px;
+  --page-pt:    40px;
+  --grid-gap:   12px;
+  --section-gap: 56px;
+
+  /* ── Card Padding ── */
+  --card-px:    18px;
+  --card-py:    14px;
+  --card-pad:   18px;
+  --card-pad-lg: 24px;
+  --well-pad:   12px;
+
+  /* ── Hero Collapse ── */
+  --hero-title-size:       52px;
+  --hero-title-size-chat:  18px;
+  --hero-pad-top:          24px;
+  --hero-pad-top-chat:     14px;
+  --hero-dur-collapse:     850ms;
+
+  /* ── Streaming ── */
+  --stream-cursor-w:       2px;
+  --stream-cursor-color:   var(--text-3);
+  --stream-token-dur:      0.3s;
+
+  /* ── Typing Indicator ── */
+  --typing-dot-size:       6px;
+  --typing-dot-color:      var(--text-4);
+
+  /* ── User Bubble ── */
+  --bubble-user-bg:        var(--text-1);
+  --bubble-user-color:     var(--bg);
+  --bubble-user-shadow:    0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+
+  /* ── Component Sizes ── */
+  --av-lg:      48px;
+  --av:         36px;
+  --av-sm:      26px;
+  --av-xs:      20px;
+  --icon-well:  32px;
+  --icon-well-lg: 40px;
+  --sep-h:      0.5px;
+  --prog-h:     4px;
+  --prog-h-lg:  6px;
+  --chevron-w:  7px;
+  --chevron-h:  12px;
+}

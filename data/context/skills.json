@@ -1,0 +1,24 @@
+[
+  {
+    "category": "Languages",
+    "skills": [
+      { "name": "TypeScript", "years": 3, "proficiency": "expert", "color": "blue" },
+      { "name": "Python", "years": 3, "proficiency": "expert", "color": "green" },
+      { "name": "JavaScript", "years": 4, "proficiency": "expert", "color": "orange" }
+    ]
+  },
+  {
+    "category": "Frameworks",
+    "skills": [
+      { "name": "React", "years": 3, "proficiency": "expert", "color": "blue" },
+      { "name": "Next.js", "years": 2, "proficiency": "advanced", "color": "indigo" }
+    ]
+  },
+  {
+    "category": "AI & Tools",
+    "skills": [
+      { "name": "Claude API", "years": 1, "proficiency": "expert", "color": "purple" },
+      { "name": "LangChain", "years": 1, "proficiency": "advanced", "color": "teal" }
+    ]
+  }
+]

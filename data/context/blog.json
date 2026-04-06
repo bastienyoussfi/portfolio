@@ -1,0 +1,11 @@
+[
+  {
+    "id": "placeholder-1",
+    "title": "Blog Post Title",
+    "excerpt": "Brief excerpt of the blog post.",
+    "date": "2024-01-15",
+    "readTimeMinutes": 5,
+    "tags": ["AI", "Engineering"],
+    "url": "https://blog.example.com/post"
+  }
+]

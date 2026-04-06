@@ -1,0 +1,17 @@
+[
+  {
+    "type": "work",
+    "title": "Software Engineer",
+    "organization": "Company Name",
+    "location": "Paris, France",
+    "startDate": "2023-01",
+    "endDate": null,
+    "description": "Description of role and responsibilities.",
+    "highlights": [
+      "Key achievement 1",
+      "Key achievement 2"
+    ],
+    "technologies": ["React", "TypeScript", "Node.js"],
+    "status": "current"
+  }
+]

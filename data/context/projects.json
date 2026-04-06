@@ -1,0 +1,21 @@
+[
+  {
+    "id": "placeholder-1",
+    "title": "Project Title",
+    "description": "Brief description of the project.",
+    "longDescription": "Detailed case study text about the project, its challenges, and outcomes.",
+    "category": "ai",
+    "technologies": ["React", "TypeScript", "Claude API"],
+    "role": "Full-Stack Developer",
+    "status": "live",
+    "year": 2024,
+    "metrics": [
+      { "label": "Users", "value": "1k+" }
+    ],
+    "links": {
+      "live": "https://example.com",
+      "github": "https://github.com/example"
+    },
+    "featured": true
+  }
+]
