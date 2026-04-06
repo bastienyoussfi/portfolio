@@ -194,9 +194,6 @@
   align-items: center;
   gap: 4px;
   padding: 6px;
-  background: var(--card);
-  border-radius: 100px;
-  box-shadow: var(--shadow);
   pointer-events: auto;
 }
 
