@@ -916,20 +916,6 @@
   overflow-y: auto;
 }
 
-/* ── Streaming ── */
-
-/* ── Legacy Cursor (unused, kept for reference) ── */
-.cursor {
-  display: inline-block;
-  width: 2px;
-  height: 15px;
-  background: linear-gradient(180deg, var(--blue) 0%, var(--purple) 100%);
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: blink 1s steps(1) infinite;
-  border-radius: 1px;
-}
-
 /* ── Typing Indicator ── */
 .typing-indicator {
   display: flex;

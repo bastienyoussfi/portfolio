@@ -108,8 +108,11 @@ export default function Markdown({ content, isStreaming }: Props) {
       }
 
       const chars = Math.max(1, Math.floor(elapsed / speed))
-      indexRef.current = Math.min(indexRef.current + chars, targetRef.current.length)
-      setDisplayed(targetRef.current.slice(0, indexRef.current))
+      const next = Math.min(indexRef.current + chars, targetRef.current.length)
+      if (next !== indexRef.current) {
+        indexRef.current = next
+        setDisplayed(targetRef.current.slice(0, next))
+      }
       last = now
       rafRef.current = requestAnimationFrame(tick)
     }

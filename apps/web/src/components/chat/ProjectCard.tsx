@@ -1,18 +1,8 @@
+import type { Project } from '@/types/project'
 import { getTagColor } from '@/utils/tagColors'
 import { categoryConfig, defaultCategoryConfig } from '@/utils/categoryConfig'
 
-export interface ProjectResult {
-  title: string
-  description: string
-  category: string
-  technologies: string[]
-  status: string
-  year: number
-  metrics?: Array<{ label: string; value: string }>
-  links?: { live?: string; github?: string }
-}
-
-export default function ProjectCard({ project, index }: { project: ProjectResult; index: number }) {
+export default function ProjectCard({ project, index }: { project: Project; index: number }) {
   const config = categoryConfig[project.category] ?? defaultCategoryConfig
 
   return (
@@ -33,7 +23,7 @@ export default function ProjectCard({ project, index }: { project: ProjectResult
       </div>
       <div className="project-card__desc">{project.description}</div>
       <div className="project-card__tags">
-        {project.technologies.map((t) => (
+        {project.technologies?.map((t) => (
           <span key={t} className={`ptag ptag--${getTagColor(t)}`}>{t}</span>
         ))}
       </div>

@@ -1,14 +1,5 @@
+import type { Project } from '@/types/project'
 import { categoryConfig, defaultCategoryConfig } from '@/utils/categoryConfig'
-
-interface Project {
-  id: string
-  title: string
-  description: string
-  category: string
-  year: number
-  thumbnail?: string
-  links?: { live?: string; github?: string }
-}
 
 export default function ProjectGridCard({ project, index }: { project: Project; index: number }) {
   const config = categoryConfig[project.category] ?? defaultCategoryConfig

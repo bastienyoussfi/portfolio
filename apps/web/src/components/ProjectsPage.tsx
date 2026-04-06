@@ -1,22 +1,15 @@
+import { useMemo } from 'react'
+import type { Project } from '@/types/project'
 import { projects } from '@/data'
 import ProjectGridCard from './ProjectGridCard'
 
-interface ProjectData {
-  id: string
-  title: string
-  description: string
-  category: string
-  year: number
-  featured?: boolean
-  order?: number
-  thumbnail?: string
-  links?: { live?: string; github?: string }
-}
-
 export default function ProjectsPage() {
-  const items = (projects as ProjectData[])
-    .filter((p) => p.featured !== false)
-    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+  const items = useMemo(
+    () => (projects as Project[])
+      .filter((p) => p.featured !== false)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99)),
+    [],
+  )
 
   return (
     <main className="projects-page">

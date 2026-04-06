@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ToolCallDisplay } from '@/types/chat'
-import ProjectCard, { type ProjectResult } from './ProjectCard'
+import type { Project } from '@/types/project'
+import ProjectCard from './ProjectCard'
 
 const LABELS: Record<string, string> = {
   search_projects: 'Searching projects',
@@ -19,7 +20,7 @@ const COMPACT_LABELS: Record<string, (result: unknown) => string> = {
   get_contact: () => 'Got contact info',
 }
 
-function isProjectResult(result: unknown): result is { count: number; projects: ProjectResult[] } {
+function isProjectResult(result: unknown): result is { count: number; projects: Project[] } {
   if (!result || typeof result !== 'object') return false
   const r = result as Record<string, unknown>
   return Array.isArray(r.projects) && r.projects.length > 0
