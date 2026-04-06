@@ -212,9 +212,6 @@ export default function ChatHero() {
 
         <div className={`chat-input ${!isActive ? 'chat-input--centered' : ''}`}>
           <div className="chat-input__field">
-            <div className="chat-input__bounty">
-              <SpriteCanvas animation="idle" scale={0.75} />
-            </div>
             <textarea
               ref={textareaRef}
               className="chat-input__textarea"
