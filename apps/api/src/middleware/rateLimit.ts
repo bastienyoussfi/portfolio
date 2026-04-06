@@ -6,7 +6,7 @@ interface RateLimitEntry {
   resetAt: number
 }
 
-const MAX_REQUESTS = 10
+const MAX_REQUESTS = 100
 const WINDOW_MS = 3600_000 // 1 hour
 
 // In-memory fallback when KV is not configured
