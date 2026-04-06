@@ -66,8 +66,11 @@ export default function ChatHero() {
   const heroRef = useRef<HTMLDivElement>(null)
 
   const [phase, setPhase] = useState<Phase>('hero')
+  const [userDismissed, setUserDismissed] = useState(false)
   const progress = useAnimatedProgress(phase, 850)
   const isActive = phase !== 'hero'
+  const collapseTimer = useRef<ReturnType<typeof setTimeout>>(null)
+  const goHomeTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
   const [sizes, setSizes] = useState({
     titleStart: 52, titleEnd: 18, padStart: 24, padEnd: 14,
@@ -99,12 +102,33 @@ export default function ChatHero() {
   }, [])
 
   useEffect(() => {
-    if (hasInteracted && phase === 'hero') {
+    if (hasInteracted && phase === 'hero' && !userDismissed) {
       setPhase('transitioning')
-      const timer = setTimeout(() => setPhase('chat'), 900)
-      return () => clearTimeout(timer)
+      collapseTimer.current = setTimeout(() => setPhase('chat'), 900)
     }
-  }, [hasInteracted, phase])
+  }, [hasInteracted, phase, userDismissed])
+
+  const prevMessageCount = useRef(messages.length)
+  useEffect(() => {
+    if (messages.length > prevMessageCount.current && userDismissed) {
+      setUserDismissed(false)
+    }
+    prevMessageCount.current = messages.length
+  }, [messages.length, userDismissed])
+
+  useEffect(() => {
+    return () => {
+      if (collapseTimer.current) clearTimeout(collapseTimer.current)
+      if (goHomeTimer.current) clearTimeout(goHomeTimer.current)
+    }
+  }, [])
+
+  const handleGoHome = useCallback(() => {
+    if (phase !== 'chat') return
+    setUserDismissed(true)
+    setPhase('expanding')
+    goHomeTimer.current = setTimeout(() => setPhase('hero'), 900)
+  }, [phase])
 
   const scrollRaf = useRef(0)
   useEffect(() => {
@@ -145,8 +169,33 @@ export default function ChatHero() {
   const titleAlign = progress > 0.5 ? 'center' : ('left' as const)
 
   const lastMsg = messages[messages.length - 1]
-  const showTyping = isLoading && lastMsg?.role === 'assistant' &&
+  const shouldType = isLoading && lastMsg?.role === 'assistant' &&
     !lastMsg.content && !lastMsg.isThinking && !(lastMsg.toolCalls?.length)
+
+  const [typingPhase, setTypingPhase] = useState<'hidden' | 'visible' | 'exiting'>('hidden')
+  const visibleSinceRef = useRef(0)
+
+  useEffect(() => {
+    let delay: ReturnType<typeof setTimeout>
+    let exit: ReturnType<typeof setTimeout>
+
+    if (shouldType && typingPhase === 'hidden') {
+      setTypingPhase('visible')
+      visibleSinceRef.current = Date.now()
+    } else if (!shouldType && typingPhase === 'visible') {
+      const elapsed = Date.now() - visibleSinceRef.current
+      const remaining = Math.max(0, 200 - elapsed)
+      delay = setTimeout(() => {
+        setTypingPhase('exiting')
+        exit = setTimeout(() => setTypingPhase('hidden'), 300)
+      }, remaining)
+    }
+
+    return () => {
+      clearTimeout(delay)
+      clearTimeout(exit)
+    }
+  }, [shouldType, typingPhase])
 
   return (
     <div
@@ -155,7 +204,7 @@ export default function ChatHero() {
       style={{ paddingTop: headerPadTop }}
     >
       <h1
-        className="hero__heading"
+        className={`hero__heading ${phase === 'chat' ? 'hero__heading--hidden' : ''}`}
         style={{ fontSize: titleSize, textAlign: titleAlign }}
       >
         Hi, I'm <strong>{bio.name}.</strong>
@@ -184,12 +233,12 @@ export default function ChatHero() {
         <div className="chat-messages" ref={messagesRef} role="log" aria-live="polite">
           {messages.map((m, i) => {
             const isEmpty = m.role === 'assistant' && !m.content && !m.thinking && !m.toolCalls?.length
-            if (isEmpty && showTyping && i === messages.length - 1) return null
+            if (isEmpty && typingPhase !== 'hidden' && i === messages.length - 1) return null
             return <Message key={m.id} msg={m} onSendMessage={sendMessage} />
           })}
 
-          {showTyping && (
-            <div className="typing-indicator">
+          {typingPhase !== 'hidden' && (
+            <div className={`typing-indicator typing-indicator--${typingPhase}`}>
               <div className="typing-indicator__avatar">
                 <SpriteCanvas animation="walk" scale={1.5} />
               </div>
@@ -240,6 +289,16 @@ export default function ChatHero() {
             </button>
           ))}
         </div>
+
+        {phase === 'chat' && (
+          <button className="chat-reset" onClick={handleGoHome}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+            Reset chat
+          </button>
+        )}
       </div>
     </div>
   )

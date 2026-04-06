@@ -38,28 +38,28 @@ export default function ToolCallBlock({ tc, compact }: { tc: ToolCallDisplay; co
   const label = LABELS[tc.name] ?? tc.name
 
   if (compact) {
-    if (done) {
-      const compactLabel = COMPACT_LABELS[tc.name]?.(tc.result) ?? label
-      return (
-        <>
-          <div className="tool-call--pill">
-            {checkIcon}
-            <span>{compactLabel}</span>
-          </div>
-          {tc.name === 'search_projects' && isProjectResult(tc.result) && (
-            <div className="project-cards">
-              {tc.result.projects.map((p, i) => (
-                <ProjectCard key={p.title} project={p} index={i} />
-              ))}
-            </div>
-          )}
-        </>
-      )
-    }
     return (
-      <div className="tool-call--pill tool-call--pill-loading">
-        <div className="tool-call__spinner" />
-        <span>{label}…</span>
+      <div className="tool-call-wrap">
+        {done ? (
+          <>
+            <div className="tool-call--pill">
+              {checkIcon}
+              <span>{COMPACT_LABELS[tc.name]?.(tc.result) ?? label}</span>
+            </div>
+            {tc.name === 'search_projects' && isProjectResult(tc.result) && (
+              <div className="project-cards">
+                {tc.result.projects.map((p, i) => (
+                  <ProjectCard key={p.title} project={p} index={i} />
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="tool-call--pill tool-call--pill-loading">
+            <div className="tool-call__spinner" />
+            <span>{label}…</span>
+          </div>
+        )}
       </div>
     )
   }
