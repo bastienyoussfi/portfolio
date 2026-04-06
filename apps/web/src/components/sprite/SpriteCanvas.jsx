@@ -6,6 +6,11 @@ import { useEffect, useRef } from "react";
 
 const FRAME_W = 32;
 const FRAME_H = 32;
+// The cat content sits at (7,14)→(24,31) within each 32×32 frame
+const CROP_X = 7;
+const CROP_Y = 14;
+const CROP_W = 18;
+const CROP_H = 18;
 
 export const ANIMATIONS = {
   idle:   { row: 0, frames: 4, speed: 280 },
@@ -86,10 +91,10 @@ export default function SpriteCanvas({
       const col = frameRef.current % anim.frames;
       ctx.drawImage(
         sprite,
-        col * FRAME_W,
-        anim.row * FRAME_H,
-        FRAME_W,
-        FRAME_H,
+        col * FRAME_W + CROP_X,
+        anim.row * FRAME_H + CROP_Y,
+        CROP_W,
+        CROP_H,
         0,
         0,
         w,

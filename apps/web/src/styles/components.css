@@ -1435,7 +1435,7 @@
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  gap: 10px;
 }
 
 @media (max-width: 840px) {
@@ -1447,7 +1447,7 @@
 @media (max-width: 520px) {
   .projects-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 12px;
   }
 
   .projects-page__title,
