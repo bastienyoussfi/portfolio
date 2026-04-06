@@ -3,7 +3,6 @@ import ThinkingBlock from './ThinkingBlock'
 import ToolCallBlock from './ToolCallBlock'
 import FollowUpButtons from './FollowUpButtons'
 import Markdown from './Markdown'
-import StreamingContent from './StreamingContent'
 // @ts-expect-error — JSX sprite component, no types
 import SpriteCanvas from '@/components/sprite/SpriteCanvas'
 
@@ -41,10 +40,8 @@ export default function Message({ msg, onSendMessage }: { msg: ChatMessage; onSe
         {msg.toolCalls?.map((tc) => (
           <ToolCallBlock key={tc.id} tc={tc} compact />
         ))}
-        {hasContent && (
-          msg.isStreaming
-            ? <StreamingContent content={msg.content} />
-            : <Markdown content={msg.content} />
+        {(hasContent || msg.isStreaming) && (
+          <Markdown content={msg.content} isStreaming={msg.isStreaming} />
         )}
         {isComplete && lastToolName && onSendMessage && (
           <FollowUpButtons toolName={lastToolName} onSelect={onSendMessage} />

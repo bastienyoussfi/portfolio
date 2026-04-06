@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { contact } from '@/data'
 
 const SECTIONS = [
-  { id: 'home', label: 'Home' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'blog', label: 'Blog' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'home', label: 'Home', to: '/' },
+  { id: 'projects', label: 'Projects', to: '/projects' },
+  { id: 'experience', label: 'Experience', to: '/#experience' },
+  { id: 'skills', label: 'Skills', to: '/#skills' },
+  { id: 'blog', label: 'Blog', to: '/#blog' },
+  { id: 'contact', label: 'Contact', to: '/#contact' },
 ]
 
 export default function Header() {
@@ -64,16 +65,16 @@ export default function Header() {
       <div className="header__overlay" aria-hidden={!isOpen}>
         <nav className="header__overlay-nav">
           {SECTIONS.map((s, i) => (
-            <a
+            <Link
               key={s.id}
-              href={`#${s.id}`}
+              to={s.to}
               className="header__overlay-link"
               style={{ transitionDelay: isOpen ? `${i * 50}ms` : `${(SECTIONS.length - 1 - i) * 30}ms` }}
               tabIndex={isOpen ? 0 : -1}
               onClick={close}
             >
               {s.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

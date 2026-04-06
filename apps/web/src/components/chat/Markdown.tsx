@@ -1,5 +1,8 @@
+import { useState, useEffect, useRef } from 'react'
+
 interface Props {
   content: string
+  isStreaming?: boolean
 }
 
 function renderInline(text: string): React.ReactNode {
@@ -36,8 +39,8 @@ function renderInline(text: string): React.ReactNode {
   return <>{parts}</>
 }
 
-export default function Markdown({ content }: Props) {
-  const lines = content.split('\n')
+function renderMarkdown(text: string): React.ReactNode {
+  const lines = text.split('\n')
   const out: React.ReactNode[] = []
   let list: React.ReactNode[] = []
 
@@ -65,5 +68,61 @@ export default function Markdown({ content }: Props) {
   }
 
   flush()
-  return <div className="msg-bubble--assistant b1">{out}</div>
+  return out
+}
+
+export default function Markdown({ content, isStreaming }: Props) {
+  const [displayed, setDisplayed] = useState(isStreaming ? '' : content)
+  const targetRef = useRef(content)
+  const indexRef = useRef(isStreaming ? 0 : content.length)
+  const rafRef = useRef(0)
+
+  targetRef.current = content
+
+  // Streaming animation loop — smoothly reveals characters
+  useEffect(() => {
+    if (!isStreaming) {
+      // When streaming ends, show full content immediately
+      cancelAnimationFrame(rafRef.current)
+      setDisplayed(content)
+      indexRef.current = content.length
+      return
+    }
+
+    let last = 0
+
+    const tick = (now: number) => {
+      if (!last) last = now
+      const behind = targetRef.current.length - indexRef.current
+
+      if (behind <= 0) {
+        rafRef.current = requestAnimationFrame(tick)
+        return
+      }
+
+      const elapsed = now - last
+      const speed = behind > 60 ? 4 : behind > 30 ? 8 : behind > 10 ? 14 : 20
+      if (elapsed < speed) {
+        rafRef.current = requestAnimationFrame(tick)
+        return
+      }
+
+      const chars = Math.max(1, Math.floor(elapsed / speed))
+      indexRef.current = Math.min(indexRef.current + chars, targetRef.current.length)
+      setDisplayed(targetRef.current.slice(0, indexRef.current))
+      last = now
+      rafRef.current = requestAnimationFrame(tick)
+    }
+
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [isStreaming, content])
+
+  const text = isStreaming ? displayed : content
+
+  return (
+    <div className="msg-bubble--assistant b1">
+      {renderMarkdown(text)}
+    </div>
+  )
 }

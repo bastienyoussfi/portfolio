@@ -16,6 +16,72 @@
       "live": "https://example.com",
       "github": "https://github.com/example"
     },
-    "featured": true
+    "featured": true,
+    "order": 1
+  },
+  {
+    "id": "placeholder-2",
+    "title": "Another Project",
+    "description": "A web application built with modern tooling.",
+    "longDescription": "Detailed case study about this web project.",
+    "category": "web",
+    "technologies": ["Next.js", "Tailwind CSS", "PostgreSQL"],
+    "role": "Full-Stack Developer",
+    "status": "live",
+    "year": 2024,
+    "links": {
+      "github": "https://github.com/example"
+    },
+    "featured": true,
+    "order": 2
+  },
+  {
+    "id": "placeholder-3",
+    "title": "Mobile Experience",
+    "description": "A cross-platform mobile application.",
+    "longDescription": "Case study for the mobile project.",
+    "category": "mobile",
+    "technologies": ["React Native", "TypeScript", "Firebase"],
+    "role": "Mobile Developer",
+    "status": "live",
+    "year": 2023,
+    "links": {
+      "live": "https://example.com"
+    },
+    "featured": true,
+    "order": 3
+  },
+  {
+    "id": "placeholder-4",
+    "title": "Open Source Tool",
+    "description": "A developer tool shared with the community.",
+    "longDescription": "Case study for the open source project.",
+    "category": "open-source",
+    "technologies": ["Python", "Docker", "FastAPI"],
+    "role": "Creator & Maintainer",
+    "status": "live",
+    "year": 2023,
+    "links": {
+      "github": "https://github.com/example"
+    },
+    "featured": true,
+    "order": 4
+  },
+  {
+    "id": "placeholder-5",
+    "title": "AI Assistant",
+    "description": "An intelligent conversational agent.",
+    "longDescription": "Case study for the AI assistant project.",
+    "category": "ai",
+    "technologies": ["Python", "LangChain", "OpenAI API"],
+    "role": "AI Engineer",
+    "status": "live",
+    "year": 2025,
+    "links": {
+      "live": "https://example.com",
+      "github": "https://github.com/example"
+    },
+    "featured": true,
+    "order": 5
   }
 ]
