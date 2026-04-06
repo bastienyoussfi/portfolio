@@ -20,18 +20,13 @@ export async function rateLimit(
   const key = `rate:${ip}`
   const kv = c.env.RATE_LIMIT_KV
 
-  let entry: RateLimitEntry
+  const stored = kv
+    ? await kv.get<RateLimitEntry>(key, 'json')
+    : memoryStore.get(key) ?? null
 
-  if (kv) {
-    entry = (await kv.get(key, 'json')) ?? {
-      count: 0,
-      resetAt: Date.now() + WINDOW_MS,
-    }
-  } else {
-    entry = memoryStore.get(key) ?? {
-      count: 0,
-      resetAt: Date.now() + WINDOW_MS,
-    }
+  let entry: RateLimitEntry = stored ?? {
+    count: 0,
+    resetAt: Date.now() + WINDOW_MS,
   }
 
   if (Date.now() > entry.resetAt) {

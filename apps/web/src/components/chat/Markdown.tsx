@@ -23,6 +23,12 @@ function renderInline(text: string): React.ReactNode {
       rest = rest.slice(link[0].length); continue
     }
 
+    const plain = rest.match(/^[^*`\[]+/)
+    if (plain) {
+      parts.push(plain[0])
+      rest = rest.slice(plain[0].length)
+      continue
+    }
     parts.push(rest[0])
     rest = rest.slice(1)
   }

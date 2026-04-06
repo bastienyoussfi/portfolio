@@ -30,13 +30,9 @@ export default function StreamingContent({ content }: Props) {
       if (!last) last = now
       const behind = targetRef.current.length - indexRef.current
 
-      if (behind <= 0) {
-        rafRef.current = requestAnimationFrame(tick)
-        return
-      }
+      if (behind <= 0) return
 
       const elapsed = now - last
-      // Adaptive speed: faster when buffer is large, slower when nearly caught up
       const speed = behind > 60 ? 4 : behind > 30 ? 8 : behind > 10 ? 14 : 20
       if (elapsed < speed) {
         rafRef.current = requestAnimationFrame(tick)
@@ -52,7 +48,7 @@ export default function StreamingContent({ content }: Props) {
 
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [])
+  }, [content])
 
   return (
     <div className="streaming-content msg-bubble--assistant b1">

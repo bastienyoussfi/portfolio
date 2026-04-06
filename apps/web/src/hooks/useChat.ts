@@ -1,4 +1,4 @@
-import { useReducer, useCallback } from 'react'
+import { useReducer, useCallback, useRef } from 'react'
 import type { ChatState, ChatAction, ChatMessage } from '@/types/chat'
 import { parseSSE } from '@/utils/sse'
 
@@ -7,6 +7,17 @@ const initialState: ChatState = {
   isLoading: false,
   error: null,
   hasInteracted: false,
+}
+
+function updateLastAssistant(
+  state: ChatState,
+  updater: (msg: ChatMessage) => ChatMessage,
+): ChatState {
+  const last = state.messages[state.messages.length - 1]
+  if (last?.role !== 'assistant') return state
+  const msgs = state.messages.slice(0, -1)
+  msgs.push(updater(last))
+  return { ...state, messages: msgs }
 }
 
 function chatReducer(state: ChatState, action: ChatAction): ChatState {
@@ -46,107 +57,46 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
         ],
       }
 
-    case 'SET_THINKING': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        msgs[msgs.length - 1] = { ...last, isThinking: action.isThinking }
-      }
-      return { ...state, messages: msgs }
-    }
+    case 'SET_THINKING':
+      return updateLastAssistant(state, (m) => ({ ...m, isThinking: action.isThinking }))
 
-    case 'APPEND_THINKING': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        msgs[msgs.length - 1] = {
-          ...last,
-          thinking: (last.thinking ?? '') + action.text,
-        }
-      }
-      return { ...state, messages: msgs }
-    }
+    case 'APPEND_THINKING':
+      return updateLastAssistant(state, (m) => ({ ...m, thinking: (m.thinking ?? '') + action.text }))
 
-    case 'ADD_TOOL_CALL': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        msgs[msgs.length - 1] = {
-          ...last,
-          toolCalls: [
-            ...(last.toolCalls ?? []),
-            {
-              id: action.id,
-              name: action.name,
-              input: {},
-              status: 'pending',
-            },
-          ],
-        }
-      }
-      return { ...state, messages: msgs }
-    }
+    case 'ADD_TOOL_CALL':
+      return updateLastAssistant(state, (m) => ({
+        ...m,
+        toolCalls: [...(m.toolCalls ?? []), { id: action.id, name: action.name, input: {}, status: 'pending' as const }],
+      }))
 
-    case 'UPDATE_TOOL_CALL': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        const toolCalls = (last.toolCalls ?? []).map((tc) =>
-          tc.id === action.id
-            ? { ...tc, input: action.input, status: 'executing' as const }
-            : tc,
-        )
-        msgs[msgs.length - 1] = { ...last, toolCalls }
-      }
-      return { ...state, messages: msgs }
-    }
+    case 'UPDATE_TOOL_CALL':
+      return updateLastAssistant(state, (m) => ({
+        ...m,
+        toolCalls: (m.toolCalls ?? []).map((tc) =>
+          tc.id === action.id ? { ...tc, input: action.input, status: 'executing' as const } : tc,
+        ),
+      }))
 
-    case 'TOOL_RESULT': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        const toolCalls = (last.toolCalls ?? []).map((tc) =>
-          tc.id === action.toolUseId
-            ? { ...tc, result: action.result, status: 'complete' as const }
-            : tc,
-        )
-        msgs[msgs.length - 1] = { ...last, toolCalls }
-      }
-      return { ...state, messages: msgs }
-    }
+    case 'TOOL_RESULT':
+      return updateLastAssistant(state, (m) => ({
+        ...m,
+        toolCalls: (m.toolCalls ?? []).map((tc) =>
+          tc.id === action.toolUseId ? { ...tc, result: action.result, status: 'complete' as const } : tc,
+        ),
+      }))
 
-    case 'APPEND_TEXT': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        msgs[msgs.length - 1] = {
-          ...last,
-          content: last.content + action.text,
-        }
-      }
-      return { ...state, messages: msgs }
-    }
+    case 'APPEND_TEXT':
+      return updateLastAssistant(state, (m) => ({ ...m, content: m.content + action.text }))
 
     case 'FINISH': {
-      const msgs = [...state.messages]
-      const last = msgs[msgs.length - 1]
-      if (last?.role === 'assistant') {
-        msgs[msgs.length - 1] = { ...last, isStreaming: false }
-      }
-      return { ...state, messages: msgs, isLoading: false }
+      const updated = updateLastAssistant(state, (m) => ({ ...m, isStreaming: false }))
+      return { ...updated, isLoading: false }
     }
 
-    case 'SET_ERROR':
-      return {
-        ...state,
-        isLoading: false,
-        error: action.message,
-        messages: state.messages.map((m, i) =>
-          i === state.messages.length - 1 && m.role === 'assistant'
-            ? { ...m, isStreaming: false }
-            : m,
-        ),
-      }
+    case 'SET_ERROR': {
+      const updated = updateLastAssistant(state, (m) => ({ ...m, isStreaming: false }))
+      return { ...updated, isLoading: false, error: action.message }
+    }
 
     default:
       return state
@@ -166,17 +116,19 @@ function buildApiMessages(
 
 export function useChat() {
   const [state, dispatch] = useReducer(chatReducer, initialState)
+  const messagesRef = useRef(state.messages)
+  messagesRef.current = state.messages
 
   const sendMessage = useCallback(
     async (content: string) => {
-      if (!content.trim() || state.isLoading) return
+      if (!content.trim()) return
 
       dispatch({ type: 'ADD_USER_MESSAGE', content })
       dispatch({ type: 'START_ASSISTANT_MESSAGE' })
 
       try {
         const apiMessages = [
-          ...buildApiMessages(state.messages),
+          ...buildApiMessages(messagesRef.current),
           { role: 'user', content },
         ]
 
@@ -198,6 +150,7 @@ export function useChat() {
         }
 
         const reader = response.body!.getReader()
+        let finished = false
 
         for await (const { event, data } of parseSSE(reader)) {
           switch (event) {
@@ -242,18 +195,19 @@ export function useChat() {
               break
             case 'done':
               dispatch({ type: 'FINISH' })
+              finished = true
               break
             case 'error':
               dispatch({
                 type: 'SET_ERROR',
                 message: data.message as string,
               })
+              finished = true
               break
           }
         }
 
-        // In case we don't get a done event
-        dispatch({ type: 'FINISH' })
+        if (!finished) dispatch({ type: 'FINISH' })
       } catch (err) {
         dispatch({
           type: 'SET_ERROR',
@@ -261,7 +215,7 @@ export function useChat() {
         })
       }
     },
-    [state.messages, state.isLoading],
+    [],
   )
 
   return {

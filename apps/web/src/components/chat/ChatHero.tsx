@@ -13,6 +13,12 @@ const PROMPTS = [
   'How can I get in touch?',
 ]
 
+const sendIcon = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
 export default function ChatHero() {
   const { messages, isLoading, error, hasInteracted, sendMessage } = useChat()
   const messagesRef = useRef<HTMLDivElement>(null)
@@ -28,6 +34,7 @@ export default function ChatHero() {
   })
 
   useEffect(() => {
+    let rafId = 0
     const update = () => {
       const el = heroRef.current
       if (!el) return
@@ -39,9 +46,16 @@ export default function ChatHero() {
         padEnd: parseFloat(cs.getPropertyValue('--hero-pad-top-chat')) || 14,
       })
     }
+    const onResize = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(update)
+    }
     update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      cancelAnimationFrame(rafId)
+    }
   }, [])
 
   useEffect(() => {
@@ -96,12 +110,6 @@ export default function ChatHero() {
   const lastMsg = messages[messages.length - 1]
   const showTyping = isLoading && lastMsg?.role === 'assistant' &&
     !lastMsg.content && !lastMsg.isThinking && !(lastMsg.toolCalls?.length)
-
-  const sendIcon = (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-      <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
 
   return (
     <div
@@ -194,7 +202,7 @@ export default function ChatHero() {
             ref={textareaRef}
             className="chat-input__textarea"
             rows={1}
-            placeholder="Ask Bounty about Bastien…"
+            placeholder={`Ask Bounty about ${bio.name.split(' ')[0]}…`}
             onKeyDown={handleKeyDown}
             onInput={handleInput}
             disabled={isLoading}

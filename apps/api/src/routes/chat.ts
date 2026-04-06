@@ -101,6 +101,8 @@ chatRoute.post('/chat', rateLimit, async (c) => {
           input?: string
           text?: string
           thinking?: string
+          parsedInput?: Record<string, unknown>
+          result?: unknown
         }> = []
         let currentBlockIndex = -1
 
@@ -189,22 +191,22 @@ chatRoute.post('/chat', rateLimit, async (c) => {
                 if (block.type === 'thinking') {
                   await write('thinking_end', {})
                 } else if (block.type === 'tool_use') {
-                  // Parse the accumulated input JSON
                   let input: Record<string, unknown> = {}
                   try {
                     input = JSON.parse(block.input ?? '{}')
                   } catch {
                     // ignore parse errors
                   }
+                  block.parsedInput = input
+
+                  const result = executeTool(block.name!, input)
+                  block.result = result
 
                   await write('tool_use_end', {
                     id: block.id,
                     name: block.name,
                     input,
                   })
-
-                  // Execute the tool
-                  const result = executeTool(block.name!, input)
 
                   await write('tool_result', {
                     tool_use_id: block.id,
@@ -222,42 +224,23 @@ chatRoute.post('/chat', rateLimit, async (c) => {
           break
         }
 
-        // Build the assistant response content blocks for the next turn
+        // Build the assistant content and tool results for the next turn
         const assistantContent: unknown[] = []
+        const toolResults: unknown[] = []
         for (const block of contentBlocks) {
           if (block.type === 'text' && block.text) {
             assistantContent.push({ type: 'text', text: block.text })
           } else if (block.type === 'tool_use') {
-            let input: Record<string, unknown> = {}
-            try {
-              input = JSON.parse(block.input ?? '{}')
-            } catch {
-              // ignore
-            }
             assistantContent.push({
               type: 'tool_use',
               id: block.id,
               name: block.name,
-              input,
+              input: block.parsedInput,
             })
-          }
-        }
-
-        // Build tool results for the user turn
-        const toolResults: unknown[] = []
-        for (const block of contentBlocks) {
-          if (block.type === 'tool_use') {
-            let input: Record<string, unknown> = {}
-            try {
-              input = JSON.parse(block.input ?? '{}')
-            } catch {
-              // ignore
-            }
-            const result = executeTool(block.name!, input)
             toolResults.push({
               type: 'tool_result',
               tool_use_id: block.id,
-              content: JSON.stringify(result),
+              content: JSON.stringify(block.result),
             })
           }
         }
