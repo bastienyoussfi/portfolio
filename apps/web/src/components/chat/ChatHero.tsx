@@ -6,12 +6,52 @@ import Message from './Message'
 // @ts-expect-error — JSX sprite component, no types
 import SpriteCanvas from '@/components/sprite/SpriteCanvas'
 
+/* ── SVG Icons for chips (14×14, stroke, currentColor) ── */
+const FolderIcon = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+  </svg>
+)
+
+const ZapIcon = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+  </svg>
+)
+
+const BuildingIcon = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+    <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01" />
+  </svg>
+)
+
+const MailIcon = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="4" width="20" height="16" rx="2" />
+    <path d="M22 7l-10 7L2 7" />
+  </svg>
+)
+
+const ArrowIcon = (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 17L17 7M7 7h10v10" />
+  </svg>
+)
+
 const PROMPTS = [
-  'What projects has Bastien worked on?',
-  "What's his tech stack?",
-  'Tell me about his experience',
-  'How can I get in touch?',
+  { text: 'His projects', icon: FolderIcon, featured: true },
+  { text: 'Tech stack', icon: ZapIcon },
+  { text: 'Experience', icon: BuildingIcon },
+  { text: 'Get in touch', icon: MailIcon },
 ]
+
+const PROMPT_MESSAGES: Record<string, string> = {
+  'His projects': 'What projects has Bastien worked on?',
+  'Tech stack': "What's his tech stack?",
+  'Experience': 'Tell me about his experience',
+  'Get in touch': 'How can I get in touch?',
+}
 
 const sendIcon = (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -101,9 +141,6 @@ export default function ChatHero() {
 
   const titleSize = sizes.titleStart - progress * (sizes.titleStart - sizes.titleEnd)
   const headerPadTop = sizes.padStart - progress * (sizes.padStart - sizes.padEnd)
-  const subtitleOpacity = Math.max(0, 1 - progress * 2)
-  const ctaOpacity = Math.max(0, 1 - progress * 2.5)
-  const idleOpacity = Math.max(0, 1 - progress * 2.5)
   const showBorder = progress > 0.6
   const titleAlign = progress > 0.5 ? 'center' : ('left' as const)
 
@@ -124,60 +161,52 @@ export default function ChatHero() {
         Hi, I'm <strong>{bio.name}.</strong>
       </h1>
 
-      <div
-        className="hero__subtitle-wrap"
-        style={{
-          maxHeight: subtitleOpacity > 0 ? 60 : 0,
-          opacity: subtitleOpacity,
-        }}
-      >
-        <p className="hero__role">{bio.title}.</p>
-      </div>
-
-      <div
-        className="hero__cta-wrap"
-        style={{
-          maxHeight: ctaOpacity > 0 ? 80 : 0,
-          opacity: ctaOpacity,
-        }}
-      >
-        <div className="hero__actions">
-          <a href={`mailto:${contact.email}`} className="hero__cta">Get in Touch</a>
-          <span className="hero__supporting">
-            Feel free to explore my portfolio and reach out — I'd love to connect!
-          </span>
+      <div className={`hero-group ${isActive ? 'hero-group--collapsed' : ''}`}>
+        <div className="hero__subtitle-wrap">
+          <p className="hero__role">{bio.title}.</p>
         </div>
-      </div>
 
-      <div
-        className="chat-idle-wrap"
-        style={{
-          maxHeight: idleOpacity > 0 ? 250 : 0,
-          opacity: idleOpacity,
-        }}
-      >
-        <div className="chat-idle">
-          <div className="chat-idle__cat">
-            <SpriteCanvas animation="idle" scale={2} />
+        <div className="hero__cta-wrap">
+          <div className="hero__actions">
+            <a href={`mailto:${contact.email}`} className="hero__cta">
+              Get in Touch
+              {ArrowIcon}
+            </a>
+            <span className="hero__supporting">
+              Feel free to explore my portfolio and reach out — I'd love to connect!
+            </span>
           </div>
-          <div className="chat-idle__prompts">
-            {PROMPTS.map((p, i) => (
-              <button
-                key={p}
-                className="prompt-pill"
-                style={{ animationDelay: `${i * 60}ms` }}
-                onClick={() => sendMessage(p)}
-              >
-                {p}
-              </button>
-            ))}
+        </div>
+
+        <div className="chat-idle-wrap">
+          <div className="chat-idle">
+            <div className="chat-idle__cat">
+              <SpriteCanvas animation="idle" scale={2} />
+            </div>
+            <div className="chat-idle__prompts">
+              {PROMPTS.map((p, i) => (
+                <button
+                  key={p.text}
+                  className={`prompt-pill ${p.featured ? 'prompt-pill--featured' : ''}`}
+                  style={{ animationDelay: `${i * 60}ms` }}
+                  onClick={() => sendMessage(PROMPT_MESSAGES[p.text] ?? p.text)}
+                >
+                  {p.icon}
+                  {p.text}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       <div className={`chat-messages-area ${isActive ? 'chat-messages-area--visible' : ''}`}>
         <div className="chat-messages" ref={messagesRef} role="log" aria-live="polite">
-          {messages.map((m) => <Message key={m.id} msg={m} />)}
+          {messages.map((m, i) => {
+            const isEmpty = m.role === 'assistant' && !m.content && !m.thinking && !m.toolCalls?.length
+            if (isEmpty && showTyping && i === messages.length - 1) return null
+            return <Message key={m.id} msg={m} onSendMessage={sendMessage} />
+          })}
 
           {showTyping && (
             <div className="typing-indicator">
@@ -198,6 +227,9 @@ export default function ChatHero() {
 
       <div className={`chat-input ${!isActive ? 'chat-input--centered' : ''}`}>
         <div className="chat-input__field">
+          <div className="chat-input__bounty">
+            <SpriteCanvas animation="idle" scale={0.75} />
+          </div>
           <textarea
             ref={textareaRef}
             className="chat-input__textarea"

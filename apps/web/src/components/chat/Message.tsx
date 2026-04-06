@@ -1,6 +1,7 @@
 import type { ChatMessage } from '@/types/chat'
 import ThinkingBlock from './ThinkingBlock'
 import ToolCallBlock from './ToolCallBlock'
+import FollowUpButtons from './FollowUpButtons'
 import Markdown from './Markdown'
 import StreamingContent from './StreamingContent'
 // @ts-expect-error — JSX sprite component, no types
@@ -12,7 +13,7 @@ function getCatAnimation(msg: ChatMessage): string {
   return 'sit'
 }
 
-export default function Message({ msg }: { msg: ChatMessage }) {
+export default function Message({ msg, onSendMessage }: { msg: ChatMessage; onSendMessage?: (text: string) => void }) {
   if (msg.role === 'user') {
     return (
       <div className="msg-row msg-row--user">
@@ -23,6 +24,10 @@ export default function Message({ msg }: { msg: ChatMessage }) {
 
   const hasThinking = !!msg.thinking
   const hasContent = !!msg.content
+  const isComplete = !msg.isStreaming && !msg.isThinking
+  const completedTools = (msg.toolCalls ?? []).filter(tc => tc.status === 'complete')
+  const lastTool = completedTools[completedTools.length - 1]
+  const lastToolName = lastTool ? lastTool.name : null
 
   return (
     <div className="msg-row msg-row--assistant">
@@ -34,12 +39,15 @@ export default function Message({ msg }: { msg: ChatMessage }) {
           <ThinkingBlock thinking={msg.thinking!} isActive={msg.isThinking ?? false} />
         )}
         {msg.toolCalls?.map((tc) => (
-          <ToolCallBlock key={tc.id} tc={tc} />
+          <ToolCallBlock key={tc.id} tc={tc} compact />
         ))}
         {hasContent && (
           msg.isStreaming
             ? <StreamingContent content={msg.content} />
             : <Markdown content={msg.content} />
+        )}
+        {isComplete && lastToolName && onSendMessage && (
+          <FollowUpButtons toolName={lastToolName} onSelect={onSendMessage} />
         )}
       </div>
     </div>

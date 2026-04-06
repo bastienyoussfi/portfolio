@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ToolCallDisplay } from '@/types/chat'
+import ProjectCard, { type ProjectResult } from './ProjectCard'
 
 const LABELS: Record<string, string> = {
   search_projects: 'Searching projects',
@@ -8,10 +9,59 @@ const LABELS: Record<string, string> = {
   get_contact: 'Getting contact info',
 }
 
-export default function ToolCallBlock({ tc }: { tc: ToolCallDisplay }) {
+const COMPACT_LABELS: Record<string, (result: unknown) => string> = {
+  search_projects: (r) => {
+    const res = r as { count?: number }
+    return `Found ${res?.count ?? 0} project${(res?.count ?? 0) !== 1 ? 's' : ''}`
+  },
+  get_skills: () => 'Retrieved skills',
+  get_experience: () => 'Found experience',
+  get_contact: () => 'Got contact info',
+}
+
+function isProjectResult(result: unknown): result is { count: number; projects: ProjectResult[] } {
+  if (!result || typeof result !== 'object') return false
+  const r = result as Record<string, unknown>
+  return Array.isArray(r.projects) && r.projects.length > 0
+}
+
+const checkIcon = (
+  <svg viewBox="0 0 16 16" fill="none">
+    <path d="M3 8.5l3.5 3.5L13 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+export default function ToolCallBlock({ tc, compact }: { tc: ToolCallDisplay; compact?: boolean }) {
   const [open, setOpen] = useState(false)
   const done = tc.status === 'complete'
   const label = LABELS[tc.name] ?? tc.name
+
+  if (compact) {
+    if (done) {
+      const compactLabel = COMPACT_LABELS[tc.name]?.(tc.result) ?? label
+      return (
+        <>
+          <div className="tool-call--pill">
+            {checkIcon}
+            <span>{compactLabel}</span>
+          </div>
+          {tc.name === 'search_projects' && isProjectResult(tc.result) && (
+            <div className="project-cards">
+              {tc.result.projects.map((p, i) => (
+                <ProjectCard key={p.title} project={p} index={i} />
+              ))}
+            </div>
+          )}
+        </>
+      )
+    }
+    return (
+      <div className="tool-call--pill tool-call--pill-loading">
+        <div className="tool-call__spinner" />
+        <span>{label}…</span>
+      </div>
+    )
+  }
 
   return (
     <div className="tool-call">
