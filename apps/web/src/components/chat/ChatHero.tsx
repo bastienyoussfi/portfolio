@@ -40,7 +40,7 @@ const ArrowIcon = (
 )
 
 const PROMPTS = [
-  { text: 'His projects', icon: FolderIcon, featured: true },
+  { text: 'His projects', icon: FolderIcon },
   { text: 'Tech stack', icon: ZapIcon },
   { text: 'Experience', icon: BuildingIcon },
   { text: 'Get in touch', icon: MailIcon },
