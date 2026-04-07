@@ -37,10 +37,6 @@ const defaultImages = [
   'https://images.unsplash.com/photo-1550439062-609e1531270e?w=800&h=600&fit=crop',
 ]
 
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
 export default function ProjectsPage() {
   const items = useMemo(
     () => (projects as Project[])
@@ -66,7 +62,7 @@ export default function ProjectsPage() {
             headline={p.title}
             excerpt={p.description}
             cover={(projectImages[p.id] ?? defaultImages)[0]}
-            tag={capitalize(p.category)}
+            technologies={p.technologies}
             writer={p.role}
             publishedAt={new Date(p.year, 0, 1)}
             clampLines={3}

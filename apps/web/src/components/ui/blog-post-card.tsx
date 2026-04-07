@@ -1,21 +1,23 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardHeader,
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { getTechIcon } from "@/utils/techIcons";
 import { cn } from "@/lib/utils";
 
+const MAX_VISIBLE_AVATARS = 4;
 
 export interface ArticleCardProps {
   headline: string;
   excerpt: string;
   cover?: string;
-  tag?: string;
-  readingTime?: number; // in seconds
+  technologies?: string[];
+  readingTime?: number;
   writer?: string;
   publishedAt?: Date;
   clampLines?: number;
@@ -42,7 +44,7 @@ export function formatPostDate(date: Date): string {
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({
   cover,
-  tag,
+  technologies,
   readingTime,
   headline,
   excerpt,
@@ -52,8 +54,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   href,
   className,
 }) => {
-  const hasMeta = tag || readingTime;
+  const hasMeta = (technologies && technologies.length > 0) || readingTime;
   const hasFooter = writer || publishedAt;
+
+  const visibleTechs = technologies?.slice(0, MAX_VISIBLE_AVATARS) ?? [];
+  const overflowCount = (technologies?.length ?? 0) - MAX_VISIBLE_AVATARS;
 
   const content = (
     <Card className={cn("flex w-full flex-col gap-3 overflow-hidden rounded-[var(--r)] border-[var(--sep)] p-3", className)}>
@@ -72,14 +77,32 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 
       <CardContent className="flex-grow p-3">
         {hasMeta && (
-          <div className="mb-4 flex items-center text-sm text-[var(--text-3)]">
-            {tag && (
-            <Badge className="rounded-full bg-[var(--fill-1)] px-3 py-1 text-sm text-[var(--text-3)] hover:text-[var(--text-1)]">
-              {tag}
-            </Badge>
-
+          <div className="mb-4 flex items-center gap-3 text-sm text-[var(--text-3)]">
+            {visibleTechs.length > 0 && (
+              <div className="flex -space-x-2">
+                {visibleTechs.map((tech) => {
+                  const { icon, initials } = getTechIcon(tech);
+                  return (
+                    <Avatar key={tech} className="size-8">
+                      <AvatarImage
+                        src={icon || undefined}
+                        alt={tech}
+                        className="border-2 border-[var(--card)] bg-[var(--card)] p-1 hover:z-10"
+                      />
+                      <AvatarFallback className="text-[10px]">
+                        {initials}
+                      </AvatarFallback>
+                    </Avatar>
+                  );
+                })}
+                {overflowCount > 0 && (
+                  <div className="relative flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-[var(--card)] bg-[var(--fill-1)] text-xs font-semibold text-[var(--text-3)]">
+                    +{overflowCount}
+                  </div>
+                )}
+              </div>
             )}
-            {tag && readingTime && <span className="mx-2">•</span>}
+            {visibleTechs.length > 0 && readingTime && <span>•</span>}
             {readingTime && <span>{formatReadTime(readingTime)}</span>}
           </div>
         )}

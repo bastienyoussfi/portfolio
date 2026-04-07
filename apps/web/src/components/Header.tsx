@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { contact } from '@/data'
+import { useContactModal } from '@/hooks/useContactModal'
 
 const SECTIONS = [
   { id: 'home', label: 'Home', to: '/' },
   { id: 'projects', label: 'Projects', to: '/projects' },
   { id: 'blog', label: 'Blog', to: '/blog' },
-  { id: 'contact', label: 'Contact', to: '/#contact' },
+  { id: 'contact', label: 'Contact', to: '' },
 ]
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const { open: openContact } = useContactModal()
 
   const close = useCallback(() => setIsOpen(false), [])
 
@@ -62,18 +64,30 @@ export default function Header() {
       {/* Page selector overlay — always mounted for exit animation */}
       <div className="header__overlay" aria-hidden={!isOpen}>
         <nav className="header__overlay-nav">
-          {SECTIONS.map((s, i) => (
-            <Link
-              key={s.id}
-              to={s.to}
-              className="header__overlay-link"
-              style={{ transitionDelay: isOpen ? `${i * 50}ms` : `${(SECTIONS.length - 1 - i) * 30}ms` }}
-              tabIndex={isOpen ? 0 : -1}
-              onClick={close}
-            >
-              {s.label}
-            </Link>
-          ))}
+          {SECTIONS.map((s, i) =>
+            s.id === 'contact' ? (
+              <button
+                key={s.id}
+                className="header__overlay-link"
+                style={{ transitionDelay: isOpen ? `${i * 50}ms` : `${(SECTIONS.length - 1 - i) * 30}ms` }}
+                tabIndex={isOpen ? 0 : -1}
+                onClick={() => { close(); openContact() }}
+              >
+                {s.label}
+              </button>
+            ) : (
+              <Link
+                key={s.id}
+                to={s.to}
+                className="header__overlay-link"
+                style={{ transitionDelay: isOpen ? `${i * 50}ms` : `${(SECTIONS.length - 1 - i) * 30}ms` }}
+                tabIndex={isOpen ? 0 : -1}
+                onClick={close}
+              >
+                {s.label}
+              </Link>
+            )
+          )}
         </nav>
       </div>
     </header>
