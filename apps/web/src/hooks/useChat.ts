@@ -89,12 +89,24 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
       return updateLastAssistant(state, (m) => ({ ...m, content: m.content + action.text }))
 
     case 'FINISH': {
-      const updated = updateLastAssistant(state, (m) => ({ ...m, isStreaming: false }))
+      const updated = updateLastAssistant(state, (m) => ({
+        ...m,
+        isStreaming: false,
+        toolCalls: (m.toolCalls ?? []).map((tc) =>
+          tc.status !== 'complete' ? { ...tc, status: 'complete' as const } : tc,
+        ),
+      }))
       return { ...updated, isLoading: false }
     }
 
     case 'SET_ERROR': {
-      const updated = updateLastAssistant(state, (m) => ({ ...m, isStreaming: false }))
+      const updated = updateLastAssistant(state, (m) => ({
+        ...m,
+        isStreaming: false,
+        toolCalls: (m.toolCalls ?? []).map((tc) =>
+          tc.status !== 'complete' ? { ...tc, status: 'complete' as const } : tc,
+        ),
+      }))
       return { ...updated, isLoading: false, error: action.message }
     }
 

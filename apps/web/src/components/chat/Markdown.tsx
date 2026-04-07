@@ -53,9 +53,15 @@ function renderMarkdown(text: string): React.ReactNode {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]!
+    const heading = line.match(/^(#{1,4})\s+(.+)/)
     const li = line.match(/^[\-\*]\s+(.+)/) || line.match(/^\d+\.\s+(.+)/)
 
-    if (li) {
+    if (heading) {
+      flush()
+      const level = heading[1]!.length as 1 | 2 | 3 | 4
+      const Tag = `h${level}` as const
+      out.push(<Tag key={i}>{renderInline(heading[2]!)}</Tag>)
+    } else if (li) {
       list.push(<li key={i}>{renderInline(li[1]!)}</li>)
     } else {
       flush()

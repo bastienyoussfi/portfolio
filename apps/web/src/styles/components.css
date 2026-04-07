@@ -716,6 +716,27 @@
   text-decoration: none;
 }
 
+.msg-bubble--assistant h1,
+.msg-bubble--assistant h2,
+.msg-bubble--assistant h3,
+.msg-bubble--assistant h4 {
+  margin: 8px 0 4px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.msg-bubble--assistant h1 { font-size: 1.25em; }
+.msg-bubble--assistant h2 { font-size: 1.15em; }
+.msg-bubble--assistant h3 { font-size: 1.05em; }
+.msg-bubble--assistant h4 { font-size: 1em; }
+
+.msg-bubble--assistant h1:first-child,
+.msg-bubble--assistant h2:first-child,
+.msg-bubble--assistant h3:first-child,
+.msg-bubble--assistant h4:first-child {
+  margin-top: 0;
+}
+
 .msg-bubble--assistant code {
   background: var(--fill-1);
   padding: 1px 5px;
