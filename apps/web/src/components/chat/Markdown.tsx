@@ -126,7 +126,6 @@ export default function Markdown({ content, isStreaming }: Props) {
   return (
     <div className="msg-bubble--assistant b1">
       {renderMarkdown(text)}
-      {isStreaming && <span className="stream-cursor" />}
     </div>
   )
 }

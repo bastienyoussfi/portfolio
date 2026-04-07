@@ -197,6 +197,17 @@ export default function ChatHero() {
     }
   }, [shouldType, typingPhase])
 
+  // Mascot animation: shows below the last message
+  const getMascotAnimation = (): string | null => {
+    if (!lastMsg || lastMsg.role === 'user') return null
+
+    if (lastMsg.isStreaming || lastMsg.isThinking) return 'play'
+    if (lastMsg.toolCalls?.some(tc => tc.status !== 'complete')) return 'walk'
+    return 'sit'
+  }
+
+  const mascotAnimation = getMascotAnimation()
+
   return (
     <div
       ref={heroRef}
@@ -249,6 +260,12 @@ export default function ChatHero() {
               </div>
             </div>
           )}
+
+          {mascotAnimation && (
+            <div className="chat-mascot">
+              <SpriteCanvas animation={mascotAnimation} scale={2} />
+            </div>
+          )}
         </div>
       </div>
 
@@ -280,7 +297,7 @@ export default function ChatHero() {
           {PROMPTS.map((p, i) => (
             <button
               key={p.text}
-              className={`prompt-pill ${p.featured ? 'prompt-pill--featured' : ''}`}
+              className="prompt-pill"
               style={{ animationDelay: `${i * 60}ms` }}
               onClick={() => sendMessage(PROMPT_MESSAGES[p.text] ?? p.text)}
             >

@@ -8,12 +8,8 @@
     "endDate": null,
     "description": "Independent freelance engineer specializing in AI-powered products, document processing, RAG systems, and full-stack SaaS development. Billing through Malt, working directly with clients across legal, bakery, industrial, and tech sectors.",
     "highlights": [
-      "Built a WhatsApp AI order agent for GOSSELIN bakery with NestJS, React, and PostgreSQL",
-      "Developing an information capitalization tool for a law firm using RAG over Teams calls, Outlook emails, and meeting transcriptions on sovereign French infrastructure",
-      "Delivered Product Finder AI for TYCO/Johnson Controls — enterprise semantic product search using Mistral and FastAPI",
       "Building Auditex, a B2B SaaS for AI extraction from French professional documents (payslips, CVs, invoices) under Updev Solutions",
-      "Building Grow Online, a cross-platform social media automation SaaS with Gemini-powered video processing",
-      "Preparatory work on Veolia call summarization and classification project via Sia Partners"
+      "Building Grow Online, a cross-platform social media automation SaaS with Gemini-powered video processing"
     ],
     "technologies": ["TypeScript", "Python", "NestJS", "FastAPI", "React", "PostgreSQL", "Claude API", "Mistral API", "Gemini API", "Docker", "RAG", "MCP"],
     "status": "current"

@@ -709,21 +709,9 @@
 }
 .msg-row--user { justify-content: flex-end; }
 .msg-row--assistant {
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   max-width: 92%;
-  gap: 8px;
-}
-
-.msg-avatar {
-  width: 28px;
-  height: 28px;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
 }
 
 .msg-body {
@@ -793,16 +781,6 @@
   font-size: 0.88em;
 }
 
-.stream-cursor {
-  display: inline-block;
-  width: var(--stream-cursor-w);
-  height: 1em;
-  background: var(--stream-cursor-color);
-  margin-left: 1px;
-  vertical-align: text-bottom;
-  border-radius: 1px;
-  animation: cursor-pulse 0.8s ease-in-out infinite;
-}
 
 /* ── Thinking Block ── */
 .thinking {
@@ -1000,9 +978,8 @@
 }
 
 .typing-indicator__avatar {
-  width: 28px;
-  height: 28px;
-  overflow: hidden;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -1029,6 +1006,19 @@
 
 .typing-indicator__dot:nth-child(3) {
   animation-delay: 0.24s;
+}
+
+/* ── Chat Mascot (below last message) ── */
+.chat-mascot {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  animation: mascot-in 0.3s var(--ease-out) forwards;
+}
+
+@keyframes mascot-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .prompt-chip {
   display: flex;

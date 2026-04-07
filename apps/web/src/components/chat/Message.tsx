@@ -3,14 +3,6 @@ import ThinkingBlock from './ThinkingBlock'
 import ToolCallBlock from './ToolCallBlock'
 import FollowUpButtons from './FollowUpButtons'
 import Markdown from './Markdown'
-// @ts-expect-error — JSX sprite component, no types
-import SpriteCanvas from '@/components/sprite/SpriteCanvas'
-
-function getCatAnimation(msg: ChatMessage): string {
-  if (msg.isStreaming || msg.isThinking) return 'play'
-  if ((msg.toolCalls?.length ?? 0) > 0 && msg.toolCalls!.some(tc => tc.status !== 'complete')) return 'walk'
-  return 'sit'
-}
 
 export default function Message({ msg, onSendMessage }: { msg: ChatMessage; onSendMessage?: (text: string) => void }) {
   if (msg.role === 'user') {
@@ -30,9 +22,6 @@ export default function Message({ msg, onSendMessage }: { msg: ChatMessage; onSe
 
   return (
     <div className="msg-row msg-row--assistant">
-      <div className="msg-avatar">
-        <SpriteCanvas animation={getCatAnimation(msg)} scale={1.5} />
-      </div>
       <div className="msg-body">
         {hasThinking && (
           <ThinkingBlock thinking={msg.thinking!} isActive={msg.isThinking ?? false} />

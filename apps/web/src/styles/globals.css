@@ -177,11 +177,6 @@ body {
   }
 }
 
-@keyframes cursor-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.15; }
-}
-
 @keyframes dot-bounce {
   0%, 60%, 100% {
     transform: translateY(0);

@@ -82,8 +82,6 @@
   --hero-dur-collapse:     850ms;
 
   /* ── Streaming ── */
-  --stream-cursor-w:       2px;
-  --stream-cursor-color:   var(--text-3);
   --stream-token-dur:      0.3s;
 
   /* ── Typing Indicator ── */
