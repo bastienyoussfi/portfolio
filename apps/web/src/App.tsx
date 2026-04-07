@@ -1,13 +1,16 @@
 import { Routes, Route, Outlet } from 'react-router-dom'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import ChatHero from '@/components/chat/ChatHero'
 import ProjectsPage from '@/components/ProjectsPage'
+import BlogPage from '@/components/BlogPage'
 
 function Layout({ className }: { className: string }) {
   return (
     <div className={className}>
       <Header />
       <Outlet />
+      <Footer />
     </div>
   )
 }
@@ -20,6 +23,9 @@ export default function App() {
       </Route>
       <Route element={<Layout className="page page--scroll" />}>
         <Route path="/projects" element={<ProjectsPage />} />
+      </Route>
+      <Route element={<Layout className="page page--scroll" />}>
+        <Route path="/blog" element={<BlogPage />} />
       </Route>
     </Routes>
   )

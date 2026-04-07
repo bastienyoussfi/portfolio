@@ -1,14 +1,7 @@
 import { useMemo } from 'react'
 import type { Project } from '@/types/project'
 import { projects } from '@/data'
-import { AnimatedHikeCard } from '@/components/ui/card-25'
-import { Brain, Rocket, Code, Calendar, Layers } from 'lucide-react'
-
-const categoryIcons: Record<string, React.ReactNode> = {
-  ai: <Brain className="h-4 w-4" />,
-  saas: <Rocket className="h-4 w-4" />,
-  fullstack: <Code className="h-4 w-4" />,
-}
+import { ArticleCard } from '@/components/ui/blog-post-card'
 
 const projectImages: Record<string, string[]> = {
   auditex: [
@@ -44,15 +37,8 @@ const defaultImages = [
   'https://images.unsplash.com/photo-1550439062-609e1531270e?w=800&h=600&fit=crop',
 ]
 
-function buildStats(project: Project) {
-  const stats = []
-  const icon = categoryIcons[project.category] ?? <Code className="h-4 w-4" />
-  stats.push({ icon, label: project.category })
-  stats.push({ icon: <Calendar className="h-4 w-4" />, label: String(project.year) })
-  if (project.technologies?.length) {
-    stats.push({ icon: <Layers className="h-4 w-4" />, label: `${project.technologies.length} techs` })
-  }
-  return stats
+function capitalize(s: string) {
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 export default function ProjectsPage() {
@@ -75,12 +61,15 @@ export default function ProjectsPage() {
       </div>
       <div className="projects-grid">
         {items.map((p) => (
-          <AnimatedHikeCard
+          <ArticleCard
             key={p.id}
-            title={p.title}
-            images={projectImages[p.id] ?? defaultImages}
-            stats={buildStats(p)}
-            description={p.description}
+            headline={p.title}
+            excerpt={p.description}
+            cover={(projectImages[p.id] ?? defaultImages)[0]}
+            tag={capitalize(p.category)}
+            writer={p.role}
+            publishedAt={new Date(p.year, 0, 1)}
+            clampLines={3}
             href={p.links?.live || p.links?.github || '#'}
           />
         ))}

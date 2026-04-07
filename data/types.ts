@@ -70,6 +70,7 @@ export interface BlogPost {
   title: string
   excerpt: string
   date: string
+  displayDate: string
   readTimeMinutes: number
   tags: string[]
   url: string

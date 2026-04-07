@@ -278,6 +278,10 @@ export default function ChatHero() {
           </div>
         </div>
 
+        <p className="chat-disclaimer">
+          Bounty can make mistakes. Double-check important info about Bastien.
+        </p>
+
         <div className="chat-idle__prompts">
           {PROMPTS.map((p, i) => (
             <button
