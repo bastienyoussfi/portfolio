@@ -239,7 +239,6 @@ export default function ChatHero() {
       className="hero"
       style={{
         paddingTop: headerPadTop,
-        borderBottomColor: progress > 0.6 ? 'var(--sep)' : 'transparent',
       }}
     >
 
