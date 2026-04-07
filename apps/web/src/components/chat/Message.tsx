@@ -27,7 +27,7 @@ export default function Message({ msg, onSendMessage }: { msg: ChatMessage; onSe
           <ThinkingBlock thinking={msg.thinking!} isActive={msg.isThinking ?? false} />
         )}
         {msg.toolCalls?.map((tc) => (
-          <ToolCallBlock key={tc.id} tc={tc} compact />
+          <ToolCallBlock key={tc.id} tc={tc} />
         ))}
         {(hasContent || msg.isStreaming) && (
           <Markdown content={msg.content} isStreaming={msg.isStreaming} />

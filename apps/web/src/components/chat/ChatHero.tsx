@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback, useState } from 'react'
+import { useRef, useEffect, useCallback, useState, useLayoutEffect } from 'react'
 import { useChat } from '@/hooks/useChat'
 import { useAnimatedProgress, type Phase } from '@/hooks/useAnimatedProgress'
 import { useContactModal } from '@/hooks/useContactModal'
@@ -65,6 +65,7 @@ export default function ChatHero() {
   const messagesRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
 
   const [phase, setPhase] = useState<Phase>('hero')
   const [userDismissed, setUserDismissed] = useState(false)
@@ -72,6 +73,24 @@ export default function ChatHero() {
   const isActive = phase !== 'hero'
   const collapseTimer = useRef<ReturnType<typeof setTimeout>>(null)
   const goHomeTimer = useRef<ReturnType<typeof setTimeout>>(null)
+
+  /* ── Measure heading natural height for smooth collapse ── */
+  const [headingHeight, setHeadingHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    const el = headingRef.current
+    if (!el) return
+    const measure = () => {
+      // Only measure when not animating to avoid feedback loops
+      if (progress === 0) {
+        setHeadingHeight(el.scrollHeight)
+      }
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [progress === 0]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [sizes, setSizes] = useState({
     titleStart: 52, titleEnd: 18, padStart: 24, padEnd: 14,
@@ -164,10 +183,26 @@ export default function ChatHero() {
     el.style.height = `${Math.min(el.scrollHeight, 120)}px`
   }
 
+  /* ── Progress-driven interpolations ── */
   const titleSize = sizes.titleStart - progress * (sizes.titleStart - sizes.titleEnd)
   const headerPadTop = sizes.padStart - progress * (sizes.padStart - sizes.padEnd)
-  const showBorder = progress > 0.6
   const titleAlign = progress > 0.5 ? 'center' : ('left' as const)
+
+  // Heading collapses smoothly via measured height
+  const headingOpacity = Math.max(0, 1 - progress * 1.5)
+  const headingH = progress > 0
+    ? headingHeight * (1 - progress)
+    : 'auto'
+  const headingMb = 6 * (1 - progress)
+
+  // Hero group fades out in the first half of progress
+  const heroGroupOpacity = Math.max(0, 1 - progress * 2)
+  const heroGroupMaxH = 500 * (1 - progress)
+
+  // Messages area fades in during the second half
+  const messagesOpacity = progress
+  const messagesTranslateY = 20 * (1 - progress)
+  const messagesFlex = progress
 
   const lastMsg = messages[messages.length - 1]
   const shouldType = isLoading && lastMsg?.role === 'assistant' &&
@@ -201,17 +236,37 @@ export default function ChatHero() {
   return (
     <div
       ref={heroRef}
-      className={`hero ${showBorder ? 'hero--collapsed' : ''}`}
-      style={{ paddingTop: headerPadTop }}
+      className="hero"
+      style={{
+        paddingTop: headerPadTop,
+        borderBottomColor: progress > 0.6 ? 'var(--sep)' : 'transparent',
+      }}
     >
+
       <h1
-        className={`hero__heading ${phase === 'chat' ? 'hero__heading--hidden' : ''}`}
-        style={{ fontSize: titleSize, textAlign: titleAlign }}
+        ref={headingRef}
+        className="hero__heading"
+        style={{
+          fontSize: titleSize,
+          textAlign: titleAlign,
+          height: headingH,
+          marginBottom: headingMb,
+          overflow: progress > 0 ? 'hidden' : 'visible',
+          opacity: headingOpacity,
+        }}
       >
         Hi, I'm <strong>{bio.name}.</strong>
       </h1>
 
-      <div className={`hero-group ${isActive ? 'hero-group--collapsed' : ''}`}>
+      <div
+        className="hero-group"
+        style={{
+          maxHeight: heroGroupMaxH,
+          overflow: 'hidden',
+          opacity: heroGroupOpacity,
+          pointerEvents: progress > 0.3 ? 'none' : 'auto',
+        }}
+      >
         <div className="hero__subtitle-wrap">
           <p className="hero__role">{bio.title}.</p>
         </div>
@@ -230,7 +285,14 @@ export default function ChatHero() {
 
       </div>
 
-      <div className={`chat-messages-area ${isActive ? 'chat-messages-area--visible' : ''}`}>
+      <div
+        className="chat-messages-area"
+        style={{
+          flex: messagesFlex,
+          opacity: messagesOpacity,
+          transform: `translateY(${messagesTranslateY}px)`,
+        }}
+      >
         <div className="chat-messages" ref={messagesRef} role="log" aria-live="polite">
           {messages.map((m, i) => {
             const isEmpty = m.role === 'assistant' && !m.content && !m.thinking && !m.toolCalls?.length
@@ -247,24 +309,27 @@ export default function ChatHero() {
               </div>
             </div>
           )}
-
-          {lastMsg?.role === 'assistant' && (
-            <div className="chat-mascot">
-              <GhostMascot scale={2} />
-            </div>
-          )}
         </div>
       </div>
 
       {error && <div className="chat-error">{error}</div>}
 
       <div className={`chat-center ${isActive ? 'chat-center--active' : ''}`}>
-        <div className="chat-idle__cat">
-          <GhostMascot scale={2} />
-        </div>
+        {/* Hero mode mascot — centered above input */}
+        {!isActive && (
+          <div className="chat-idle__cat">
+            <GhostMascot scale={2} />
+          </div>
+        )}
 
         <div className={`chat-input ${!isActive ? 'chat-input--centered' : ''}`}>
           <div className="chat-input__field">
+            {/* Chat mode mascot — inside input, left side */}
+            {isActive && (
+              <div className="chat-input__mascot">
+                <GhostMascot scale={0.8} />
+              </div>
+            )}
             <textarea
               ref={textareaRef}
               className="chat-input__textarea"
@@ -277,6 +342,14 @@ export default function ChatHero() {
             <button className="chat-input__send" onClick={handleSend} disabled={isLoading} aria-label="Send message">
               {sendIcon}
             </button>
+            {phase === 'chat' && (
+              <button className="chat-input__reset" onClick={handleGoHome} aria-label="Reset chat">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
 
@@ -297,16 +370,6 @@ export default function ChatHero() {
             </button>
           ))}
         </div>
-
-        {phase === 'chat' && (
-          <button className="chat-reset" onClick={handleGoHome}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="1 4 1 10 7 10" />
-              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-            </svg>
-            Reset chat
-          </button>
-        )}
       </div>
     </div>
   )

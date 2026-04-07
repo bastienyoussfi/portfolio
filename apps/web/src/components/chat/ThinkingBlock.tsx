@@ -1,9 +1,19 @@
 import { useState } from 'react'
+import TextShimmer from './TextShimmer'
 
 interface Props {
   thinking: string
   isActive: boolean
 }
+
+const BrainIcon = (
+  <svg viewBox="0 0 16 16" fill="none">
+    <path
+      d="M5.5 14v-1.3A5 5 0 0 1 3 8a5 5 0 0 1 10 0 5 5 0 0 1-2.5 4.7V14M6 10h4M7 12h2"
+      stroke="var(--purple)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+    />
+  </svg>
+)
 
 export default function ThinkingBlock({ thinking, isActive }: Props) {
   const [open, setOpen] = useState(isActive)
@@ -11,15 +21,15 @@ export default function ThinkingBlock({ thinking, isActive }: Props) {
   return (
     <div className="thinking">
       <div className="thinking__header" onClick={() => setOpen((o) => !o)}>
-        {isActive && (
-          <div className="thinking__dots">
-            <div className="thinking__dot" />
-            <div className="thinking__dot" />
-            <div className="thinking__dot" />
-          </div>
-        )}
+        <div className="thinking__icon-well">
+          {isActive ? <div className="thinking__sparkle" /> : BrainIcon}
+        </div>
         <span className="thinking__label">
-          {isActive ? 'Thinking…' : 'Thought process'}
+          {isActive ? (
+            <TextShimmer duration={3} spread={25}>Agent thinking</TextShimmer>
+          ) : (
+            'Thought process'
+          )}
         </span>
         <svg
           className={`thinking__chevron ${open ? 'thinking__chevron--open' : ''}`}

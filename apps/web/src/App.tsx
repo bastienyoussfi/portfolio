@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import ChatHero from '@/components/chat/ChatHero'
 import ProjectsPage from '@/components/ProjectsPage'
 import BlogPage from '@/components/BlogPage'
+import BlogPostPage from '@/components/BlogPostPage'
 import ContactModal from '@/components/ContactModal'
 import { ContactModalProvider } from '@/hooks/useContactModal'
 
@@ -29,6 +30,7 @@ export default function App() {
         </Route>
         <Route element={<Layout className="page page--scroll" />}>
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Route>
       </Routes>
       <ContactModal />

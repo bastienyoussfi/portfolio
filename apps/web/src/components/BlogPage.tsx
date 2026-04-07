@@ -19,6 +19,7 @@ export default function BlogPage() {
             title={post.title}
             date={post.displayDate}
             description={post.excerpt}
+            slug={post.slug}
           />
         ))}
       </div>
