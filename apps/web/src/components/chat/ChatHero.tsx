@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback, useState, useLayoutEffect } from 'react
 import { useChat } from '@/hooks/useChat'
 import { useAnimatedProgress, type Phase } from '@/hooks/useAnimatedProgress'
 import { useContactModal } from '@/hooks/useContactModal'
-import { bio, contact } from '@/data'
+import { bio } from '@/data'
 import Message from './Message'
 import GhostMascot from '@/components/ui/GhostMascot'
 

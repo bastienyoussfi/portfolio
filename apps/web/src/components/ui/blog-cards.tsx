@@ -53,7 +53,7 @@ export default function BlogCard({ title, date, description, slug, image }: Blog
     <Link
       ref={ref}
       to={`/blog/${slug}`}
-      className="blog-card"
+      className="list-card"
       onMouseMove={image ? handleMouseMove : undefined}
       onMouseEnter={image ? handleMouseEnter : undefined}
       onMouseLeave={image ? handleMouseLeave : undefined}
@@ -62,7 +62,7 @@ export default function BlogCard({ title, date, description, slug, image }: Blog
         <motion.img
           src={image}
           alt=""
-          className="blog-card__hover-img"
+          className="list-card__hover-img"
           style={{
             top,
             left,
@@ -73,12 +73,12 @@ export default function BlogCard({ title, date, description, slug, image }: Blog
           }}
         />
       )}
-      <div className="blog-card__row">
-        <div className="blog-card__title">{title}</div>
-        <span className="blog-card__divider" />
-        <div className="blog-card__date">{date}</div>
+      <div className="list-card__row">
+        <div className="list-card__title">{title}</div>
+        <span className="list-card__divider" />
+        <div className="list-card__date">{date}</div>
       </div>
-      <div className="blog-card__desc">{description}</div>
+      <div className="list-card__desc">{description}</div>
     </Link>
   )
 }

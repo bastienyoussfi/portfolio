@@ -4,47 +4,6 @@
    Inline styles only for dynamic values (cursor pos).
    ═══════════════════════════════════════════════ */
 
-/* ── Card ── */
-.card {
-  background: var(--card);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  position: relative;
-  transition:
-    transform var(--dur-hover) var(--ease-out),
-    box-shadow var(--dur-hover) var(--ease-out);
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    380px circle at var(--mx, 50%) var(--my, 50%),
-    var(--card-gradient),
-    transparent 50%
-  );
-  opacity: 0;
-  transition: opacity 0.4s linear;
-  z-index: 1;
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-hover);
-}
-
-.card:active {
-  transform: scale(0.99);
-  box-shadow: var(--shadow);
-  transition-duration: var(--dur-press);
-}
 
 /* ── Pill ── */
 .pill {
@@ -1171,26 +1130,14 @@
   color: var(--text-4);
 }
 
-/* ── Projects Grid ── */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 40px;
-  column-gap: 24px;
-}
-
-@media (max-width: 840px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* ── Projects List ── */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 @media (max-width: 520px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-    row-gap: 32px;
-  }
-
   .projects-page__title,
   .projects-page__subtitle {
     font-size: 32px;
@@ -1238,12 +1185,12 @@
 }
 
 /* ── Blog Card ── */
-.blog-card {
+.list-card {
   cursor: pointer;
   position: relative;
 }
 
-.blog-card__hover-img {
+.list-card__hover-img {
   position: absolute;
   top: 0;
   left: 0;
@@ -1256,7 +1203,7 @@
   pointer-events: none;
 }
 
-.blog-card__row {
+.list-card__row {
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -1264,7 +1211,7 @@
   z-index: 1;
 }
 
-.blog-card__title {
+.list-card__title {
   font-family: var(--font-body);
   font-size: 20px;
   font-weight: 700;
@@ -1275,7 +1222,7 @@
   transition: color var(--dur-hover) var(--ease-out);
 }
 
-.blog-card__divider {
+.list-card__divider {
   flex: 1;
   min-width: 24px;
   border-bottom: var(--sep-h) dashed var(--text-5);
@@ -1284,7 +1231,7 @@
   transition: border-color var(--dur-hover) var(--ease-out);
 }
 
-.blog-card__date {
+.list-card__date {
   font-size: 11px;
   font-weight: 500;
   color: var(--text-3);
@@ -1294,7 +1241,7 @@
   transition: color var(--dur-hover) var(--ease-out);
 }
 
-.blog-card__desc {
+.list-card__desc {
   color: var(--text-3);
   font-size: 13px;
   line-height: 1.4;
@@ -1304,14 +1251,40 @@
   z-index: 1;
 }
 
-.blog-card:hover .blog-card__title,
-.blog-card:hover .blog-card__date,
-.blog-card:hover .blog-card__desc {
+.list-card:hover .list-card__title,
+.list-card:hover .list-card__date,
+.list-card:hover .list-card__desc {
   color: var(--orange);
 }
 
-.blog-card:hover .blog-card__divider {
+.list-card:hover .list-card__divider {
   border-color: var(--orange);
+}
+
+/* ── List Card Tech Avatars ── */
+.list-card__techs {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.list-card__techs > * + * {
+  margin-left: -4px;
+}
+
+.list-card__techs-overflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  border: 1px solid var(--sep);
+  background: var(--fill-1);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-left: -4px;
 }
 
 @media (max-width: 520px) {
@@ -1321,21 +1294,21 @@
     letter-spacing: -1.5px;
   }
 
-  .blog-card__title {
+  .list-card__title {
     font-size: 17px;
   }
 
-  .blog-card__date {
+  .list-card__date {
     font-size: 10px;
   }
 
-  .blog-card__hover-img {
+  .list-card__hover-img {
     display: none;
   }
 }
 
 /* ── Blog Card link reset ── */
-a.blog-card {
+a.list-card {
   text-decoration: none;
   color: inherit;
   display: block;
