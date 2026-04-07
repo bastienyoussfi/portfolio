@@ -60,7 +60,7 @@ const sendIcon = (
 )
 
 export default function ChatHero() {
-  const { messages, isLoading, error, hasInteracted, sendMessage } = useChat()
+  const { messages, isLoading, error, hasInteracted, sendMessage, reset } = useChat()
   const { open: openContact } = useContactModal()
   const messagesRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -71,8 +71,6 @@ export default function ChatHero() {
   const [userDismissed, setUserDismissed] = useState(false)
   const progress = useAnimatedProgress(phase, 850)
   const isActive = phase !== 'hero'
-  const collapseTimer = useRef<ReturnType<typeof setTimeout>>(null)
-  const goHomeTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
   /* ── Measure heading natural height for smooth collapse ── */
   const [headingHeight, setHeadingHeight] = useState(0)
@@ -123,8 +121,7 @@ export default function ChatHero() {
 
   useEffect(() => {
     if (hasInteracted && phase === 'hero' && !userDismissed) {
-      setPhase('transitioning')
-      collapseTimer.current = setTimeout(() => setPhase('chat'), 900)
+      setPhase('chat')
     }
   }, [hasInteracted, phase, userDismissed])
 
@@ -136,19 +133,12 @@ export default function ChatHero() {
     prevMessageCount.current = messages.length
   }, [messages.length, userDismissed])
 
-  useEffect(() => {
-    return () => {
-      if (collapseTimer.current) clearTimeout(collapseTimer.current)
-      if (goHomeTimer.current) clearTimeout(goHomeTimer.current)
-    }
-  }, [])
-
   const handleGoHome = useCallback(() => {
     if (phase !== 'chat') return
     setUserDismissed(true)
-    setPhase('expanding')
-    goHomeTimer.current = setTimeout(() => setPhase('hero'), 900)
-  }, [phase])
+    setPhase('hero')
+    reset()
+  }, [phase, reset])
 
   const scrollRaf = useRef(0)
   useEffect(() => {

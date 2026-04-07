@@ -35,3 +35,4 @@ export type ChatAction =
   | { type: 'APPEND_TEXT'; text: string }
   | { type: 'FINISH' }
   | { type: 'SET_ERROR'; message: string }
+  | { type: 'RESET' }

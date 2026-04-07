@@ -121,6 +121,10 @@ body::before {
   background-size: 256px 256px;
 }
 
+[data-theme="dark"] body::before {
+  opacity: 0.12;
+}
+
 /* ── Scroll Reveal ── */
 .reveal-target {
   opacity: 0;

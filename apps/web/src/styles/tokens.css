@@ -104,3 +104,52 @@
   --card-gradient:  rgba(0, 0, 0, 0.012);
   --font-mono:      ui-monospace, 'SF Mono', monospace;
 }
+
+/* ── Dark Theme ── */
+[data-theme="dark"] {
+  --bg:           #111113;
+  --card:         #1c1c1e;
+  --well:         #1c1c1e;
+  --well-2:       #2c2c2e;
+
+  --text-1:       #f5f5f7;
+  --text-2:       #c7c7cc;
+  --text-3:       #8e8e93;
+  --text-4:       #48484a;
+  --text-5:       #3a3a3c;
+
+  --sep:          rgba(245, 245, 247, 0.08);
+  --fill-1:       rgba(245, 245, 247, 0.08);
+  --fill-2:       rgba(245, 245, 247, 0.05);
+  --fill-3:       rgba(245, 245, 247, 0.03);
+
+  --blue:         #0a84ff;
+  --blue-light:   rgba(10, 132, 255, 0.15);
+  --green:        #30d158;
+  --green-light:  rgba(48, 209, 88, 0.15);
+  --orange:       #ff9f0a;
+  --orange-light: rgba(255, 159, 10, 0.15);
+  --red:          #ff453a;
+  --red-light:    rgba(255, 69, 58, 0.15);
+  --purple:       #bf5af2;
+  --purple-light: rgba(191, 90, 242, 0.15);
+  --teal:         #64d2ff;
+  --indigo:       #5e5ce6;
+  --indigo-light: rgba(94, 92, 230, 0.15);
+
+  --shadow:       0 0 0 0.5px rgba(255,255,255,0.04), 0 0.5px 1px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-hover: 0 0 0 0.5px rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.3), 0 8px 28px rgba(0,0,0,0.35);
+  --shadow-well:  inset 0 0.5px 1px rgba(0,0,0,0.2);
+  --shadow-tag:   0 1px 3px rgba(0,0,0,0.2);
+  --shadow-chat:  0 0 0 0.5px rgba(255,255,255,0.04), 0 2px 12px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.25);
+
+  --bubble-user-bg:     #f5f5f7;
+  --bubble-user-color:  #111113;
+  --bubble-user-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  --on-primary:     #ffffff;
+  --border-focus:   rgba(245, 245, 247, 0.15);
+  --backdrop:       rgba(0, 0, 0, 0.5);
+  --shadow-lifted:  0 4px 16px rgba(0, 0, 0, 0.3);
+  --card-gradient:  rgba(255, 255, 255, 0.015);
+}

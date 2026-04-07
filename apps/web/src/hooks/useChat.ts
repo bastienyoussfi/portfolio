@@ -110,6 +110,9 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
       return { ...updated, isLoading: false, error: action.message }
     }
 
+    case 'RESET':
+      return initialState
+
     default:
       return state
   }
@@ -130,10 +133,15 @@ export function useChat() {
   const [state, dispatch] = useReducer(chatReducer, initialState)
   const messagesRef = useRef(state.messages)
   messagesRef.current = state.messages
+  const abortRef = useRef<AbortController | null>(null)
 
   const sendMessage = useCallback(
     async (content: string) => {
       if (!content.trim()) return
+
+      abortRef.current?.abort()
+      const controller = new AbortController()
+      abortRef.current = controller
 
       dispatch({ type: 'ADD_USER_MESSAGE', content })
       dispatch({ type: 'START_ASSISTANT_MESSAGE' })
@@ -148,6 +156,7 @@ export function useChat() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: apiMessages }),
+          signal: controller.signal,
         })
 
         if (!response.ok) {
@@ -165,6 +174,8 @@ export function useChat() {
         let finished = false
 
         for await (const { event, data } of parseSSE(reader)) {
+          if (controller.signal.aborted) break
+
           switch (event) {
             case 'thinking_start':
               dispatch({ type: 'SET_THINKING', isThinking: true })
@@ -219,8 +230,9 @@ export function useChat() {
           }
         }
 
-        if (!finished) dispatch({ type: 'FINISH' })
+        if (!finished && !controller.signal.aborted) dispatch({ type: 'FINISH' })
       } catch (err) {
+        if (controller.signal.aborted) return
         dispatch({
           type: 'SET_ERROR',
           message: 'Failed to connect. Please try again.',
@@ -230,11 +242,17 @@ export function useChat() {
     [],
   )
 
+  const reset = useCallback(() => {
+    abortRef.current?.abort()
+    dispatch({ type: 'RESET' })
+  }, [])
+
   return {
     messages: state.messages,
     isLoading: state.isLoading,
     error: state.error,
     hasInteracted: state.hasInteracted,
     sendMessage,
+    reset,
   }
 }
