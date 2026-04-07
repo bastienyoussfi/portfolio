@@ -20,6 +20,7 @@ export default function BlogPage() {
             date={post.displayDate}
             description={post.excerpt}
             slug={post.slug}
+            image={post.image}
           />
         ))}
       </div>
