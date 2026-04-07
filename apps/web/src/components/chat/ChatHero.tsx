@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { useChat } from '@/hooks/useChat'
 import { useAnimatedProgress, type Phase } from '@/hooks/useAnimatedProgress'
+import { useContactModal } from '@/hooks/useContactModal'
 import { bio, contact } from '@/data'
 import Message from './Message'
 import GhostMascot from '@/components/ui/GhostMascot'
@@ -60,6 +61,7 @@ const sendIcon = (
 
 export default function ChatHero() {
   const { messages, isLoading, error, hasInteracted, sendMessage } = useChat()
+  const { open: openContact } = useContactModal()
   const messagesRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -216,10 +218,10 @@ export default function ChatHero() {
 
         <div className="hero__cta-wrap">
           <div className="hero__actions">
-            <a href={`mailto:${contact.email}`} className="hero__cta">
+            <button onClick={openContact} className="hero__cta">
               Get in Touch
               {ArrowIcon}
-            </a>
+            </button>
             <span className="hero__supporting">
               Feel free to explore my portfolio and reach out — I'd love to connect!
             </span>
