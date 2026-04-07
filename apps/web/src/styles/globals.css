@@ -3,12 +3,14 @@
 @import "./components.css";
 
 /* ── Reset ── */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 html {
@@ -198,15 +200,6 @@ body {
   100% { background-position: -200% 0; }
 }
 
-@keyframes bounty-idle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-
-@keyframes bounty-shadow {
-  0%, 100% { transform: scaleX(1); opacity: 0.15; }
-  50% { transform: scaleX(0.85); opacity: 0.08; }
-}
 
 @keyframes msg-in {
   from {
@@ -228,6 +221,15 @@ body {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+@keyframes ghost-blink {
+  0%, 90%, 100% { ry: 30; }
+  95% { ry: 3; }
+}
+
+.ghost-eye {
+  animation: ghost-blink 3s ease-in-out infinite;
 }
 
 /* ── Grain Texture ── */

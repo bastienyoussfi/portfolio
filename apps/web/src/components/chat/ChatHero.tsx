@@ -3,8 +3,7 @@ import { useChat } from '@/hooks/useChat'
 import { useAnimatedProgress, type Phase } from '@/hooks/useAnimatedProgress'
 import { bio, contact } from '@/data'
 import Message from './Message'
-// @ts-expect-error — JSX sprite component, no types
-import SpriteCanvas from '@/components/sprite/SpriteCanvas'
+import GhostMascot from '@/components/ui/GhostMascot'
 
 /* ── SVG Icons for chips (14×14, stroke, currentColor) ── */
 const FolderIcon = (
@@ -197,17 +196,6 @@ export default function ChatHero() {
     }
   }, [shouldType, typingPhase])
 
-  // Mascot animation: shows below the last message
-  const getMascotAnimation = (): string | null => {
-    if (!lastMsg || lastMsg.role === 'user') return null
-
-    if (lastMsg.isStreaming || lastMsg.isThinking) return 'play'
-    if (lastMsg.toolCalls?.some(tc => tc.status !== 'complete')) return 'walk'
-    return 'sit'
-  }
-
-  const mascotAnimation = getMascotAnimation()
-
   return (
     <div
       ref={heroRef}
@@ -250,9 +238,6 @@ export default function ChatHero() {
 
           {typingPhase !== 'hidden' && (
             <div className={`typing-indicator typing-indicator--${typingPhase}`}>
-              <div className="typing-indicator__avatar">
-                <SpriteCanvas animation="walk" scale={1.5} />
-              </div>
               <div className="typing-indicator__dots">
                 <div className="typing-indicator__dot" />
                 <div className="typing-indicator__dot" />
@@ -261,9 +246,9 @@ export default function ChatHero() {
             </div>
           )}
 
-          {mascotAnimation && (
+          {lastMsg?.role === 'assistant' && (
             <div className="chat-mascot">
-              <SpriteCanvas animation={mascotAnimation} scale={2} />
+              <GhostMascot scale={2} />
             </div>
           )}
         </div>
@@ -273,7 +258,7 @@ export default function ChatHero() {
 
       <div className={`chat-center ${isActive ? 'chat-center--active' : ''}`}>
         <div className="chat-idle__cat">
-          <SpriteCanvas animation="idle" scale={2} />
+          <GhostMascot scale={2} />
         </div>
 
         <div className={`chat-input ${!isActive ? 'chat-input--centered' : ''}`}>

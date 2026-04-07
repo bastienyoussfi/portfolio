@@ -5,8 +5,6 @@ import { contact } from '@/data'
 const SECTIONS = [
   { id: 'home', label: 'Home', to: '/' },
   { id: 'projects', label: 'Projects', to: '/projects' },
-  { id: 'experience', label: 'Experience', to: '/#experience' },
-  { id: 'skills', label: 'Skills', to: '/#skills' },
   { id: 'blog', label: 'Blog', to: '/#blog' },
   { id: 'contact', label: 'Contact', to: '/#contact' },
 ]

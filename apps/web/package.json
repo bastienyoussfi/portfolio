@@ -8,9 +8,14 @@
     "typecheck": "tsc -b"
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.72",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.7.0",
     "react": "^19",
     "react-dom": "^19",
-    "react-router-dom": "^7.14.0"
+    "react-router-dom": "^7.14.0",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4",
