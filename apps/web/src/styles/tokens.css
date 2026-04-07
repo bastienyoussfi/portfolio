@@ -65,14 +65,12 @@
   --page-px:    24px;
   --page-pt:    40px;
   --grid-gap:   12px;
-  --section-gap: 56px;
 
   /* ── Card Padding ── */
   --card-px:    18px;
   --card-py:    14px;
   --card-pad:   18px;
   --card-pad-lg: 24px;
-  --well-pad:   12px;
 
   /* ── Hero Collapse ── */
   --hero-title-size:       52px;
@@ -94,15 +92,15 @@
   --bubble-user-shadow:    0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
 
   /* ── Component Sizes ── */
-  --av-lg:      48px;
-  --av:         36px;
-  --av-sm:      26px;
-  --av-xs:      20px;
-  --icon-well:  32px;
-  --icon-well-lg: 40px;
   --sep-h:      0.5px;
-  --prog-h:     4px;
-  --prog-h-lg:  6px;
   --chevron-w:  7px;
   --chevron-h:  12px;
+
+  /* ── Dark-Theme Ready ── */
+  --on-primary:     #ffffff;
+  --border-focus:   rgba(60, 60, 67, 0.15);
+  --backdrop:       rgba(0, 0, 0, 0.25);
+  --shadow-lifted:  0 4px 16px rgba(0, 0, 0, 0.12);
+  --card-gradient:  rgba(0, 0, 0, 0.012);
+  --font-mono:      ui-monospace, 'SF Mono', monospace;
 }
