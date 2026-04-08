@@ -1096,6 +1096,14 @@
   .header__overlay-link {
     font-size: 32px;
   }
+
+  .chat-idle__cat {
+    display: none;
+  }
+
+  .chat-input__mascot {
+    display: none;
+  }
 }
 
 /* ── Projects Page ── */
@@ -1294,8 +1302,17 @@
     letter-spacing: -1.5px;
   }
 
+  .list-card__row {
+    flex-wrap: wrap;
+  }
+
   .list-card__title {
     font-size: 17px;
+    white-space: normal;
+  }
+
+  .list-card__divider {
+    display: none;
   }
 
   .list-card__date {
