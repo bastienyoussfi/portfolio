@@ -10,7 +10,12 @@ export interface Env {
 const app = new Hono<{ Bindings: Env }>()
 
 app.use('/api/*', cors({
-  origin: ['http://localhost:5173', 'http://localhost:4173'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'https://bastienyoussfi.com',
+    'https://www.bastienyoussfi.com',
+  ],
   allowMethods: ['POST', 'OPTIONS'],
   allowHeaders: ['Content-Type'],
 }))
