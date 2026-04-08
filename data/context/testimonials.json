@@ -1,0 +1,11 @@
+[
+  {
+    "id": "placeholder-1",
+    "quote": "Placeholder testimonial text.",
+    "author": "Jane Doe",
+    "title": "CTO",
+    "company": "TechCo",
+    "rating": 5,
+    "avatarColor": "blue"
+  }
+]

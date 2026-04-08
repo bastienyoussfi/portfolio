@@ -1,0 +1,68 @@
+[
+  {
+    "id": "cache",
+    "title": "Caching 101",
+    "excerpt": "Caching, a multi-layered strategy that happens at every level of your infrastructure.",
+    "date": "2025-11-19",
+    "displayDate": "Nov 19 2025",
+    "readTimeMinutes": 5,
+    "tags": ["DevOps", "Caching"],
+    "image": "/blog/caching.png",
+    "slug": "cache"
+  },
+  {
+    "id": "proxies",
+    "title": "Forward Proxies 101",
+    "excerpt": "What are Forward Proxies, and why we use them.",
+    "date": "2025-11-12",
+    "displayDate": "Nov 12 2025",
+    "readTimeMinutes": 5,
+    "tags": ["DevOps", "Networking"],
+    "image": "/blog/proxy.jpeg",
+    "slug": "proxies"
+  },
+  {
+    "id": "docker",
+    "title": "Docker Fundamentals and the Magic Behind Containers",
+    "excerpt": "Main concepts of Docker, and how it works under the hood.",
+    "date": "2025-10-31",
+    "displayDate": "Oct 31 2025",
+    "readTimeMinutes": 5,
+    "tags": ["DevOps", "Docker"],
+    "image": null,
+    "slug": "docker"
+  },
+  {
+    "id": "operating-systems",
+    "title": "Discovery of Operating Systems",
+    "excerpt": "Main concepts of Operating Systems, their building blocks and responsibilities.",
+    "date": "2025-10-17",
+    "displayDate": "Oct 17 2025",
+    "readTimeMinutes": 5,
+    "tags": ["DevOps", "OS"],
+    "image": "/blog/components.png",
+    "slug": "operating-systems"
+  },
+  {
+    "id": "openai",
+    "title": "The Risks of Misaligned Public AI",
+    "excerpt": "An analysis of ChatGPT's concerning sycophantic behavior and its implications for AI ethics.",
+    "date": "2025-05-05",
+    "displayDate": "May 5 2025",
+    "readTimeMinutes": 5,
+    "tags": ["AI", "Ethics"],
+    "image": "/blog/reddit.jpeg",
+    "slug": "openai"
+  },
+  {
+    "id": "welcome",
+    "title": "Welcome",
+    "excerpt": "Beginning of Bastien Youssfi's blog.",
+    "date": "2025-04-01",
+    "displayDate": "Apr 1 2025",
+    "readTimeMinutes": 2,
+    "tags": ["Personal"],
+    "image": null,
+    "slug": "welcome"
+  }
+]

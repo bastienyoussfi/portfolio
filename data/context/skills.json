@@ -1,0 +1,85 @@
+[
+  {
+    "category": "Languages",
+    "skills": [
+      { "name": "TypeScript", "years": 4, "proficiency": "expert", "color": "blue" },
+      { "name": "Python", "years": 4, "proficiency": "expert", "color": "green" },
+      { "name": "JavaScript", "years": 5, "proficiency": "expert", "color": "orange" },
+      { "name": "SQL", "years": 4, "proficiency": "advanced", "color": "slate" },
+      { "name": "HTML/CSS", "years": 5, "proficiency": "expert", "color": "red" },
+      { "name": "Bash", "years": 3, "proficiency": "advanced", "color": "gray" }
+    ]
+  },
+  {
+    "category": "Frontend",
+    "skills": [
+      { "name": "React", "years": 4, "proficiency": "expert", "color": "cyan" },
+      { "name": "Next.js", "years": 2, "proficiency": "advanced", "color": "indigo" },
+      { "name": "Tailwind CSS", "years": 3, "proficiency": "expert", "color": "teal" },
+      { "name": "shadcn/ui", "years": 1, "proficiency": "advanced", "color": "slate" },
+      { "name": "Framer Motion", "years": 1, "proficiency": "intermediate", "color": "purple" },
+      { "name": "Vite", "years": 2, "proficiency": "advanced", "color": "yellow" }
+    ]
+  },
+  {
+    "category": "Backend",
+    "skills": [
+      { "name": "NestJS", "years": 3, "proficiency": "expert", "color": "red" },
+      { "name": "FastAPI", "years": 2, "proficiency": "advanced", "color": "green" },
+      { "name": "Node.js", "years": 4, "proficiency": "expert", "color": "lime" },
+      { "name": "Prisma", "years": 2, "proficiency": "advanced", "color": "indigo" },
+      { "name": "PostgreSQL", "years": 4, "proficiency": "expert", "color": "blue" },
+      { "name": "REST APIs", "years": 4, "proficiency": "expert", "color": "orange" },
+      { "name": "OAuth 2.0", "years": 2, "proficiency": "advanced", "color": "amber" }
+    ]
+  },
+  {
+    "category": "AI & LLMs",
+    "skills": [
+      { "name": "Claude API", "years": 2, "proficiency": "expert", "color": "purple" },
+      { "name": "Mistral API", "years": 1, "proficiency": "advanced", "color": "orange" },
+      { "name": "Gemini API", "years": 1, "proficiency": "advanced", "color": "blue" },
+      { "name": "RAG", "years": 2, "proficiency": "expert", "color": "teal" },
+      { "name": "Prompt Engineering", "years": 2, "proficiency": "expert", "color": "pink" },
+      { "name": "Embeddings / Semantic Search", "years": 2, "proficiency": "advanced", "color": "cyan" },
+      { "name": "MCP", "years": 1, "proficiency": "advanced", "color": "violet" },
+      { "name": "Agentic Workflows", "years": 1, "proficiency": "advanced", "color": "rose" },
+      { "name": "ElevenLabs API", "years": 1, "proficiency": "intermediate", "color": "slate" },
+      { "name": "Speech-to-Text / NLP", "years": 2, "proficiency": "advanced", "color": "emerald" }
+    ]
+  },
+  {
+    "category": "DevOps & Infrastructure",
+    "skills": [
+      { "name": "Docker", "years": 3, "proficiency": "expert", "color": "blue" },
+      { "name": "GitHub Actions CI/CD", "years": 2, "proficiency": "advanced", "color": "gray" },
+      { "name": "NGINX", "years": 2, "proficiency": "advanced", "color": "green" },
+      { "name": "Linux / VPS", "years": 3, "proficiency": "advanced", "color": "orange" },
+      { "name": "Hetzner", "years": 1, "proficiency": "advanced", "color": "red" },
+      { "name": "Scaleway", "years": 1, "proficiency": "intermediate", "color": "purple" },
+      { "name": "GitLab (self-hosted)", "years": 1, "proficiency": "intermediate", "color": "orange" }
+    ]
+  },
+  {
+    "category": "APIs & Integrations",
+    "skills": [
+      { "name": "Microsoft Graph API", "years": 2, "proficiency": "advanced", "color": "blue" },
+      { "name": "Meta APIs (Instagram/Facebook/Threads)", "years": 1, "proficiency": "advanced", "color": "blue" },
+      { "name": "TikTok API", "years": 1, "proficiency": "intermediate", "color": "pink" },
+      { "name": "YouTube Data API", "years": 1, "proficiency": "intermediate", "color": "red" },
+      { "name": "LinkedIn API", "years": 1, "proficiency": "intermediate", "color": "blue" },
+      { "name": "WhatsApp Business API", "years": 1, "proficiency": "intermediate", "color": "green" },
+      { "name": "Twilio", "years": 1, "proficiency": "intermediate", "color": "red" },
+      { "name": "Sentry", "years": 1, "proficiency": "intermediate", "color": "purple" }
+    ]
+  },
+  {
+    "category": "Tools & Workflow",
+    "skills": [
+      { "name": "Claude Code", "years": 1, "proficiency": "expert", "color": "purple" },
+      { "name": "Git", "years": 5, "proficiency": "expert", "color": "orange" },
+      { "name": "Figma", "years": 2, "proficiency": "intermediate", "color": "pink" },
+      { "name": "Malt (Freelance)", "years": 2, "proficiency": "advanced", "color": "red" }
+    ]
+  }
+]

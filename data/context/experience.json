@@ -1,0 +1,137 @@
+[
+  {
+    "type": "work",
+    "title": "Freelance Full-Stack & AI Engineer",
+    "organization": "bastienyoussfi.dev (via Malt)",
+    "location": "Remote, France",
+    "startDate": "2024-01",
+    "endDate": null,
+    "description": "Independent freelance engineer specializing in AI-powered products, document processing, RAG systems, and full-stack SaaS development. Billing through Malt, working directly with clients across legal, bakery, industrial, and tech sectors.",
+    "highlights": [
+      "Building Auditex, a B2B SaaS for AI extraction from French professional documents (payslips, CVs, invoices) under Updev Solutions",
+      "Building Grow Online, a cross-platform social media automation SaaS with Gemini-powered video processing"
+    ],
+    "technologies": ["TypeScript", "Python", "NestJS", "FastAPI", "React", "PostgreSQL", "Claude API", "Mistral API", "Gemini API", "Docker", "RAG", "MCP"],
+    "status": "current"
+  },
+  {
+    "type": "work",
+    "title": "Consultant & AI Engineer",
+    "organization": "Sia Partners",
+    "location": "Paris, France",
+    "startDate": "2022-01",
+    "endDate": "2024-01",
+    "description": "AI engineering and consulting within a global management consulting firm. Built internal tools, led AI deployments for enterprise clients, and handled data integration projects across HR and knowledge management domains.",
+    "highlights": [
+      "Built the Sia Use Case Catalog — an internal platform to organize and showcase AI/data use cases across the firm",
+      "Developed POSI-BTP for CCCA-BTP — an AI career positioning platform for the French construction sector using self-hosted LLMs on Scaleway",
+      "Worked on data mapping and HR system integrations with Workday, Microsoft Graph API, and Alibeez",
+      "Contributed to enterprise AI deployment strategies for multiple clients",
+      "Used self-hosted GitLab and integrated MCP tooling for internal workflows"
+    ],
+    "technologies": ["TypeScript", "Python", "React", "NestJS", "PostgreSQL", "Self-hosted LLMs", "Scaleway", "Microsoft Graph API", "Workday", "GitLab"],
+    "status": "completed"
+  },
+  {
+    "type": "work",
+    "title": "AI Engineer",
+    "organization": "Armatis",
+    "location": "France",
+    "startDate": "2023-01",
+    "endDate": "2023-12",
+    "description": "Built SquAIre, a RAG-based knowledge management system for customer service agents, enabling natural language querying of internal documentation and procedures.",
+    "highlights": [
+      "Designed and implemented the RAG architecture for SquAIre, indexing internal documentation into a searchable knowledge base",
+      "Reduced average handling time for customer service agents by providing instant AI-powered answers",
+      "Improved first-call resolution rates by eliminating manual document searches"
+    ],
+    "technologies": ["Python", "TypeScript", "NestJS", "PostgreSQL", "RAG", "Embeddings", "LLM"],
+    "status": "completed"
+  },
+  {
+    "type": "work",
+    "title": "Full-Stack Developer",
+    "organization": "Steamulo",
+    "location": "France",
+    "startDate": "2021-01",
+    "endDate": "2022-01",
+    "description": "Early career full-stack development role where I built Autoscribe, an automatic meeting transcription pipeline, and contributed to various client web projects.",
+    "highlights": [
+      "Built Autoscribe — an end-to-end meeting transcription pipeline using speech-to-text models",
+      "Contributed to full-stack web development projects for agency clients"
+    ],
+    "technologies": ["Python", "JavaScript", "Speech-to-Text", "NLP"],
+    "status": "completed"
+  },
+  {
+    "type": "work",
+    "title": "Intern — Signal Processing Software",
+    "organization": "Digital Surf",
+    "location": "Besançon, France",
+    "startDate": "2020-01",
+    "endDate": "2020-06",
+    "description": "Engineering internship focused on signal processing software development.",
+    "highlights": [
+      "Contributed to signal processing tools and software used in surface metrology"
+    ],
+    "technologies": ["Signal Processing"],
+    "status": "completed"
+  },
+  {
+    "type": "education",
+    "title": "Engineering Degree (Diplôme d'Ingénieur)",
+    "organization": "ENSIMAG — Grenoble INP",
+    "location": "Grenoble, France",
+    "startDate": "2017-09",
+    "endDate": "2021-06",
+    "description": "Grande école engineering program specializing in applied mathematics and computer science.",
+    "highlights": [
+      "Studied applied mathematics, algorithms, and software engineering",
+      "Foundation in competitive programming and algorithmic problem-solving"
+    ],
+    "technologies": [],
+    "status": "completed"
+  },
+  {
+    "type": "education",
+    "title": "Master's Exchange Program",
+    "organization": "University in Japan",
+    "location": "Japan",
+    "startDate": "2019-09",
+    "endDate": "2020-06",
+    "description": "International exchange program in Japan as part of the ENSIMAG curriculum.",
+    "highlights": [
+      "Completed a master's-level research and coursework program abroad"
+    ],
+    "technologies": [],
+    "status": "completed"
+  },
+  {
+    "type": "certification",
+    "title": "IBM Machine Learning & Deep Learning Certifications",
+    "organization": "IBM",
+    "location": "Online",
+    "startDate": "2022-01",
+    "endDate": "2022-12",
+    "description": "Professional certifications covering machine learning fundamentals, deep learning architectures, and applied AI techniques.",
+    "highlights": [
+      "Completed IBM ML and Deep Learning professional certification tracks"
+    ],
+    "technologies": ["Machine Learning", "Deep Learning", "Python"],
+    "status": "completed"
+  },
+  {
+    "type": "certification",
+    "title": "Hugging Face AI Agents Course",
+    "organization": "Hugging Face",
+    "location": "Online",
+    "startDate": "2025-01",
+    "endDate": "2025-03",
+    "description": "Course on building AI agents, covering the GAIA benchmark and agentic AI patterns.",
+    "highlights": [
+      "Completed the full course and worked through the GAIA benchmark evaluations"
+    ],
+    "technologies": ["AI Agents", "Python", "Hugging Face"],
+    "status": "completed"
+  }
+]
