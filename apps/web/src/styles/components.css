@@ -253,18 +253,40 @@
   letter-spacing: -0.1px;
   cursor: pointer;
   text-decoration: none;
-  transition:
-    transform var(--dur-hover) var(--spring),
-    box-shadow var(--dur-hover) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow var(--dur-hover) var(--ease-out);
+}
+
+.hero__cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 25%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 75%,
+    transparent 100%
+  );
+  transition: none;
+}
+
+.hero__cta:hover::after {
+  left: 150%;
+  transition: left 0.7s ease;
 }
 
 .hero__cta:hover {
-  transform: scale(1.03);
   box-shadow: var(--shadow-hover);
 }
 
 .hero__cta:active {
-  transform: scale(0.97);
+  opacity: 0.85;
 }
 
 .hero__supporting {
