@@ -4,6 +4,7 @@ import { rateLimit } from '../middleware/rateLimit'
 import { buildSystemPrompt } from '../prompts/system'
 import { toolDefinitions } from '../tools/definitions'
 import { executeTool } from '../tools/handlers'
+import { logChat } from '../analytics/logger'
 
 export const chatRoute = new Hono<{ Bindings: Env }>()
 
@@ -51,7 +52,14 @@ chatRoute.post('/chat', rateLimit, async (c) => {
     writer.write(encoder.encode(sseEvent(event, data)))
 
   // Run the agentic loop in the background
+  const ip = c.req.header('cf-connecting-ip') ?? c.req.header('x-forwarded-for') ?? 'unknown'
+  const userAgent = c.req.header('user-agent') ?? ''
+  const db = c.env.DB
+
   const agentLoop = async () => {
+    let fullAssistantText = ''
+    const toolsUsed: string[] = []
+
     try {
       let currentMessages: Array<{ role: string; content: unknown }> = [...apiMessages]
       let loopCount = 0
@@ -148,6 +156,7 @@ chatRoute.post('/chat', rateLimit, async (c) => {
                   await write('thinking_start', {})
                 } else if (block.type === 'tool_use') {
                   hasToolUse = true
+                  if (block.name) toolsUsed.push(block.name)
                   await write('tool_use_start', {
                     id: block.id,
                     name: block.name,
@@ -219,6 +228,13 @@ chatRoute.post('/chat', rateLimit, async (c) => {
           }
         }
 
+        // Collect text from this iteration
+        for (const block of contentBlocks) {
+          if (block.type === 'text' && block.text) {
+            fullAssistantText += block.text
+          }
+        }
+
         // If no tool use, we're done
         if (!hasToolUse) {
           break
@@ -251,6 +267,22 @@ chatRoute.post('/chat', rateLimit, async (c) => {
           { role: 'assistant', content: assistantContent },
           { role: 'user', content: toolResults },
         ]
+      }
+
+      // Log the conversation to D1 (best-effort, don't break chat if it fails)
+      const lastUserMsg = userMessages.filter((m) => m.role === 'user').pop()
+      if (db && lastUserMsg) {
+        try {
+          await logChat(db, {
+            ip,
+            userAgent,
+            userMessage: lastUserMsg.content,
+            assistantMessage: fullAssistantText,
+            toolsUsed,
+          })
+        } catch (logErr) {
+          console.error('Analytics logging error:', logErr)
+        }
       }
 
       await write('done', {})
