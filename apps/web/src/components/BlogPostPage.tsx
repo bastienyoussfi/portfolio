@@ -44,12 +44,6 @@ export default function BlogPostPage() {
       <div className="blog-post__body">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
-
-      <div className="blog-post__tags">
-        {post.tags.map((tag) => (
-          <span key={tag} className="pill">{tag}</span>
-        ))}
-      </div>
     </main>
   )
 }

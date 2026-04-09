@@ -17,15 +17,15 @@ const TECH_ICONS: Record<string, { icon: string; initials: string }> = {
     initials: 'TW',
   },
   'shadcn/ui': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/shadcnui.svg',
     initials: 'UI',
   },
   'claude api': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/anthropic.svg',
     initials: 'Cl',
   },
   'claude haiku': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/anthropic.svg',
     initials: 'CH',
   },
   'nestjs': {
@@ -53,11 +53,11 @@ const TECH_ICONS: Record<string, { icon: string; initials: string }> = {
     initials: 'GA',
   },
   'gemini flash api': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/googlegemini.svg',
     initials: 'Ge',
   },
   'hetzner': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/hetzner.svg',
     initials: 'Hz',
   },
   'oauth 2.0': {
@@ -65,31 +65,31 @@ const TECH_ICONS: Record<string, { icon: string; initials: string }> = {
     initials: 'OA',
   },
   'elevenlabs api': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/elevenlabs.svg',
     initials: 'EL',
   },
   'twilio': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/twilio.svg',
     initials: 'Tw',
   },
   'llm': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/brain.svg',
     initials: 'LM',
   },
   'rag': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/file-search.svg',
     initials: 'RG',
   },
   'embeddings': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/layers.svg',
     initials: 'Em',
   },
   'scaleway': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/scaleway.svg',
     initials: 'Sc',
   },
   'self-hosted llms': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/server.svg',
     initials: 'SH',
   },
   'framer motion': {
@@ -97,11 +97,11 @@ const TECH_ICONS: Record<string, { icon: string; initials: string }> = {
     initials: 'FM',
   },
   'speech-to-text': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/mic.svg',
     initials: 'ST',
   },
   'nlp': {
-    icon: '',
+    icon: 'https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/languages.svg',
     initials: 'NL',
   },
 }

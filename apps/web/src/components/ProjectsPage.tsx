@@ -4,14 +4,8 @@ import { projects } from '@/data'
 import ProjectCard from '@/components/ui/project-card'
 
 const projectImages: Record<string, string> = {
-  auditex: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
-  'grow-online': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
-  squaire: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop',
-  'posi-btp': 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=600&fit=crop',
-  'portfolio-site': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop',
+  auditex: '/projects/auditex.png',
 }
-
-const defaultImage = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'
 
 export default function ProjectsPage() {
   const items = useMemo(
@@ -39,7 +33,7 @@ export default function ProjectsPage() {
             year={p.year}
             description={p.description}
             href={p.links?.live || p.links?.github || undefined}
-            image={projectImages[p.id] ?? defaultImage}
+            image={projectImages[p.id]}
             technologies={p.technologies}
           />
         ))}
