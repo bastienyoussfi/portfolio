@@ -32,7 +32,7 @@ export default function ProjectsPage() {
             title={p.title}
             year={p.year}
             description={p.description}
-            href={p.links?.live || p.links?.github || undefined}
+            href={`/projects/${p.id}`}
             image={projectImages[p.id]}
             technologies={p.technologies}
           />

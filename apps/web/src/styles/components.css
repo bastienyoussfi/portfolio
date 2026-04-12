@@ -1350,14 +1350,16 @@ a.list-card {
   display: block;
 }
 
-/* ── Blog Post Page ── */
-.blog-post {
+/* ── Blog Post Page / Project Post Page ── */
+.blog-post,
+.project-post {
   padding: 0 0 100px;
   position: relative;
   z-index: 1;
 }
 
-.blog-post__back {
+.blog-post__back,
+.project-post__back {
   display: inline-block;
   margin-top: var(--hero-pad-top);
   margin-bottom: 24px;
@@ -1368,15 +1370,18 @@ a.list-card {
   transition: color var(--dur-hover) var(--ease-out);
 }
 
-.blog-post__back:hover {
+.blog-post__back:hover,
+.project-post__back:hover {
   color: var(--orange);
 }
 
-.blog-post__header {
+.blog-post__header,
+.project-post__header {
   margin-bottom: 32px;
 }
 
-.blog-post__title {
+.blog-post__title,
+.project-post__title {
   font-size: 38px;
   font-weight: 700;
   letter-spacing: -1.8px;
@@ -1385,7 +1390,8 @@ a.list-card {
   margin-bottom: 8px;
 }
 
-.blog-post__meta {
+.blog-post__meta,
+.project-post__meta {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-3);
@@ -1393,7 +1399,21 @@ a.list-card {
   letter-spacing: 0.5px;
 }
 
-.blog-post__hero {
+.project-post__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.project-post__techs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.blog-post__hero,
+.project-post__hero {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
@@ -1401,8 +1421,9 @@ a.list-card {
   margin-bottom: 40px;
 }
 
-/* ── Blog Post Body (markdown prose) ── */
-.blog-post__body {
+/* ── Blog Post / Project Post Body ── */
+.blog-post__body,
+.project-post__body {
   color: var(--text-2);
   font-size: 15px;
   line-height: 1.75;
@@ -1522,27 +1543,56 @@ a.list-card {
   border-top: 1px solid var(--sep);
 }
 
+.project-post__links {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sep);
+}
+
+.project-post__links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease-out);
+}
+
+.project-post__links a:hover {
+  color: var(--orange);
+}
+
 @media (max-width: 520px) {
-  .blog-post__title {
+  .blog-post__title,
+  .project-post__title {
     font-size: 28px;
     letter-spacing: -1.2px;
   }
 
-  .blog-post__hero {
+  .blog-post__hero,
+  .project-post__hero {
     max-height: 240px;
     border-radius: var(--r-sm);
   }
 
-  .blog-post__body h1 {
+  .blog-post__body h1,
+  .project-post__body h1 {
     font-size: 22px;
   }
 
-  .blog-post__body h2 {
+  .blog-post__body h2,
+  .project-post__body h2 {
     font-size: 19px;
   }
 
-  .blog-post__body h3 {
+  .blog-post__body h3,
+  .project-post__body h3 {
     font-size: 16px;
+  }
+
+  .project-post__meta {
+    flex-wrap: wrap;
   }
 }
 

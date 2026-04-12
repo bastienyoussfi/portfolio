@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { getTechIcon } from '@/utils/techIcons'
@@ -105,18 +106,16 @@ export default function ProjectCard({ title, year, description, href, image, tec
 
   if (href) {
     return (
-      <a
+      <Link
         ref={ref as React.Ref<HTMLAnchorElement>}
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        to={href}
         className="list-card"
         onMouseMove={image ? handleMouseMove : undefined}
         onMouseEnter={image ? handleMouseEnter : undefined}
         onMouseLeave={image ? handleMouseLeave : undefined}
       >
         {content}
-      </a>
+      </Link>
     )
   }
 
