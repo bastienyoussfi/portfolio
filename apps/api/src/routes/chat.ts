@@ -37,6 +37,22 @@ chatRoute.post('/chat', rateLimit, async (c) => {
   const body = await c.req.json<ChatRequest>()
   const userMessages = trimMessages(body.messages, 10)
 
+  // Log the latest user question to D1
+  if (c.env.DB) {
+    const lastUserMsg = [...body.messages].reverse().find(m => m.role === 'user')
+    if (lastUserMsg) {
+      const ip = c.req.header('cf-connecting-ip') ?? 'unknown'
+      const ipHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip))
+        .then(buf => [...new Uint8Array(buf)].slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join(''))
+      c.executionCtx.waitUntil(
+        c.env.DB.prepare('INSERT INTO chat_logs (question, ip_hash) VALUES (?, ?)')
+          .bind(lastUserMsg.content, ipHash)
+          .run()
+          .catch(err => console.error('D1 log error:', err))
+      )
+    }
+  }
+
   // Build the messages array for Claude API (convert simple strings to content blocks)
   const apiMessages = userMessages.map((m) => ({
     role: m.role,

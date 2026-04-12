@@ -7,3 +7,8 @@ compatibility_flags = ["nodejs_compat"]
 # [[kv_namespaces]]
 # binding = "RATE_LIMIT_KV"
 # id = "your-kv-namespace-id"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-chat-logs"
+database_id = "placeholder"
