@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Mail, ArrowUpRight, Clock } from 'lucide-react'
+import { Mail, ArrowUpRight } from 'lucide-react'
 import { contact } from '@/data'
 import { useContactModal } from '@/hooks/useContactModal'
 
@@ -33,23 +33,17 @@ const socials = [
   {
     name: 'GitHub',
     href: contact.github,
-    handle: '@' + contact.github.split('github.com/')[1],
     icon: GithubIcon,
-    colorClass: 'contact-modal__social-icon--github',
   },
   {
     name: 'X',
     href: contact.twitter,
-    handle: '@' + contact.twitter.split('x.com/')[1],
     icon: XIcon,
-    colorClass: 'contact-modal__social-icon--x',
   },
   {
     name: 'LinkedIn',
     href: contact.linkedin,
-    handle: contact.linkedin.split('linkedin.com')[1],
     icon: LinkedinIcon,
-    colorClass: 'contact-modal__social-icon--linkedin',
   },
 ]
 
@@ -74,24 +68,13 @@ const panelVariants = {
   },
 }
 
-const socialsContainerVariants = {
-  visible: { transition: { staggerChildren: 0.06 } },
-}
-
-const socialCardVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 1, 0.5, 1] as const } },
-}
-
 export default function ContactModal() {
   const { isOpen, close } = useContactModal()
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  // Body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      // Focus close button on open
       requestAnimationFrame(() => closeRef.current?.focus())
     }
     return () => {
@@ -99,7 +82,6 @@ export default function ContactModal() {
     }
   }, [isOpen])
 
-  // Escape to close
   useEffect(() => {
     if (!isOpen) return
     const onKey = (e: KeyboardEvent) => {
@@ -136,10 +118,9 @@ export default function ContactModal() {
             }}
           >
             <div className="contact-modal__panel">
-              {/* Header */}
               <div className="contact-modal__header">
                 <h2 id="contact-modal-title" className="contact-modal__title">
-                  Let's <em>connect</em>
+                  Get in <em>touch</em>
                 </h2>
                 <button
                   ref={closeRef}
@@ -154,51 +135,30 @@ export default function ContactModal() {
                 </button>
               </div>
 
-              {/* Availability */}
-              <div className="contact-modal__status">
-                <span className="contact-modal__status-dot" />
-                <span className="contact-modal__status-label">Available</span>
-                <span className="contact-modal__timezone">
-                  <Clock size={12} />
-                  {contact.timezone.replace('/', ' / ')}
-                </span>
-              </div>
-              <p className="contact-modal__note">{contact.availabilityNote}</p>
+              <p className="contact-modal__subtitle">
+                {contact.availabilityNote}
+              </p>
 
-              {/* Email CTA */}
               <a href={`mailto:${contact.email}`} className="contact-modal__email">
                 <Mail size={18} />
-                <span className="contact-modal__email-label">{contact.email}</span>
+                <span>{contact.email}</span>
                 <ArrowUpRight size={16} className="contact-modal__email-arrow" />
               </a>
 
-              {/* Separator */}
-              <div className="contact-modal__sep" />
-
-              {/* Social cards */}
-              <motion.div
-                className="contact-modal__socials"
-                variants={socialsContainerVariants}
-                initial="hidden"
-                animate="visible"
-              >
+              <div className="contact-modal__social-row">
                 {socials.map((s) => (
-                  <motion.a
+                  <a
                     key={s.name}
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="contact-modal__social-card"
-                    variants={socialCardVariants}
+                    className="contact-modal__social-btn"
+                    aria-label={s.name}
                   >
-                    <span className={`contact-modal__social-icon ${s.colorClass}`}>
-                      <s.icon />
-                    </span>
-                    <span className="contact-modal__social-name">{s.name}</span>
-                    <span className="contact-modal__social-handle">{s.handle}</span>
-                  </motion.a>
+                    <s.icon />
+                  </a>
                 ))}
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         </>
