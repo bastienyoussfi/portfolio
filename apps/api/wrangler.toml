@@ -11,4 +11,4 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "portfolio-chat-logs"
-database_id = "placeholder"
+database_id = "665ce4a2-debb-4209-a81c-1c27888fae1f"
