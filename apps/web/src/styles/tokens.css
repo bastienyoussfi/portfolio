@@ -147,7 +147,7 @@
   --bubble-user-color:  #111113;
   --bubble-user-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
 
-  --on-primary:     #ffffff;
+  --on-primary:     #111113;
   --border-focus:   rgba(245, 245, 247, 0.15);
   --backdrop:       rgba(0, 0, 0, 0.5);
   --shadow-lifted:  0 4px 16px rgba(0, 0, 0, 0.3);

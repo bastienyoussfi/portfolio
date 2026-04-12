@@ -697,6 +697,7 @@
   flex: 1;
   display: flex;
   align-items: center;
+  gap: 4px;
   background: var(--bg);
   border-radius: var(--r);
   border: 1px solid var(--sep);
@@ -745,7 +746,8 @@
   flex-shrink: 0;
   transition:
     transform var(--dur-hover) var(--spring),
-    opacity 0.2s ease;
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .chat-input__send:disabled {
@@ -755,7 +757,8 @@
 }
 
 .chat-input__send:not(:disabled):hover {
-  transform: scale(1.08);
+  background: var(--text-2);
+  color: var(--on-primary);
 }
 
 .chat-input__send:not(:disabled):active {
