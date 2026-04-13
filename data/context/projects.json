@@ -15,7 +15,7 @@
     "order": 1
   },
   {
-    "id": "grow-online",
+    "id": "growonline",
     "title": "Grow Online",
     "description": "Cross-platform social media automation SaaS with AI-powered video processing and scheduling.",
     "longDescription": "Grow Online is a social media automation platform enabling creators and businesses to manage content across Instagram, Facebook, Threads, TikTok, YouTube, and LinkedIn from a single dashboard. I built the full OAuth integration flows for Meta, TikTok, YouTube, and LinkedIn APIs, navigating each platform's review and approval process. The standout feature is the 'Automate' module — a visual workflow builder that lets users define content pipelines with a Gemini Flash-based transcription and clip detection engine for automatic short-form video generation. Infrastructure runs on Hetzner VPS with Docker and GitHub Actions CI/CD. The product's visual identity leans into a nature-focused illustration style.",
@@ -25,7 +25,9 @@
     "status": "in-development",
     "year": 2025,
     "metrics": [],
-    "links": {},
+    "links": {
+      "live": "https://www.growonline.now"
+    },
     "featured": true,
     "order": 2
   },
@@ -41,38 +43,8 @@
     "year": 2024,
     "metrics": [],
     "links": {},
-    "featured": false,
+    "featured": true,
     "order": 6
-  },
-  {
-    "id": "squaire",
-    "title": "SquAIre — Armatis",
-    "description": "RAG-based knowledge management system for customer service agents at Armatis.",
-    "longDescription": "SquAIre is a knowledge management platform built at Armatis to empower customer service agents with instant, AI-powered access to internal documentation and procedures. Using a RAG (Retrieval-Augmented Generation) architecture, agents can query the knowledge base in natural language and receive grounded, accurate answers sourced from company documentation. This reduced average handling time and improved first-call resolution by giving agents reliable answers without manual document searches.",
-    "category": "ai",
-    "technologies": ["RAG", "Python", "TypeScript", "NestJS", "PostgreSQL", "LLM", "Embeddings"],
-    "role": "AI Engineer",
-    "status": "completed",
-    "year": 2024,
-    "metrics": [],
-    "links": {},
-    "featured": true,
-    "order": 7
-  },
-  {
-    "id": "posi-btp",
-    "title": "POSI-BTP — CCCA-BTP",
-    "description": "AI career positioning platform for the French construction sector using self-hosted LLMs.",
-    "longDescription": "POSI-BTP is an AI-powered career positioning tool built for CCCA-BTP, the national organization overseeing apprenticeship training in the French construction industry. The platform helps apprentices and professionals explore career paths, assess their skills, and receive personalized guidance. A key technical differentiator is the use of self-hosted LLMs on Scaleway infrastructure, ensuring data sovereignty and cost control at scale. The project involved fine-tuning prompts against domain-specific construction trade terminology and French labor market data.",
-    "category": "ai",
-    "technologies": ["Python", "Self-hosted LLMs", "Scaleway", "NestJS", "TypeScript", "React", "PostgreSQL"],
-    "role": "AI Engineer — Sia Partners",
-    "status": "completed",
-    "year": 2024,
-    "metrics": [],
-    "links": {},
-    "featured": true,
-    "order": 8
   },
   {
     "id": "autoscribe",
@@ -85,13 +57,15 @@
     "status": "completed",
     "year": 2022,
     "metrics": [],
-    "links": {},
-    "featured": false,
+    "links": {
+      "live": "https://auto-scribe.ai"
+    },
+    "featured": true,
     "order": 10
   },
   {
-    "id": "portfolio-site",
-    "title": "bastienyoussfi.dev — Portfolio",
+    "id": "portfolio",
+    "title": "Portfolio",
     "description": "Immersive developer portfolio with AI chat interface, pixel cat mascot, and editorial dark aesthetic.",
     "longDescription": "My personal portfolio site at bastienyoussfi.dev, designed as an immersive experience rather than a traditional dev portfolio. The centerpiece is an AI-powered chat interface where visitors can converse with a pixel cat mascot named 'Bounty' to learn about my work. The site features a 'Collapse & Anchor' hero-to-chat transition animation and a halftone/editorial dark aesthetic. Built to showcase both technical depth and design sensibility.",
     "category": "fullstack",
@@ -101,7 +75,7 @@
     "year": 2025,
     "metrics": [],
     "links": {
-      "live": "https://bastienyoussfi.dev"
+      "live": "https://bastienyoussfi.com"
     },
     "featured": true,
     "order": 12

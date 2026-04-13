@@ -5,6 +5,10 @@ import ProjectCard from '@/components/ui/project-card'
 
 const projectImages: Record<string, string> = {
   auditex: '/projects/auditex.png',
+  growonline: '/projects/growonline.png',
+  voicy: '/projects/voicy.png',
+  autoscribe: '/projects/autoscribe.png',
+  portfolio: '/projects/portfolio.png',
 }
 
 export default function ProjectsPage() {
