@@ -18,6 +18,7 @@ app.use('/api/*', cors({
     'http://localhost:4173',
     'https://bastienyoussfi.com',
     'https://www.bastienyoussfi.com',
+    'https://ongoing.bastienyoussfi.com',
   ],
   allowMethods: ['GET', 'POST', 'OPTIONS'],
   allowHeaders: ['Content-Type'],
