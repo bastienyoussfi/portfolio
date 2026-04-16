@@ -1,0 +1,35 @@
+{
+  "name": "platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:worker\" \"pnpm dev:frontend\"",
+    "dev:worker": "wrangler dev",
+    "dev:frontend": "vite",
+    "build": "pnpm build:registry && pnpm build:frontend",
+    "build:registry": "tsx scripts/build-registry.ts",
+    "build:frontend": "vite build",
+    "upload:assets": "tsx scripts/upload-assets.ts",
+    "deploy": "pnpm build && wrangler deploy",
+    "typecheck": "tsc --noEmit -p tsconfig.worker.json && tsc --noEmit -p tsconfig.frontend.json",
+    "new-agent": "tsx scripts/new-agent.ts"
+  },
+  "dependencies": {
+    "hono": "^4",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4",
+    "@tailwindcss/vite": "^4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4",
+    "concurrently": "^9",
+    "tailwindcss": "^4",
+    "tsx": "^4",
+    "typescript": "^5",
+    "vite": "^6",
+    "wrangler": "^4"
+  }
+}

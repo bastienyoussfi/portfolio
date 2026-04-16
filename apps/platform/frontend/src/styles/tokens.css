@@ -1,0 +1,148 @@
+:root {
+  /* ── Surface ── */
+  --bg:         #fafafa;
+  --card:       #ffffff;
+  --well:       #f9f9fb;
+  --well-2:     #f4f4f8;
+
+  /* ── Text ── */
+  --text-1:     #1c1c1e;
+  --text-2:     #3a3a3c;
+  --text-3:     #8e8e93;
+  --text-4:     #c7c7cc;
+  --text-5:     #d5d5da;
+
+  /* ── Borders & Fills ── */
+  --sep:        rgba(60, 60, 67, 0.06);
+  --fill-1:     rgba(120, 120, 128, 0.08);
+  --fill-2:     rgba(120, 120, 128, 0.05);
+  --fill-3:     rgba(120, 120, 128, 0.03);
+
+  /* ── Accent Palette ── */
+  --blue:       #007aff;
+  --blue-light: rgba(0, 122, 255, 0.08);
+  --green:      #34c759;
+  --green-light: rgba(52, 199, 89, 0.08);
+  --orange:     #ff9500;
+  --orange-light: rgba(255, 149, 0, 0.08);
+  --red:        #ff3b30;
+  --red-light:  rgba(255, 59, 48, 0.08);
+  --purple:     #af52de;
+  --purple-light: rgba(175, 82, 222, 0.08);
+  --teal:       #5ac8fa;
+  --indigo:     #5856d6;
+  --indigo-light: rgba(88, 86, 214, 0.08);
+
+  /* ── Border Radii ── */
+  --r:          16px;
+  --r-inner:    12px;
+  --r-sm:       10px;
+  --r-xs:       8px;
+
+  /* ── Shadows ── */
+  --shadow:       0 0 0 0.5px rgba(0,0,0,0.02), 0 0.5px 1px rgba(0,0,0,0.015), 0 2px 8px rgba(0,0,0,0.025);
+  --shadow-hover: 0 0 0 0.5px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.025), 0 8px 28px rgba(0,0,0,0.055);
+  --shadow-well:  inset 0 0.5px 1px rgba(0,0,0,0.02);
+  --shadow-tag:   0 1px 3px rgba(0,0,0,0.02);
+  --shadow-chat:  0 0 0 0.5px rgba(0,0,0,0.03), 0 2px 12px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.03);
+
+  /* ── Motion ── */
+  --spring:     cubic-bezier(.4, 1.6, .6, 1);
+  --ease-out:   cubic-bezier(.25, 1, .5, 1);
+  --dur-hover:  0.35s;
+  --dur-press:  0.1s;
+  --dur-row:    0.12s;
+  --dur-rise:   0.45s;
+  --dur-tag:    0.2s;
+  --stagger:    40ms;
+
+  /* ── Typography ── */
+  --font-body:  'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-mono:  ui-monospace, 'SF Mono', monospace;
+
+  /* ── Layout ── */
+  --max-w:      920px;
+  --page-px:    24px;
+  --page-pt:    40px;
+  --grid-gap:   12px;
+
+  /* ── Card Padding ── */
+  --card-px:    18px;
+  --card-py:    14px;
+  --card-pad:   18px;
+  --card-pad-lg: 24px;
+
+  /* ── Streaming ── */
+  --stream-token-dur: 0.3s;
+
+  /* ── Typing Indicator ── */
+  --typing-dot-size:  6px;
+  --typing-dot-color: var(--text-4);
+
+  /* ── User Bubble ── */
+  --bubble-user-bg:     var(--text-1);
+  --bubble-user-color:  var(--bg);
+  --bubble-user-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+
+  /* ── Component Sizes ── */
+  --sep-h:      0.5px;
+  --chevron-w:  7px;
+  --chevron-h:  12px;
+
+  /* ── Dark-Theme Ready ── */
+  --on-primary:     #ffffff;
+  --border-focus:   rgba(60, 60, 67, 0.15);
+  --backdrop:       rgba(0, 0, 0, 0.25);
+  --shadow-lifted:  0 4px 16px rgba(0, 0, 0, 0.12);
+  --card-gradient:  rgba(0, 0, 0, 0.012);
+}
+
+/* ── Dark Theme ── */
+[data-theme="dark"] {
+  --bg:           #111113;
+  --card:         #1c1c1e;
+  --well:         #1c1c1e;
+  --well-2:       #2c2c2e;
+
+  --text-1:       #f5f5f7;
+  --text-2:       #c7c7cc;
+  --text-3:       #8e8e93;
+  --text-4:       #48484a;
+  --text-5:       #3a3a3c;
+
+  --sep:          rgba(245, 245, 247, 0.08);
+  --fill-1:       rgba(245, 245, 247, 0.08);
+  --fill-2:       rgba(245, 245, 247, 0.05);
+  --fill-3:       rgba(245, 245, 247, 0.03);
+
+  --blue:         #0a84ff;
+  --blue-light:   rgba(10, 132, 255, 0.15);
+  --green:        #30d158;
+  --green-light:  rgba(48, 209, 88, 0.15);
+  --orange:       #ff9f0a;
+  --orange-light: rgba(255, 159, 10, 0.15);
+  --red:          #ff453a;
+  --red-light:    rgba(255, 69, 58, 0.15);
+  --purple:       #bf5af2;
+  --purple-light: rgba(191, 90, 242, 0.15);
+  --teal:         #64d2ff;
+  --indigo:       #5e5ce6;
+  --indigo-light: rgba(94, 92, 230, 0.15);
+
+  --shadow:       0 0 0 0.5px rgba(255,255,255,0.04), 0 0.5px 1px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-hover: 0 0 0 0.5px rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.3), 0 8px 28px rgba(0,0,0,0.35);
+  --shadow-well:  inset 0 0.5px 1px rgba(0,0,0,0.2);
+  --shadow-tag:   0 1px 3px rgba(0,0,0,0.2);
+  --shadow-chat:  0 0 0 0.5px rgba(255,255,255,0.04), 0 2px 12px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.25);
+
+  --bubble-user-bg:     #f5f5f7;
+  --bubble-user-color:  #111113;
+  --bubble-user-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  --on-primary:     #111113;
+  --border-focus:   rgba(245, 245, 247, 0.15);
+  --backdrop:       rgba(0, 0, 0, 0.5);
+  --shadow-lifted:  0 4px 16px rgba(0, 0, 0, 0.3);
+  --card-gradient:  rgba(255, 255, 255, 0.015);
+}

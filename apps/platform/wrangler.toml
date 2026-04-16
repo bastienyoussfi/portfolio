@@ -1,0 +1,21 @@
+name = "agents-platform"
+main = "worker/src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# Serve frontend build — SPA fallback for path-based agent routing
+[assets]
+directory = "./dist/frontend"
+not_found_handling = "single-page-application"
+
+[vars]
+PLATFORM_DOMAIN = "agents.bastienyoussfi.com"
+
+[[routes]]
+pattern = "agents.bastienyoussfi.com/*"
+zone_name = "bastienyoussfi.com"
+
+# Secrets (set via `wrangler secret put`):
+# ANTHROPIC_API_KEY
+# MISTRAL_API_KEY
