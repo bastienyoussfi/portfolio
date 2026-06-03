@@ -32,6 +32,36 @@
     "order": 2
   },
   {
+    "id": "legal-knowledge-ai",
+    "title": "Horace Lawyer Agent",
+    "description": "Multi-tenant AI platform that captures and organizes institutional knowledge for law firms from emails, meetings, and documents.",
+    "longDescription": "A knowledge-capitalization SaaS for legal practices that automatically captures, organizes, and retrieves institutional knowledge from emails, Teams meetings, calendars, and documents using Claude. Built as a TypeScript monorepo with a productized-agency model: a single codebase powers N physically-isolated, per-firm stacks provisioned with Terraform on EU infrastructure — a hard requirement for handling privileged legal data (secret professionnel). I built the provider-agnostic LLM adapter (Claude Sonnet via an EU-compliant router with zero-data-retention and fallbacks), a pgvector-backed semantic search over ingested documents, a Microsoft Graph ingestion pipeline (hybrid webhook + polling) that streams mailboxes and meeting transcripts into per-tenant knowledge bases, and an LLM cost ledger with a cross-firm admin dashboard. Every document is stored immutably with permanent UUID traceability, and a golden-set suite guards against LLM output regressions.",
+    "category": "ai",
+    "technologies": ["TypeScript", "NestJS", "React", "Vite", "PostgreSQL", "Prisma", "pgvector", "BullMQ", "Redis", "Claude Sonnet", "Microsoft Graph", "Terraform", "Docker"],
+    "role": "Full-Stack & AI Engineer",
+    "status": "in-development",
+    "year": 2026,
+    "metrics": [],
+    "links": {},
+    "featured": true,
+    "order": 3
+  },
+  {
+    "id": "architecture-brief-agent",
+    "title": "Terres Brief Agent",
+    "description": "AI agent that turns architecture site-visit transcripts into structured project briefs, with a Telegram human-in-the-loop.",
+    "longDescription": "An AI backend for an architecture studio that transforms site-visit recordings into structured, validated project briefs. The system ingests a transcript, enriches it with project context from Google Drive, then uses Claude to detect gaps and generate targeted clarifying questions. It runs an asynchronous Q&A loop over Telegram — team members reply by voice or text (audio is transcribed with Whisper) — and once a human validates the result, publishes a styled brief as a Google Doc covering 13 architectural dimensions, strictly separating facts from interpretations. A second phase generates dual-audience weekly recaps (client-facing and internal) for long-running projects, and a third adds long-term project memory backfilled from historical Telegram messages via MTProto. I built it on a hexagonal (ports & adapters) architecture with two state machines orchestrating ~11 idempotent BullMQ job queues and an outbox pattern for crash-safe delivery.",
+    "category": "ai",
+    "technologies": ["TypeScript", "NestJS", "PostgreSQL", "Prisma", "BullMQ", "Redis", "Claude API", "OpenAI Whisper", "Telegram (Grammy + MTProto)", "Google Drive & Docs API", "Docker"],
+    "role": "Full-Stack & AI Engineer",
+    "status": "in-development",
+    "year": 2026,
+    "metrics": [],
+    "links": {},
+    "featured": true,
+    "order": 4
+  },
+  {
     "id": "voicy",
     "title": "Voicy",
     "description": "Automated B2B voice prospecting agents using AI-generated speech and telephony.",
