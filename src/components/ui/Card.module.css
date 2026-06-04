@@ -1,0 +1,57 @@
+.card {
+  border: var(--border-hairline);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Surface --------------------------------------------------------------- */
+.raised {
+  background: var(--color-canvas-raised);
+}
+
+.dark {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-white);
+}
+
+/* Radius ---------------------------------------------------------------- */
+.radius-md {
+  border-radius: var(--radius-md);
+}
+
+.radius-lg {
+  border-radius: var(--radius-lg);
+}
+
+/* Padding --------------------------------------------------------------- */
+.pad-sm {
+  padding: var(--space-6-5);
+}
+
+.pad-md {
+  padding: var(--space-8) var(--space-7);
+}
+
+.pad-lg {
+  padding: var(--space-card);
+}
+
+/* Hover ----------------------------------------------------------------- */
+.lift {
+  transition: var(--transition-lift);
+}
+
+.lift:hover {
+  transform: translateY(-4px);
+}
+
+.liftAccent {
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.liftAccent:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-accent);
+}

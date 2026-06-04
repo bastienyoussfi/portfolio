@@ -1,0 +1,7 @@
+.section {
+  padding: var(--space-section) 0;
+}
+
+.bordered {
+  border-top: var(--border-hairline);
+}

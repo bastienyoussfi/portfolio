@@ -1,0 +1,47 @@
+.final {
+  padding: var(--space-section) 0 var(--space-final-bottom);
+}
+
+.block {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: var(--space-block);
+  border-radius: var(--radius-block);
+  background: var(--gradient-final);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Soft radial glow in the top-right corner. */
+.block::after {
+  content: '';
+  position: absolute;
+  top: var(--final-glow-offset);
+  right: var(--final-glow-offset);
+  width: var(--final-glow-size);
+  height: var(--final-glow-size);
+  border-radius: var(--radius-circle);
+  background: var(--gradient-final-glow);
+}
+
+.heading {
+  position: relative;
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  color: var(--color-white);
+}
+
+.text {
+  position: relative;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-relaxed);
+  color: var(--color-on-dark-strong);
+  max-width: 44ch;
+  margin: var(--space-5) auto 0;
+}
+
+.cta {
+  position: relative;
+  margin-top: var(--space-9);
+}
