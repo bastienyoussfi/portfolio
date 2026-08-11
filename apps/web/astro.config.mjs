@@ -21,10 +21,18 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
 
-  // Directory output + no trailing slash: Cloudflare Pages resolves /fr to
-  // /fr/index.html on its own, and every canonical we emit is slash-free.
+  // Every canonical, hreflang, sitemap entry and internal link this site emits
+  // is slash-free, so the served URLs have to be slash-free too.
+  //
+  // `format: 'directory'` writes /writing/index.html, and Cloudflare Pages
+  // treats /writing/ as the canonical form of that — it 308s /writing to it.
+  // The result was a redirect hop on every internal link, and /writing/
+  // serving a canonical of /writing that redirected straight back to it.
+  //
+  // `format: 'file'` writes /writing.html, which Pages serves at /writing with
+  // no redirect, and 308s the trailing-slash form to it instead.
   trailingSlash: 'never',
-  build: { format: 'directory', inlineStylesheets: 'auto' },
+  build: { format: 'file', inlineStylesheets: 'auto' },
 
   // The site is a handful of small static pages; pulling them into the cache as
   // links enter the viewport makes navigation feel instant.
