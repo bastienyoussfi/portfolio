@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets'
+import { asset } from '../lib/images.js'
+
+/**
+ * A case-study figure. The column is 615px wide at most, so sources are capped
+ * at 2x that and re-encoded to WebP. Intrinsic width/height ship with the tag
+ * either way, which is what keeps the figure from shifting layout as it loads.
+ */
+interface Props {
+  src?: string
+  alt?: string
+}
+
+const { src, alt = '' } = Astro.props as Props
+const local = asset(src)
+---
+
+{
+  local ? (
+    <Image
+      src={local}
+      widths={[Math.min(local.width, 1230)]}
+      sizes="(min-width: 768px) 615px, 100vw"
+      format="webp"
+      quality={80}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    src && <img src={src} alt={alt} loading="lazy" decoding="async" />
+  )
+}

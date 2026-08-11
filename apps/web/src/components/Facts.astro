@@ -1,0 +1,31 @@
+---
+import { content } from '../data/content.js'
+import { seo } from '../data/seo.js'
+import styles from './Facts.module.css'
+
+/**
+ * The same claims that /llms.txt carries, rendered into the page.
+ *
+ * Why they need to be here at all: the rest of the home page is written in the
+ * first person, which is the voice of the site and worth keeping. But an answer
+ * engine quoting "I'm an AI engineer in Paris" has nothing to attribute it to,
+ * so it paraphrases or skips it. These sentences are third-person, standalone
+ * and name the entity — the form that gets lifted and cited intact.
+ *
+ * Deliberately the quietest thing on the page: --color-400, no new type size.
+ */
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const t = content[lang]
+const facts = seo[lang].facts
+---
+
+<section class={styles.facts} aria-label={t.facts.label}>
+  <h2 class={styles.label}>{t.facts.label}</h2>
+  <ul class={styles.list}>
+    {facts.map((fact) => <li>{fact}</li>)}
+  </ul>
+</section>

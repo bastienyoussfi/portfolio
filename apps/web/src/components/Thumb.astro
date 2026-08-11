@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets'
+import { asset } from '../lib/images.js'
+import rows from './RowList.module.css'
+
+/**
+ * The 64x40 list thumbnail. Sources under src/assets are resized to 128px and
+ * re-encoded to WebP — a single <img>, so the existing object-fit rules apply
+ * unchanged. Anything still in public/ falls back to a plain img.
+ */
+interface Props {
+  src?: string
+}
+
+const { src } = Astro.props as Props
+const local = asset(src)
+---
+
+<div class={rows.thumb}>
+  {
+    local ? (
+      <Image
+        class={rows.thumbImg}
+        src={local}
+        width={128}
+        format="webp"
+        quality={78}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      src && (
+        <img
+          class={rows.thumbImg}
+          src={src}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          width="64"
+          height="40"
+        />
+      )
+    )
+  }
+</div>

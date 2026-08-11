@@ -1,0 +1,48 @@
+---
+/**
+ * Paris wall clock in the footer. The server renders a formatted value so the
+ * markup is never empty, and the script overwrites it on the first tick.
+ */
+interface Props {
+  label: string
+}
+
+const { label } = Astro.props as Props
+
+const formatter = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Europe/Paris',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+})
+---
+
+<span>{label} : <time data-clock>{formatter.format(new Date())}</time></span>
+
+<script>
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Paris',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  })
+
+  let timer: ReturnType<typeof setInterval> | undefined
+
+  function tick() {
+    const now = formatter.format(new Date())
+    for (const el of document.querySelectorAll('[data-clock]')) el.textContent = now
+  }
+
+  function start() {
+    clearInterval(timer)
+    if (!document.querySelector('[data-clock]')) return
+    tick()
+    timer = setInterval(tick, 1000)
+  }
+
+  start()
+  document.addEventListener('astro:page-load', start)
+</script>

@@ -1,0 +1,38 @@
+.toggle {
+  position: fixed;
+  top: 20px;
+  right: var(--gutter);
+  z-index: var(--z-overlay);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (min-width: 768px) {
+  .toggle {
+    top: 24px;
+    right: var(--gutter-md);
+  }
+}
+
+.option,
+.active {
+  padding: 0;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.option {
+  color: var(--color-400);
+}
+
+.option:hover {
+  color: var(--color-700);
+}
+
+.active {
+  color: var(--color-900);
+}
+
+.sep {
+  color: var(--color-300);
+}

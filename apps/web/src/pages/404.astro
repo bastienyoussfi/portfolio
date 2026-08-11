@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro'
+import Reveal from '../components/Reveal.astro'
+import { content } from '../data/content.js'
+import styles from '../components/Places.module.css'
+
+/**
+ * The SPA sent every unknown path back to the home page with a client-side
+ * redirect, which meant a soft 404 as far as a crawler was concerned. This is a
+ * real 404 document with a real status code.
+ */
+const lang = 'en'
+const t = content[lang]
+---
+
+<Base
+  lang={lang}
+  page="/404"
+  title="Page not found — Bastien Youssfi"
+  description="This page does not exist."
+  noindex
+  langs={['en']}
+>
+  <div class="shell">
+    <main id="main">
+      <Reveal>
+        <h1 class={styles.title}>404</h1>
+        <p class={styles.intro}>
+          This page does not exist. <a href="/" class="link">Back to the index</a>.
+        </p>
+      </Reveal>
+    </main>
+  </div>
+</Base>

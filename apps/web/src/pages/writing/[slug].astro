@@ -1,0 +1,12 @@
+---
+import Post from '../../components/pages/Post.astro'
+import { entryPaths } from '../../lib/collections.js'
+
+export async function getStaticPaths() {
+  return entryPaths('writing', 'en')
+}
+
+const { item } = Astro.props
+---
+
+<Post lang="en" item={item} />

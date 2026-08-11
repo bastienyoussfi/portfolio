@@ -1,0 +1,135 @@
+.map {
+  --dot-color: var(--color-300);
+  /* Hover motion is a touch longer than the global --dur so the dot and its
+     label settle rather than snap. Kept local: the site-wide scale is unchanged. */
+  --map-dur: 380ms;
+  position: relative;
+  width: 100%;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+}
+
+/* The marker is a small hover target centred on the projected point, so the
+   pointer can travel from the dot into the label without losing the hover. */
+.marker {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  z-index: var(--z-base);
+}
+
+.marker[data-active='true'] {
+  z-index: var(--z-aside);
+}
+
+.hit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--color-900);
+  /* A ring in the canvas colour keeps the dot legible over dense coastline. */
+  box-shadow: 0 0 0 2.5px var(--color-canvas);
+  pointer-events: none;
+  transition:
+    transform var(--map-dur) var(--ease),
+    box-shadow var(--map-dur) var(--ease);
+}
+
+/* A second ring marks a dot that stands for more than one place. */
+.dot[data-cluster='true'] {
+  box-shadow:
+    0 0 0 2.5px var(--color-canvas),
+    0 0 0 3.5px var(--color-300);
+}
+
+.marker[data-active='true'] .dot {
+  transform: scale(1.55);
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  /* Bridges the gap between dot and text so the hover survives the trip. */
+  padding-left: 1px;
+  /* Travels a little further than it used to, and the fade now shares the
+     label's duration and curve — they used to finish out of step, which is what
+     made the label read as popping in rather than gliding. */
+  transform: translate(-7px, -50%);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--map-dur) var(--ease),
+    transform var(--map-dur) var(--ease);
+}
+
+.labelItem {
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  background: var(--color-canvas);
+  color: var(--color-400);
+  transition: color var(--map-dur) var(--ease);
+}
+
+/* Within a cluster, the one you are pointing at is the one in black. */
+.labelItem[data-current='true'] {
+  color: var(--color-900);
+}
+
+/* Overflow count for a dense cluster; the full set is in the list below. */
+.labelMore {
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  background: var(--color-canvas);
+  color: var(--color-300);
+  transition: color var(--map-dur) var(--ease);
+}
+
+.marker[data-active='true'] .label {
+  opacity: 1;
+  transform: translate(0, -50%);
+  pointer-events: auto;
+}
+
+/* Labels near the right edge would run off the map, so they flip to the left. */
+.marker[data-flip='true'] .label {
+  left: auto;
+  right: 100%;
+  align-items: flex-end;
+  padding-left: 0;
+  padding-right: 1px;
+  transform: translate(7px, -50%);
+}
+
+.marker[data-flip='true'][data-active='true'] .label {
+  transform: translate(0, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot,
+  .label,
+  .labelItem,
+  .labelMore {
+    transition: opacity 1ms;
+  }
+}

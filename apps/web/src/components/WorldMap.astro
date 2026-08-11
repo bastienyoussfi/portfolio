@@ -1,0 +1,256 @@
+---
+import styles from './WorldMap.module.css'
+import { LON_RANGE, LAT_RANGE } from '../lib/worldmap.js'
+
+/**
+ * The dotted world map. The land dots are painted to a canvas and the markers
+ * are DOM, exactly as before — but clustering depends on the rendered pixel
+ * width, so the markers are built on the client once the box has been measured.
+ * That matches the React version, which also rendered no markers on first pass.
+ *
+ * Hover state is carried on `data-active-slug` rather than React state, so the
+ * list on the places page can drive the map (and vice versa) without either
+ * side importing the other.
+ */
+interface MapPlace {
+  slug: string
+  title: string
+  coords: [number, number]
+}
+
+interface Props {
+  places?: MapPlace[]
+  activeSlug?: string | null
+  /** '/places' or '/fr/places' when markers should link; omit for a static locator. */
+  linkBase?: string | null
+  class?: string
+}
+
+const { places = [], activeSlug = null, linkBase = null, class: className = '' } = Astro.props as Props
+
+// The script runs in its own module and cannot see the hashed CSS-module names,
+// so they travel with the element.
+const classNames = {
+  marker: styles.marker,
+  dot: styles.dot,
+  hit: styles.hit,
+  label: styles.label,
+  labelItem: styles.labelItem,
+  labelMore: styles.labelMore,
+}
+---
+
+<div
+  class:list={[styles.map, className]}
+  style={`aspect-ratio: ${LON_RANGE} / ${LAT_RANGE}`}
+  data-world-map
+  data-places={JSON.stringify(places.map((p) => ({ slug: p.slug, title: p.title, coords: p.coords })))}
+  data-link-base={linkBase ?? ''}
+  data-classes={JSON.stringify(classNames)}
+  data-active-slug={activeSlug ?? ''}
+>
+  <canvas class={styles.canvas} aria-hidden="true"></canvas>
+  <div data-markers></div>
+</div>
+
+<script>
+  import { GRID, LAND } from '../data/land-dots.js'
+  import { LON_RANGE, LAT_RANGE, clusterPlaces, MAX_LABELS } from '../lib/worldmap.js'
+
+  type MapPlace = { slug: string; title: string; coords: [number, number] }
+
+  type Marker = {
+    el: HTMLElement
+    members: MapPlace[]
+    items: Array<{ el: HTMLElement; slug: string }>
+    more: HTMLElement | null
+  }
+
+  function escapeHtml(value: string) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+  }
+
+  function init(root: HTMLElement) {
+    if (root.dataset.mapBound === 'true') return
+    root.dataset.mapBound = 'true'
+
+    const canvas = root.querySelector('canvas')
+    const layer = root.querySelector<HTMLElement>('[data-markers]')
+    if (!canvas || !layer) return
+
+    const cls = JSON.parse(root.dataset.classes || '{}')
+    const places: MapPlace[] = JSON.parse(root.dataset.places || '[]')
+    const linkBase = root.dataset.linkBase || ''
+
+    let markers: Marker[] = []
+
+    function paintLand(w: number, h: number) {
+      const dpr = window.devicePixelRatio || 1
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      canvas.style.height = `${h}px`
+
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      ctx.clearRect(0, 0, w, h)
+      ctx.fillStyle =
+        getComputedStyle(canvas).getPropertyValue('--dot-color').trim() || '#d4d4d4'
+
+      const cellW = w / GRID.cols
+      const cellH = h / GRID.rows
+      const radius = Math.max(0.6, Math.min(cellW, cellH) * 0.34)
+
+      for (let row = 0; row < LAND.length; row++) {
+        const y = (row + 0.5) * cellH
+        const runs = LAND[row]
+        for (let i = 0; i < runs.length; i += 2) {
+          for (let col = runs[i]; col < runs[i] + runs[i + 1]; col++) {
+            ctx.beginPath()
+            ctx.arc((col + 0.5) * cellW, y, radius, 0, Math.PI * 2)
+            ctx.fill()
+          }
+        }
+      }
+    }
+
+    /**
+     * Builds the marker DOM. Only geometry lives here, so this runs on the first
+     * draw and on resize — never on hover. Every member gets a label element up
+     * front (the ones past MAX_LABELS start hidden), which is what lets the
+     * hover state be a pure attribute flip and therefore actually transition.
+     */
+    function buildMarkers(w: number, h: number) {
+      const clusters = clusterPlaces(places, w, h)
+
+      layer.innerHTML = clusters
+        .map((cluster) => {
+          const single = cluster.members.length === 1
+          const overflow = Math.max(0, cluster.members.length - MAX_LABELS)
+
+          const items = cluster.members
+            .map((member, i) => {
+              const hidden = i >= MAX_LABELS ? ' hidden' : ''
+              const title = escapeHtml(member.title)
+              return linkBase
+                ? `<a href="${linkBase}/${member.slug}" class="${cls.labelItem}" data-member="${member.slug}" data-current="false"${hidden}>${title}</a>`
+                : `<span class="${cls.labelItem}" data-member="${member.slug}" data-current="false"${hidden}>${title}</span>`
+            })
+            .join('')
+
+          const more = `<span class="${cls.labelMore}" data-more${overflow ? '' : ' hidden'}>+${overflow}</span>`
+          const hit =
+            single && linkBase
+              ? `<a href="${linkBase}/${cluster.members[0].slug}" class="${cls.hit}" aria-label="${escapeHtml(cluster.members[0].title)}"></a>`
+              : ''
+
+          return (
+            `<span class="${cls.marker}" style="left:${cluster.x}%;top:${cluster.y}%"` +
+            ` data-cluster-key="${escapeHtml(cluster.key)}"` +
+            ` data-first="${cluster.members[0].slug}"` +
+            ` data-active="false"` +
+            ` data-flip="${cluster.x > 72}">` +
+            `${hit}<span class="${cls.dot}" data-cluster="${!single}"></span>` +
+            `<span class="${cls.label}">${items}${more}</span>` +
+            `</span>`
+          )
+        })
+        .join('')
+
+      const els = [...layer.querySelectorAll<HTMLElement>('[data-cluster-key]')]
+      markers = els.map((el, i) => ({
+        el,
+        members: clusters[i].members,
+        items: [...el.querySelectorAll<HTMLElement>('[data-member]')].map((item) => ({
+          el: item,
+          slug: item.dataset.member ?? '',
+        })),
+        more: el.querySelector<HTMLElement>('[data-more]'),
+      }))
+
+      applyActive()
+    }
+
+    /**
+     * Hover state. Attribute writes only — the elements survive, so the dot's
+     * scale and the label's fade run their CSS transitions instead of snapping.
+     */
+    function applyActive() {
+      const active = root.dataset.activeSlug || null
+
+      for (const marker of markers) {
+        marker.el.dataset.active = String(marker.members.some((m) => m.slug === active))
+
+        // Keep the hovered place visible even when it falls past the cap.
+        const shown = marker.members.slice(0, MAX_LABELS)
+        if (!shown.some((m) => m.slug === active)) {
+          const current = marker.members.find((m) => m.slug === active)
+          if (current) shown[MAX_LABELS - 1] = current
+        }
+        const shownSlugs = new Set(shown.map((m) => m.slug))
+
+        for (const item of marker.items) {
+          item.el.hidden = !shownSlugs.has(item.slug)
+          item.el.dataset.current = String(item.slug === active)
+        }
+
+        const overflow = marker.members.length - shown.length
+        if (marker.more) {
+          marker.more.hidden = overflow <= 0
+          marker.more.textContent = `+${overflow}`
+        }
+      }
+    }
+
+    let lastW = 0
+    let lastH = 0
+
+    function draw() {
+      const w = root.clientWidth
+      if (!w) return
+      const h = w * (LAT_RANGE / LON_RANGE)
+      // Sub-pixel resize noise would rebuild the markers mid-hover for nothing.
+      if (Math.abs(w - lastW) < 1) return
+      lastW = w
+      lastH = h
+      paintLand(w, h)
+      buildMarkers(w, h)
+    }
+
+    const setActive = (slug: string | null) => {
+      root.dataset.activeSlug = slug ?? ''
+    }
+
+    const activate = (event: Event) => {
+      const target = event.target as HTMLElement
+      const member = target.closest<HTMLElement>('[data-member]')
+      if (member) return setActive(member.dataset.member ?? null)
+      const marker = target.closest<HTMLElement>('[data-cluster-key]')
+      if (marker) setActive(marker.dataset.first ?? null)
+    }
+
+    layer.addEventListener('pointerover', activate)
+    layer.addEventListener('focusin', activate)
+    root.addEventListener('pointerleave', () => setActive(null))
+
+    new MutationObserver(applyActive).observe(root, {
+      attributes: true,
+      attributeFilter: ['data-active-slug'],
+    })
+
+    draw()
+    new ResizeObserver(draw).observe(root)
+    window.addEventListener('resize', draw)
+  }
+
+  function initAll() {
+    document.querySelectorAll<HTMLElement>('[data-world-map]').forEach(init)
+  }
+
+  initAll()
+  document.addEventListener('astro:page-load', initAll)
+</script>

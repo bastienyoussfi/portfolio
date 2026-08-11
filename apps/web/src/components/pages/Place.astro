@@ -1,0 +1,83 @@
+---
+import { render } from 'astro:content'
+import Article from '../../layouts/Article.astro'
+import Reveal from '../Reveal.astro'
+import WorldMap from '../WorldMap.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { entryLocales } from '../../lib/collections.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { formatLong } from '../../lib/date.js'
+import { graph, personNode, websiteNode, placeNode, breadcrumbNode } from '../../lib/schema.js'
+import prose from '../Prose.module.css'
+import styles from '../Place.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+  item: { slug: string; entry: any; data: any }
+}
+
+const { lang, item } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+
+const { Content, headings } = await render(item.entry)
+const sections = headings
+  .filter((heading) => heading.depth === 2)
+  .map((heading) => ({ id: heading.slug, label: heading.text }))
+
+const place = {
+  slug: item.slug,
+  title: item.data.title,
+  coords: item.data.coords,
+}
+
+const meta = [item.data.country, formatLong(item.data.date, lang)].filter(Boolean).join(' · ')
+const page = `/places/${item.slug}`
+const url = absoluteUrl(lang, page)
+const description =
+  item.data.summary ??
+  `${item.data.title}${item.data.country ? `, ${item.data.country}` : ''} — ${s.places.description}`
+
+const langs = await entryLocales('places', item.slug)
+
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  placeNode(lang, url, item.data),
+  breadcrumbNode(url, [
+    { name: t.shared.name, url: absoluteUrl(lang, '/') },
+    { name: t.places.label, url: absoluteUrl(lang, '/places') },
+    { name: item.data.title, url },
+  ]),
+])
+---
+
+<Article
+  lang={lang}
+  page={page}
+  seoTitle={s.titleTemplate(item.data.title)}
+  description={description}
+  type="article"
+  image={item.data.image ?? undefined}
+  publishedTime={item.data.date.toISOString()}
+  jsonLd={jsonLd}
+  langs={langs}
+  backLabel={t.places.backToIndex}
+  backHref={localePath(lang, '/places')}
+  sections={sections}
+  title={item.data.title}
+  meta={meta}
+>
+  <Reveal delay={60}>
+    <div class={styles.locator}>
+      <WorldMap places={[place]} activeSlug={place.slug} />
+    </div>
+  </Reveal>
+
+  <Reveal delay={120}>
+    <div class={prose.prose}>
+      <Content />
+    </div>
+  </Reveal>
+</Article>

@@ -1,0 +1,63 @@
+/* Case study body: methodology headings, tech chips, screenshots. */
+/* Headings are the same size as the copy; only weight separates them. */
+.heading {
+  margin-top: var(--block);
+  margin-bottom: var(--stack);
+  font-weight: var(--weight-semibold);
+  color: var(--color-900);
+}
+
+.prose {
+  color: var(--color-700);
+  line-height: var(--leading-prose);
+}
+
+.step + .step {
+  margin-top: 0;
+}
+
+/* Tech stack: small chips, mono label, icon at text size. */
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--color-100);
+  color: var(--color-700);
+  font-family: var(--font-mono);
+  font-size: var(--text-code);
+  letter-spacing: 0;
+}
+
+.chip svg,
+.chip img {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.figure {
+  margin-top: 24px;
+}
+
+.figure img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--color-100);
+}
+
+.caption {
+  margin-top: 10px;
+  color: var(--color-400);
+}
+
+.empty {
+  color: var(--color-400);
+}

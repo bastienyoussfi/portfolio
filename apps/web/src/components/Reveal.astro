@@ -1,0 +1,20 @@
+---
+import styles from './Reveal.module.css'
+
+/**
+ * The staggered entrance. Was a React state flip on a setTimeout; it is now a
+ * plain CSS animation with `animation-delay`, which produces the same 450ms
+ * ease from `translateY(8px)` and costs no JavaScript at all.
+ */
+interface Props {
+  as?: string
+  delay?: number
+  class?: string
+}
+
+const { as: Tag = 'div', delay = 0, class: className = '' } = Astro.props as Props
+---
+
+<Tag class:list={[styles.reveal, className]} style={`--reveal-delay:${delay}ms`}>
+  <slot />
+</Tag>

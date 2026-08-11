@@ -1,0 +1,100 @@
+---
+import Base from '../../layouts/Base.astro'
+import Reveal from '../Reveal.astro'
+import HoverRows from '../HoverRows.astro'
+import Thumb from '../Thumb.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { listEntries } from '../../lib/collections.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { formatLong } from '../../lib/date.js'
+import { graph, personNode, websiteNode, collectionPageNode, breadcrumbNode } from '../../lib/schema.js'
+import rows from '../RowList.module.css'
+import styles from '../Index.module.css'
+
+/**
+ * The writing hub. It earns its place beyond looking tidy: the post
+ * breadcrumbs need a real parent, RSS advertised a feed with no page behind it,
+ * and posts were reachable only from the home page.
+ *
+ * The row list is deliberately the same shape as the home page's — the page is
+ * distinguished by its title, description, H1, intro and CollectionPage graph,
+ * not by restyling the rows. It does carry full dates where home shows the
+ * month alone.
+ */
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+
+const posts = await listEntries('writing', lang)
+const showThumbs = posts.some((post) => post.data.image)
+
+const url = absoluteUrl(lang, '/writing')
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  collectionPageNode(
+    lang,
+    url,
+    s.titleTemplate(s.writing.title),
+    s.writing.description,
+    posts.map((post) => ({
+      name: post.data.title,
+      url: absoluteUrl(lang, `/writing/${post.slug}`),
+    })),
+  ),
+  breadcrumbNode(url, [
+    { name: t.shared.name, url: absoluteUrl(lang, '/') },
+    { name: t.writing.label, url },
+  ]),
+])
+---
+
+<Base
+  lang={lang}
+  page="/writing"
+  title={s.titleTemplate(s.writing.title)}
+  description={s.writing.description}
+  jsonLd={jsonLd}
+>
+  <div class="shell">
+    <main id="main">
+      <a href={localePath(lang, '/')} class={styles.back}>
+        <span aria-hidden="true">↩</span> {t.writing.backLabel}
+      </a>
+
+      <Reveal>
+        <h1 class={styles.title}>{t.writing.label}</h1>
+        <p class={styles.intro}>{t.writing.intro}</p>
+      </Reveal>
+
+      <Reveal delay={80}>
+        {
+          posts.length > 0 ? (
+            <HoverRows>
+              {posts.map((post) => (
+                <li>
+                  <a href={localePath(lang, `/writing/${post.slug}`)} class={rows.rowTall}>
+                    {showThumbs && <Thumb src={post.data.image} />}
+                    {/* No summary here: `.detail` shrinks `.title` to fit, and a
+                        post summary is long enough to truncate the title away. */}
+                    <div class:list={[rows.lead, rows.grow]}>
+                      <span class={rows.title}>{post.data.title}</span>
+                    </div>
+                    <span class={rows.meta}>{formatLong(post.data.date, lang)}</span>
+                  </a>
+                </li>
+              ))}
+            </HoverRows>
+          ) : (
+            <p class={styles.empty}>{t.writing.empty}</p>
+          )
+        }
+      </Reveal>
+    </main>
+  </div>
+</Base>

@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro'
+import Reveal from '../Reveal.astro'
+import Intro from '../Intro.astro'
+import Services from '../Services.astro'
+import ProjectList from '../ProjectList.astro'
+import Writing from '../Writing.astro'
+import Facts from '../Facts.astro'
+import Clock from '../Clock.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { graph, personNode, websiteNode, profilePageNode } from '../../lib/schema.js'
+import styles from '../../layouts/Base.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+
+const url = absoluteUrl(lang, '/')
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  profilePageNode(lang, url, s.home.title, s.home.description),
+])
+---
+
+<Base
+  lang={lang}
+  page="/"
+  title={s.home.title}
+  description={s.home.description}
+  type="profile"
+  jsonLd={jsonLd}
+>
+  <div class="shell">
+    <main id="main">
+      <Reveal>
+        <Intro lang={lang} />
+      </Reveal>
+
+      <Reveal delay={80}>
+        <Services lang={lang} />
+      </Reveal>
+
+      <Reveal delay={140}>
+        <ProjectList lang={lang} />
+      </Reveal>
+
+      <Reveal delay={200}>
+        <Writing lang={lang} />
+      </Reveal>
+
+      <Reveal delay={260}>
+        <Facts lang={lang} />
+      </Reveal>
+
+      <Reveal delay={320}>
+        <p class={styles.closing}>{t.closing}</p>
+        {/* The three hubs. Without these links /writing and /projects would be
+            reachable only from the sitemap, which is how pages go unindexed. */}
+        <p class={styles.aside}>
+          <a href={localePath(lang, '/projects')} class="link">{t.work.link}</a>
+        </p>
+        <p class={styles.aside}>
+          <a href={localePath(lang, '/writing')} class="link">{t.writing.link}</a>
+        </p>
+        <p class={styles.aside}>
+          <a href={localePath(lang, '/places')} class="link">{t.places.link}</a>
+        </p>
+        <footer class={styles.footer}>
+          <Clock label={t.footer.location} />
+        </footer>
+      </Reveal>
+    </main>
+  </div>
+</Base>

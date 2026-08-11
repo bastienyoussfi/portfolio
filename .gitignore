@@ -8,3 +8,5 @@ dist/
 .DS_Store
 legacy/blog/
 .pnpm-store/
+.astro/
+firebase-debug.log

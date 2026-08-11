@@ -1,0 +1,27 @@
+/* Shared frame for the /writing and /projects hubs. Mirrors Places.module.css,
+   which had these rules first and keeps its own copy because of the map. */
+
+.back {
+  display: inline-block;
+  margin-bottom: 40px;
+  color: var(--color-400);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.back:hover {
+  color: var(--color-900);
+}
+
+.title {
+  margin-bottom: 4px;
+  color: var(--color-900);
+}
+
+.intro {
+  color: var(--color-400);
+  margin-bottom: 44px;
+}
+
+.empty {
+  color: var(--color-400);
+}

@@ -1,0 +1,35 @@
+/* Entrance animation. The element starts hidden and the keyframe runs once
+   after `--reveal-delay`, which reproduces the old JS timer + transition pair
+   exactly — same 8px rise, same duration, same easing. */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: reveal var(--dur-slow) var(--ease) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The stagger is a first impression, not a per-navigation one. Once the client
+   router has swapped a page, transitions.css carries the entrance and this would
+   only replay underneath it — that doubled motion is what made navigation feel
+   slow. Base.astro sets the flag in `astro:after-swap`, which runs before the new
+   nodes get their first style pass, so nothing flashes. */
+:root[data-navigated] .reveal {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

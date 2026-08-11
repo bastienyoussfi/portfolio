@@ -1,0 +1,31 @@
+---
+import RowList from './RowList.astro'
+import Thumb from './Thumb.astro'
+import { content } from '../data/content.js'
+import { localePath } from '../lib/i18n.js'
+import rows from './RowList.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const { work } = content[lang]
+---
+
+<RowList label={work.label}>
+  {
+    work.items.map((item) => (
+      <li>
+        <a href={localePath(lang, `/projects/${item.id}`)} class={rows.rowTall}>
+          <Thumb src={item.image ?? undefined} />
+          <div class:list={[rows.lead, rows.grow]}>
+            <span class={rows.title}>{item.title}</span>
+            <span class={rows.detail}>{item.sector}</span>
+          </div>
+          <span class={rows.meta}>{work.statusLabels[item.status]}</span>
+        </a>
+      </li>
+    ))
+  }
+</RowList>

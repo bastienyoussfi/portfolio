@@ -1,0 +1,62 @@
+---
+import styles from './HoverRows.module.css'
+
+/**
+ * The list whose rows share one sliding highlight pill. The pill's initial
+ * inline styles match what React rendered on mount, so the first paint is
+ * identical before any script runs.
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props as Props
+---
+
+<ul class:list={[styles.list, className]} data-hover-rows>
+  <div
+    aria-hidden="true"
+    class={styles.pill}
+    data-hover-pill
+    style="height:0px;transform:translateY(0px) scale(0.96);opacity:0"
+  >
+  </div>
+  <slot />
+</ul>
+
+<script>
+  function bind(list: HTMLElement) {
+    if (list.dataset.hoverBound === 'true') return
+    list.dataset.hoverBound = 'true'
+
+    const pill = list.querySelector<HTMLElement>('[data-hover-pill]')
+    if (!pill) return
+
+    const track = (event: Event) => {
+      const target = event.target as HTMLElement | null
+      const row = target?.closest('li')
+      // Only rows that belong to this list — nested lists must not steal it.
+      if (!row || row.parentElement !== list) return
+      pill.style.height = `${row.offsetHeight}px`
+      pill.style.transform = `translateY(${row.offsetTop}px) scale(1)`
+      pill.style.opacity = '1'
+    }
+
+    const release = () => {
+      pill.style.opacity = '0'
+      pill.style.transform = pill.style.transform.replace(/scale\([^)]*\)/, 'scale(0.96)')
+    }
+
+    list.addEventListener('pointerover', track)
+    list.addEventListener('focusin', track)
+    list.addEventListener('pointerleave', release)
+    list.addEventListener('focusout', release)
+  }
+
+  function bindAll() {
+    document.querySelectorAll<HTMLElement>('[data-hover-rows]').forEach(bind)
+  }
+
+  bindAll()
+  document.addEventListener('astro:page-load', bindAll)
+</script>

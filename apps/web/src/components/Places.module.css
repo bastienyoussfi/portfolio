@@ -1,0 +1,29 @@
+.back {
+  display: inline-block;
+  margin-bottom: 40px;
+  color: var(--color-400);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.back:hover {
+  color: var(--color-900);
+}
+
+.title {
+  margin-bottom: 4px;
+  color: var(--color-900);
+}
+
+.intro {
+  color: var(--color-400);
+}
+
+/* The map breaks the measure slightly, so the world has a little more room
+   than the text around it without leaving the column. */
+.mapWrap {
+  margin: 40px -8px 44px;
+}
+
+.empty {
+  color: var(--color-400);
+}

@@ -1,0 +1,17 @@
+---
+import HoverRows from './HoverRows.astro'
+import styles from './RowList.module.css'
+
+interface Props {
+  label: string
+}
+
+const { label } = Astro.props as Props
+---
+
+<section class={styles.section} aria-label={label}>
+  <h2 class={styles.label}>{label}</h2>
+  <HoverRows>
+    <slot />
+  </HoverRows>
+</section>

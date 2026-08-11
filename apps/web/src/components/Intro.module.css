@@ -1,0 +1,22 @@
+.intro {
+  margin-bottom: var(--block);
+}
+
+.name {
+  margin-bottom: 4px;
+  color: var(--color-900);
+}
+
+.greeting {
+  margin-bottom: 22px;
+  color: var(--color-400);
+}
+
+/* Paragraph stack: one rhythm, no size change. */
+.copy {
+  color: var(--color-700);
+}
+
+.copy > * + * {
+  margin-top: var(--stack);
+}

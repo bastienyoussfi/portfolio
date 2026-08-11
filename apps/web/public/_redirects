@@ -1,0 +1,29 @@
+# The site is fully prerendered — every route has its own HTML file, so the SPA
+# fallback that used to serve index.html for unknown paths is gone. Without it,
+# Cloudflare Pages serves the real 404.html with a real 404 status instead of a
+# soft 404 that crawlers would treat as a duplicate of the home page.
+
+# --- Legacy URLs from the React site --------------------------------------
+# These paths are indexed. Rules are enumerated rather than globbed on purpose:
+# a splat like /projects/* would shadow the real case-study pages below it.
+
+# The blog became /writing. Only `welcome` has a successor post; the rest are
+# not carried over, so they go to the hub rather than to a guessed equivalent.
+/blog                        /writing              301
+/blog/welcome                /writing/bienvenue    301
+/blog/cache                  /writing              301
+/blog/proxies                /writing              301
+/blog/docker                 /writing              301
+/blog/operating-systems      /writing              301
+/blog/openai                 /writing              301
+
+# Case studies were renamed. Two map onto a clear successor — auditex is the
+# document-extraction product, architecture-brief-agent is the studio agents
+# work. The others have no equivalent and go to the hub.
+/projects/auditex                  /projects/extraction   301
+/projects/architecture-brief-agent /projects/agents       301
+/projects/growonline               /projects              301
+/projects/legal-knowledge-ai       /projects              301
+/projects/voicy                    /projects              301
+/projects/autoscribe               /projects              301
+/projects/portfolio                /projects              301

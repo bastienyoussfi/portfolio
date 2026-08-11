@@ -1,0 +1,28 @@
+---
+import RowList from './RowList.astro'
+import { content } from '../data/content.js'
+import rows from './RowList.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const { services } = content[lang]
+---
+
+<RowList label={services.label}>
+  {
+    services.items.map((item) => (
+      <li class={rows.divider}>
+        <div class={rows.row}>
+          <div class={rows.lead}>
+            <span class={rows.title}>{item.title}</span>
+            <span class={rows.detail}>{item.detail}</span>
+          </div>
+          <span class={rows.meta}>{item.meta}</span>
+        </div>
+      </li>
+    ))
+  }
+</RowList>

@@ -1,0 +1,93 @@
+.wrap {
+  display: grid;
+  overflow: hidden;
+}
+
+/* Height only animates once the first measurement has landed, otherwise the
+   block would visibly grow from zero on load. The script flips the attribute. */
+.wrap[data-animated='true'] {
+  transition: height var(--dur-slow) var(--ease);
+}
+
+/* Both layers occupy the same cell so they cross-fade in place. */
+.layer {
+  grid-area: 1 / 1;
+  margin: 0;
+}
+
+.original {
+  opacity: 1;
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.revealed {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms var(--ease);
+}
+
+.wrap[data-open='true'] .original {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wrap[data-open='true'] .revealed {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* The clickable phrase reads as a soft inline chip. */
+.trigger {
+  padding: 1px 3px;
+  margin-inline: -1px;
+  border-radius: var(--radius-sm);
+  background: var(--color-chip);
+  color: var(--color-900);
+  transition: background var(--dur-fast) var(--ease-standard);
+}
+
+.trigger:hover {
+  background: var(--color-200);
+}
+
+/* Repeats the opening words so the two layers stay aligned during the swap. */
+.ghost {
+  color: inherit;
+}
+
+.glue {
+  display: inline-block;
+}
+
+.word {
+  display: inline-block;
+  margin-right: 0.25em;
+  opacity: 0;
+  transform: scale(0.9) translateY(0.7em);
+  filter: blur(10px);
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    filter var(--dur) var(--ease);
+}
+
+.word:last-child {
+  margin-right: 0;
+}
+
+.wrap[data-open='true'] .word {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  transition-delay: calc(var(--word-index) * var(--stagger));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .wrap,
+  .wrap[data-animated='true'] { transition: none; }
+}

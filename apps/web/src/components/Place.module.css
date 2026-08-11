@@ -1,0 +1,6 @@
+/* Small locator map under the article header — the place's dot is always lit,
+   so the label reads as a caption rather than a hover state. */
+.locator {
+  margin: 32px -8px 8px;
+  opacity: 0.9;
+}

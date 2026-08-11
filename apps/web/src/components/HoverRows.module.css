@@ -1,0 +1,23 @@
+.list {
+  position: relative;
+}
+
+.pill {
+  position: absolute;
+  top: 0;
+  left: -8px;
+  right: -8px;
+  z-index: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-100);
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition:
+    transform 360ms var(--ease),
+    height 360ms var(--ease),
+    opacity var(--dur-fast) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill { transition: opacity 1ms; }
+}

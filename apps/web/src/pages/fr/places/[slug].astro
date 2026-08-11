@@ -1,0 +1,12 @@
+---
+import Place from '../../../components/pages/Place.astro'
+import { entryPaths } from '../../../lib/collections.js'
+
+export async function getStaticPaths() {
+  return entryPaths('places', 'fr')
+}
+
+const { item } = Astro.props
+---
+
+<Place lang="fr" item={item} />

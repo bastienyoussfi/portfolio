@@ -1,0 +1,96 @@
+/* Fixed rail alongside the article. Appears only when there is room beside the
+   615px measure, so the article stays optically centred at every width. */
+.aside {
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .aside {
+    position: fixed;
+    left: 64px;
+    top: var(--pad-top-md);
+    bottom: 0;
+    z-index: var(--z-aside);
+    display: flex;
+    flex-direction: column;
+    width: 192px;
+    padding-right: 8px;
+  }
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 56px;
+  color: var(--color-400);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.back:hover {
+  color: var(--color-900);
+}
+
+.backArrow {
+  display: inline-block;
+  transition: transform var(--dur) var(--ease);
+}
+
+.back:hover .backArrow {
+  transform: translateX(-3px);
+}
+
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tocLink {
+  color: var(--color-400);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.tocLink:hover {
+  color: var(--color-700);
+}
+
+.tocLink[data-active='true'] {
+  color: var(--color-900);
+}
+
+/* Back link inside the column, for widths where the rail is hidden. */
+.backInline {
+  display: inline-block;
+  margin-bottom: 40px;
+  color: var(--color-400);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.backInline:hover {
+  color: var(--color-900);
+}
+
+@media (min-width: 1100px) {
+  .backInline { display: none; }
+}
+
+.article {
+  padding-bottom: 64px;
+}
+
+.title {
+  margin-bottom: 4px;
+  color: var(--color-900);
+}
+
+.meta {
+  margin-bottom: var(--stack);
+  color: var(--color-400);
+}
+
+.summary {
+  margin-bottom: var(--stack);
+  color: var(--color-700);
+  line-height: var(--leading-prose);
+}

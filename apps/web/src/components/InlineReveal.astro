@@ -1,0 +1,102 @@
+---
+import styles from './InlineReveal.module.css'
+
+/**
+ * The opening sentence that hides its own detail. Two stacked paragraphs share
+ * a grid cell; clicking the trigger crossfades between them while the wrapper
+ * animates to the new height and the revealed words arrive one at a time.
+ *
+ * Both layers are in the HTML from the start, so the full sentence — including
+ * the client types behind the trigger — is in the source a crawler reads.
+ */
+interface Props {
+  prefix: string
+  trigger: string
+  original: string
+  revealed: string
+  glue?: string
+}
+
+const { prefix, trigger, original, revealed, glue = '' } = Astro.props as Props
+
+const words = revealed.split(/\s+/).filter(Boolean)
+const id = 'intro-reveal'
+
+// Built as one string so no whitespace lands between the inline-block words —
+// their spacing comes from margin-right alone, exactly as in the React version.
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const wordsHtml = words
+  .map((word, i) => `<span class="${styles.word}" style="--word-index:${i}">${escape(word)}</span>`)
+  .join('')
+---
+
+<div class={styles.wrap} data-inline-reveal data-open="false">
+  <p class:list={[styles.layer, styles.original]} data-layer="original" aria-hidden="false">
+    <span>{prefix}</span><button
+      type="button"
+      class={styles.trigger}
+      aria-expanded="false"
+      aria-controls={id}
+      data-toggle="open">{trigger}</button><span>{original}</span>
+  </p>
+
+  <p id={id} class:list={[styles.layer, styles.revealed]} data-layer="revealed" aria-hidden="true">
+    <span class={styles.ghost}>{prefix}</span><button
+      type="button"
+      class={styles.trigger}
+      aria-expanded="false"
+      tabindex="-1"
+      data-toggle="close">{trigger}</button>{glue && <span class={styles.glue}>{glue}</span>}{' '}<Fragment set:html={wordsHtml} />
+  </p>
+</div>
+
+<script>
+  function bind(wrap: HTMLElement) {
+    if (wrap.dataset.revealBound === 'true') return
+    wrap.dataset.revealBound = 'true'
+
+    const original = wrap.querySelector<HTMLElement>('[data-layer="original"]')
+    const revealed = wrap.querySelector<HTMLElement>('[data-layer="revealed"]')
+    const openBtn = wrap.querySelector<HTMLElement>('[data-toggle="open"]')
+    const closeBtn = wrap.querySelector<HTMLElement>('[data-toggle="close"]')
+    if (!original || !revealed || !openBtn || !closeBtn) return
+
+    const measure = () => {
+      const active = wrap.dataset.open === 'true' ? revealed : original
+      wrap.style.height = `${active.offsetHeight}px`
+    }
+
+    const setOpen = (open: boolean) => {
+      wrap.dataset.open = String(open)
+      original.setAttribute('aria-hidden', String(open))
+      revealed.setAttribute('aria-hidden', String(!open))
+      openBtn.setAttribute('aria-expanded', String(open))
+      closeBtn.setAttribute('aria-expanded', String(open))
+      ;(closeBtn as HTMLButtonElement).tabIndex = open ? 0 : -1
+      measure()
+    }
+
+    measure()
+    // Only start transitioning height after the first measurement, so the block
+    // does not visibly grow from zero on load.
+    requestAnimationFrame(() => {
+      wrap.dataset.animated = 'true'
+    })
+
+    if (typeof ResizeObserver !== 'undefined') {
+      const observer = new ResizeObserver(measure)
+      observer.observe(original)
+      observer.observe(revealed)
+    }
+
+    openBtn.addEventListener('click', () => setOpen(true))
+    closeBtn.addEventListener('click', () => setOpen(false))
+  }
+
+  function bindAll() {
+    document.querySelectorAll<HTMLElement>('[data-inline-reveal]').forEach(bind)
+  }
+
+  bindAll()
+  document.addEventListener('astro:page-load', bindAll)
+</script>

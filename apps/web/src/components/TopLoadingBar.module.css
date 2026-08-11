@@ -1,0 +1,26 @@
+.track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+}
+
+.bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: var(--color-900);
+  transition:
+    transform var(--dur-slow) var(--ease),
+    opacity var(--dur) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: opacity var(--dur-fast) linear;
+  }
+}

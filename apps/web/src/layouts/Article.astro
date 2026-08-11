@@ -1,0 +1,139 @@
+---
+import Base from './Base.astro'
+import Reveal from '../components/Reveal.astro'
+import styles from './Article.module.css'
+
+/**
+ * Case studies, posts and places share this frame: a fixed aside carrying the
+ * back link and the table of contents, and the article itself in the shell.
+ * The rail highlights the section you are reading.
+ */
+interface Section {
+  id: string
+  label: string
+}
+
+interface Props {
+  lang: 'en' | 'fr'
+  page: string
+  seoTitle: string
+  description: string
+  type?: 'website' | 'article' | 'profile'
+  image?: string
+  publishedTime?: string
+  modifiedTime?: string
+  jsonLd?: unknown
+  langs?: ('en' | 'fr')[]
+
+  backLabel: string
+  backHref: string
+  sections?: Section[]
+  title: string
+  meta?: string
+  summary?: string
+}
+
+const {
+  lang,
+  page,
+  seoTitle,
+  description,
+  type = 'article',
+  image,
+  publishedTime,
+  modifiedTime,
+  jsonLd,
+  langs,
+  backLabel,
+  backHref,
+  sections = [],
+  title,
+  meta,
+  summary,
+} = Astro.props as Props
+---
+
+<Base
+  lang={lang}
+  page={page}
+  title={seoTitle}
+  description={description}
+  type={type}
+  image={image}
+  publishedTime={publishedTime}
+  modifiedTime={modifiedTime}
+  jsonLd={jsonLd}
+  langs={langs}
+>
+  <aside class={styles.aside}>
+    <a href={backHref} class={styles.back}>
+      <span class={styles.backArrow} aria-hidden="true">↩</span>
+      <span>{backLabel}</span>
+    </a>
+
+    {
+      sections.length > 0 && (
+        <nav class={styles.toc} aria-label={title} data-toc>
+          {sections.map((section) => (
+            <a href={`#${section.id}`} class={styles.tocLink} data-active="false">
+              {section.label}
+            </a>
+          ))}
+        </nav>
+      )
+    }
+  </aside>
+
+  <div class="shell">
+    <main id="main">
+      <a href={backHref} class={styles.backInline}>
+        <span aria-hidden="true">↩</span> {backLabel}
+      </a>
+
+      <article class={styles.article}>
+        <Reveal>
+          <h1 class={styles.title}>{title}</h1>
+          {meta && <p class={styles.meta}>{meta}</p>}
+          {summary && <p class={styles.summary}>{summary}</p>}
+        </Reveal>
+
+        <slot />
+      </article>
+    </main>
+  </div>
+</Base>
+
+<script>
+  let observer: IntersectionObserver | undefined
+
+  function bind() {
+    observer?.disconnect()
+
+    const toc = document.querySelector<HTMLElement>('[data-toc]')
+    if (!toc) return
+
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')]
+    const targets = links
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter((el): el is HTMLElement => Boolean(el))
+    if (!targets.length) return
+
+    const highlight = (id: string) => {
+      for (const link of links) {
+        link.dataset.active = String(decodeURIComponent(link.hash.slice(1)) === id)
+      }
+    }
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting)
+        if (visible.length) highlight(visible[0].target.id)
+      },
+      { rootMargin: '-10% 0px -70% 0px', threshold: 0 },
+    )
+    targets.forEach((target) => observer!.observe(target))
+  }
+
+  bind()
+  document.addEventListener('astro:page-load', bind)
+</script>

@@ -1,0 +1,90 @@
+/* Page transitions.
+   One gesture per navigation: the outgoing page leaves without moving, the
+   incoming page lifts into place. Direction-aware — forward rises, back drops —
+   so the browser's back button reads as going back.
+
+   The old behaviour was the UA cross-fade, which dissolved the two pages into
+   each other for ~250ms while the Reveal stagger replayed underneath it. Two
+   animations fighting is what made navigation feel slow; Reveal now sits out
+   client-side navigations (Reveal.module.css) and this file does the whole job. */
+
+/* The UA composites the two snapshots with plus-lighter, which is seamless when
+   they hold the same pixels and blows the warm off-white canvas out to white
+   when they don't. Every snapshot whose content actually changes is named here;
+   the persisted loading bar is left on the default, where plus-lighter is doing
+   the job it was designed for. */
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-old(lang-toggle),
+::view-transition-new(lang-toggle) {
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation: page-out 100ms linear both;
+}
+
+::view-transition-new(root) {
+  /* The delay is the point: the outgoing page is all but gone before the new
+     one starts, so the two never read as a dissolve. The curve is --ease spelled
+     out — a var() that failed to resolve here would fall back to plain `ease`
+     with no warning. */
+  animation: page-in 280ms cubic-bezier(0.16, 1, 0.3, 1) 60ms both;
+}
+
+:root[data-astro-transition='back']::view-transition-new(root) {
+  animation-name: page-in-back;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes page-in-back {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* The language switch holds the same fixed spot on every page, so it gets its
+   own snapshot and cross-fades in place instead of riding the lift. */
+[data-lang-toggle] {
+  view-transition-name: lang-toggle;
+}
+
+/* Browsers without native view transitions — Astro drives these two attributes
+   itself in fallback mode. Same lift, applied to the real element. */
+:root[data-astro-transition-fallback='new'] main {
+  animation: page-in 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+:root[data-astro-transition='back'][data-astro-transition-fallback='new'] main {
+  animation-name: page-in-back;
+}
+
+/* global.css kills animation on `*`, which never matches the view-transition
+   pseudo tree — it has to be turned off by name. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(lang-toggle),
+  ::view-transition-old(lang-toggle),
+  ::view-transition-new(lang-toggle) {
+    animation: none !important;
+  }
+
+  :root[data-astro-transition-fallback='new'] main {
+    animation: none;
+  }
+}

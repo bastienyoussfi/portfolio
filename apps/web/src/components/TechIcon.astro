@@ -1,0 +1,51 @@
+---
+import { BRAND, STROKE, keyFor } from '../lib/tech-icons.js'
+
+/**
+ * One tech-stack glyph. Brand marks render filled in their own colour; the
+ * capability icons render as house-style strokes in currentColor.
+ */
+interface Props {
+  label: string
+  size?: number
+  strokeWidth?: number
+  class?: string
+}
+
+const { label, size = 26, strokeWidth = 1.6, class: className } = Astro.props as Props
+
+const key = keyFor(label)
+const brand = BRAND[key]
+const glyph = STROKE[key] || STROKE.tag
+---
+
+{
+  brand ? (
+    <svg
+      class={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={brand.color}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={brand.path} />
+    </svg>
+  ) : (
+    <svg
+      class={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width={strokeWidth}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      set:html={glyph}
+    />
+  )
+}

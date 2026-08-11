@@ -1,0 +1,119 @@
+/* Typography for rendered markdown. Same single type size as the rest of the
+   site — headings differ only in weight, and prose gets the looser leading. */
+
+.prose {
+  color: var(--color-700);
+  line-height: var(--leading-prose);
+}
+
+.prose > * + * {
+  margin-top: var(--stack);
+}
+
+.prose h2 {
+  margin-top: var(--block);
+  margin-bottom: var(--stack);
+  font-weight: var(--weight-semibold);
+  color: var(--color-900);
+  scroll-margin-top: 32px;
+}
+
+.prose h3 {
+  margin-top: 32px;
+  font-weight: var(--weight-semibold);
+  color: var(--color-900);
+}
+
+.prose strong {
+  font-weight: var(--weight-semibold);
+  color: var(--color-900);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose a {
+  color: var(--color-900);
+  text-decoration: underline;
+  text-decoration-color: var(--color-300);
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--dur-fast) var(--ease-standard);
+}
+
+.prose a:hover {
+  text-decoration-color: var(--color-900);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 18px;
+}
+
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+
+.prose li::marker {
+  color: var(--color-400);
+}
+
+.prose li + li {
+  margin-top: 6px;
+}
+
+/* Inline code reads as a small chip, matching the tech chips on case studies. */
+.prose :not(pre) > code {
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  background: var(--color-100);
+  color: var(--color-900);
+  letter-spacing: 0;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--color-100);
+  line-height: 1.55;
+}
+
+.prose pre code {
+  color: var(--color-900);
+  letter-spacing: 0;
+}
+
+.prose blockquote {
+  padding-left: 16px;
+  border-left: 2px solid var(--color-200);
+  color: var(--color-400);
+}
+
+.prose img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--color-100);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--color-200);
+  margin-block: var(--block);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose th,
+.prose td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-100);
+  text-align: left;
+}
+
+.prose th {
+  font-weight: var(--weight-semibold);
+  color: var(--color-900);
+}

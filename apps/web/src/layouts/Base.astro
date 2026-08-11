@@ -1,0 +1,89 @@
+---
+import { ClientRouter } from 'astro:transitions'
+import Seo from '../components/Seo.astro'
+import TopLoadingBar from '../components/TopLoadingBar.astro'
+import LangToggle from '../components/LangToggle.astro'
+import { HTML_LANG } from '../lib/i18n.js'
+import { content } from '../data/content.js'
+import styles from './Base.module.css'
+import '../styles/tokens.css'
+import '../styles/global.css'
+import '../styles/transitions.css'
+
+/**
+ * The shell every page shares: head metadata, the loading bar, the skip link
+ * and the FR/EN switch. These used to live in AppRoutes and each page component;
+ * putting them here means no route can ship without them.
+ */
+interface Props {
+  lang: 'en' | 'fr'
+  /** Locale-neutral page key, e.g. '/writing/my-post'. */
+  page: string
+  title: string
+  description: string
+  type?: 'website' | 'article' | 'profile'
+  image?: string
+  imageAlt?: string
+  publishedTime?: string
+  modifiedTime?: string
+  jsonLd?: unknown
+  noindex?: boolean
+  /** Locales this page exists in; passed straight through to hreflang. */
+  langs?: ('en' | 'fr')[]
+}
+
+const {
+  lang,
+  page,
+  title,
+  description,
+  type,
+  image,
+  imageAlt,
+  publishedTime,
+  modifiedTime,
+  jsonLd,
+  noindex,
+  langs,
+} = Astro.props as Props
+
+const t = content[lang]
+---
+
+<!doctype html>
+<html lang={HTML_LANG[lang]}>
+  <head>
+    <Seo
+      lang={lang}
+      page={page}
+      title={title}
+      description={description}
+      type={type}
+      image={image}
+      imageAlt={imageAlt}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      jsonLd={jsonLd}
+      noindex={noindex}
+      langs={langs}
+    />
+    <ClientRouter />
+  </head>
+  <body>
+    <TopLoadingBar />
+    <a href="#main" class={styles.skip}>{t.skip}</a>
+    <LangToggle lang={lang} page={page} langs={langs} />
+    <slot />
+
+    <script is:inline>
+      // The client router copies the incoming document's root attributes over
+      // the live ones, so this flag has to be re-set after every swap. Doing it
+      // in `astro:after-swap` — synchronously, before the swapped-in nodes are
+      // styled for the first time — is what keeps Reveal from replaying its
+      // stagger on top of the page transition. See Reveal.module.css.
+      document.addEventListener('astro:after-swap', () => {
+        document.documentElement.dataset.navigated = ''
+      })
+    </script>
+  </body>
+</html>

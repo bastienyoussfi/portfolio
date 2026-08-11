@@ -1,0 +1,26 @@
+/* No new type size and no new weight: the block sits a step further down the
+   neutral ramp than body copy, which is the only hierarchy this site uses. */
+
+/* Section rhythm on both sides: the closing line follows this block directly
+   and has no top margin of its own. */
+.facts {
+  margin-top: var(--block);
+  margin-bottom: var(--block);
+}
+
+.label {
+  font-weight: var(--weight-medium);
+  color: var(--color-400);
+  margin-bottom: 12px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--color-400);
+}
+
+.list > li + li {
+  margin-top: 6px;
+}

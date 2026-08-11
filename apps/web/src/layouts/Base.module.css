@@ -1,0 +1,29 @@
+.skip {
+  position: fixed;
+  left: var(--gutter);
+  top: 16px;
+  z-index: var(--z-overlay);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-900);
+  color: var(--color-canvas);
+  transform: translateY(-200%);
+  transition: transform var(--dur) var(--ease);
+}
+.skip:focus {
+  transform: translateY(0);
+}
+
+.closing {
+  color: var(--color-700);
+}
+
+.aside {
+  margin-top: 8px;
+}
+
+.footer {
+  margin-top: 40px;
+  color: var(--color-400);
+  font-variant-numeric: tabular-nums;
+}

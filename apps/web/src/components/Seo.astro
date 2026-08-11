@@ -1,0 +1,129 @@
+---
+import { Font } from 'astro:assets'
+import { SITE, HTML_LANG, OG_LOCALE, alternates, absoluteUrl, LOCALES, DEFAULT_LOCALE } from '../lib/i18n.js'
+
+/**
+ * Everything a crawler reads before the body. One component so no page can
+ * accidentally ship without a canonical, an hreflang set, or a description.
+ */
+interface Props {
+  lang: 'en' | 'fr'
+  /** Locale-neutral page key, e.g. '/writing/my-post'. Drives canonical + hreflang. */
+  page: string
+  title: string
+  description: string
+  type?: 'website' | 'article' | 'profile'
+  image?: string
+  imageAlt?: string
+  publishedTime?: string
+  modifiedTime?: string
+  jsonLd?: unknown
+  noindex?: boolean
+  /** Locales this page actually exists in. Guards hreflang against 404s. */
+  langs?: ('en' | 'fr')[]
+}
+
+/**
+ * Pre-rendered 1200×630 cards, one per locale — see scripts/generate-og.mjs.
+ * Everything defaults to these: the avatar is square, so it renders as a
+ * cropped thumbnail in a feed, and the per-project images live in src/assets
+ * and have no public URL at all.
+ */
+const OG_CARD = { en: '/og.png', fr: '/og-fr.png' }
+const OG_CARD_ALT = {
+  en: 'Bastien Youssfi — AI Engineer, Paris',
+  fr: 'Bastien Youssfi — Ingénieur IA, Paris',
+}
+
+const {
+  lang,
+  page,
+  title,
+  description,
+  type = 'website',
+  image,
+  imageAlt,
+  publishedTime,
+  modifiedTime,
+  jsonLd,
+  noindex = false,
+  langs = LOCALES,
+} = Astro.props as Props
+
+const links = alternates(page, langs)
+// A page always exists in its own locale, but fall back rather than throw if a
+// caller ever passes a `langs` set that omits it.
+const canonical = (links.find((l) => l.lang === lang) ?? links[0]).href
+const xDefault = (links.find((l) => l.lang === DEFAULT_LOCALE) ?? links[0]).href
+
+const card = OG_CARD[lang]
+const usingCard = !image || image === card
+const ogImage = new URL(image ?? card, SITE).href
+const ogImageAlt = imageAlt ?? (usingCard ? OG_CARD_ALT[lang] : title)
+// Only the generated cards have known dimensions; declaring them lets X and
+// LinkedIn lay out the card before the image finishes downloading.
+const cardDims = usingCard ? { width: '1200', height: '630' } : null
+
+const llms = absoluteUrl(lang, '/llms.txt')
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#fdfdfc" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{!noindex && <link rel="canonical" href={canonical} />}
+
+{
+  !noindex && (
+    <>
+      {links.map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
+      <link rel="alternate" hreflang="x-default" href={xDefault} />
+    </>
+  )
+}
+
+<meta name="author" content="Bastien Youssfi" />
+<meta
+  name="robots"
+  content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'}
+/>
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="Bastien Youssfi" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={ogImageAlt} />
+{cardDims && <meta property="og:image:type" content="image/png" />}
+{cardDims && <meta property="og:image:width" content={cardDims.width} />}
+{cardDims && <meta property="og:image:height" content={cardDims.height} />}
+<meta property="og:locale" content={OG_LOCALE[lang]} />
+{links
+  .filter((l) => l.lang !== lang)
+  .map((l) => <meta property="og:locale:alternate" content={OG_LOCALE[l.lang]} />)}
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
+
+<link rel="alternate" type="application/rss+xml" title={`Bastien Youssfi — ${HTML_LANG[lang]}`}
+  href={new URL(lang === DEFAULT_LOCALE ? '/rss.xml' : `/${lang}/rss.xml`, SITE).href} />
+
+{/* Not a registered rel, but it is how assistants that look for llms.txt at all
+    discover it without guessing the path. Harmless to every other crawler. */}
+<link rel="alternate" type="text/plain" title="llms.txt" href={llms} />
+
+<Font cssVariable="--font-inter" preload />
+<Font cssVariable="--font-jetbrains" />
+
+{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />}

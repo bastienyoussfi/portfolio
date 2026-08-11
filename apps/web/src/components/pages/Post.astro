@@ -1,0 +1,72 @@
+---
+import { render } from 'astro:content'
+import Article from '../../layouts/Article.astro'
+import Reveal from '../Reveal.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { entryLocales } from '../../lib/collections.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { formatLong } from '../../lib/date.js'
+import { graph, personNode, websiteNode, blogPostingNode, breadcrumbNode } from '../../lib/schema.js'
+import prose from '../Prose.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+  item: { slug: string; entry: any; data: any }
+}
+
+const { lang, item } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+
+const { Content, headings } = await render(item.entry)
+// The rail lists top-level sections only, matching the old `##`-driven TOC.
+const sections = headings
+  .filter((heading) => heading.depth === 2)
+  .map((heading) => ({ id: heading.slug, label: heading.text }))
+
+const page = `/writing/${item.slug}`
+const url = absoluteUrl(lang, page)
+const description =
+  item.data.summary ?? `${item.data.title} — ${s.writing.description}`
+
+// Only claim a translation that has a file. A post published in one language
+// alone would otherwise emit an hreflang pointing at a 404.
+const langs = await entryLocales('writing', item.slug)
+
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  blogPostingNode(lang, url, { ...item.data }, t.shared),
+  breadcrumbNode(url, [
+    { name: t.shared.name, url: absoluteUrl(lang, '/') },
+    { name: t.writing.label, url: absoluteUrl(lang, '/writing') },
+    { name: item.data.title, url },
+  ]),
+])
+---
+
+<Article
+  lang={lang}
+  page={page}
+  seoTitle={s.titleTemplate(item.data.title)}
+  description={description}
+  type="article"
+  image={item.data.image ?? undefined}
+  publishedTime={item.data.date.toISOString()}
+  modifiedTime={(item.data.updated ?? item.data.date).toISOString()}
+  jsonLd={jsonLd}
+  langs={langs}
+  backLabel={t.writing.backToIndex}
+  backHref={localePath(lang, '/writing')}
+  sections={sections}
+  title={item.data.title}
+  meta={formatLong(item.data.date, lang)}
+  summary={item.data.summary}
+>
+  <Reveal delay={80}>
+    <div class={prose.prose}>
+      <Content />
+    </div>
+  </Reveal>
+</Article>

@@ -1,0 +1,54 @@
+---
+import styles from './LangToggle.module.css'
+import { localePath, LOCALES } from '../lib/i18n.js'
+
+/**
+ * FR/EN switch. These were buttons flipping React state; they are now real
+ * links to the other locale's URL, which is what makes the French half of the
+ * site crawlable at all.
+ */
+interface Props {
+  lang: 'en' | 'fr'
+  /** Locale-neutral page key, so the switch stays on the same page. */
+  page: string
+  /** Locales this page exists in. A missing one renders inert, not as a 404. */
+  langs?: ('en' | 'fr')[]
+  class?: string
+}
+
+const { lang, page, langs = LOCALES, class: className = '' } = Astro.props as Props
+
+const options = [
+  { code: 'fr', label: 'FR' },
+  { code: 'en', label: 'EN' },
+] as const
+---
+
+<div
+  class:list={[styles.toggle, className]}
+  role="group"
+  aria-label="Language / Langue"
+  data-lang-toggle
+>
+  {
+    options.map((option, i) => (
+      <>
+        {i > 0 && <span class={styles.sep} aria-hidden="true">/</span>}
+        {langs.includes(option.code) ? (
+          <a
+            href={localePath(option.code, page)}
+            hreflang={option.code}
+            class={lang === option.code ? styles.active : styles.option}
+            aria-current={lang === option.code ? 'true' : undefined}
+          >
+            {option.label}
+          </a>
+        ) : (
+          <span class={styles.option} aria-disabled="true">
+            {option.label}
+          </span>
+        )}
+      </>
+    ))
+  }
+</div>

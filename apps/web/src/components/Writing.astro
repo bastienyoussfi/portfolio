@@ -1,0 +1,37 @@
+---
+import RowList from './RowList.astro'
+import Thumb from './Thumb.astro'
+import { content } from '../data/content.js'
+import { listEntries } from '../lib/collections.js'
+import { localePath } from '../lib/i18n.js'
+import { formatMonth } from '../lib/date.js'
+import rows from './RowList.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const t = content[lang]
+
+const posts = await listEntries('writing', lang)
+const showThumbs = posts.some((post) => post.data.image)
+---
+
+{
+  posts.length > 0 && (
+    <RowList label={t.writing.label}>
+      {posts.map((post) => (
+        <li>
+          <a href={localePath(lang, `/writing/${post.slug}`)} class={rows.rowTall}>
+            {showThumbs && <Thumb src={post.data.image} />}
+            <div class:list={[rows.lead, rows.grow]}>
+              <span class={rows.title}>{post.data.title}</span>
+            </div>
+            <span class={rows.meta}>{formatMonth(post.data.date, lang)}</span>
+          </a>
+        </li>
+      ))}
+    </RowList>
+  )
+}

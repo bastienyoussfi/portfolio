@@ -1,0 +1,115 @@
+---
+import Article from '../../layouts/Article.astro'
+import Reveal from '../Reveal.astro'
+import TechIcon from '../TechIcon.astro'
+import Screenshot from '../Screenshot.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { asset } from '../../lib/images.js'
+import { graph, personNode, websiteNode, caseStudyNode, breadcrumbNode } from '../../lib/schema.js'
+import styles from '../CaseStudy.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+  id: string
+}
+
+const { lang, id } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+
+const { work } = t
+const item = work.items.find((i) => i.id === id)!
+const labels = work.caseStudy
+const cs = item.caseStudy ?? {}
+
+const sections = [
+  ...(cs.tech?.length ? [{ id: 'stack', label: labels.techLabel }] : []),
+  ...(cs.methodology ?? []).map((step, i) => ({ id: `step-${i}`, label: step.title })),
+  { id: 'screens', label: labels.screenshotsLabel },
+]
+
+const page = `/projects/${id}`
+const url = absoluteUrl(lang, page)
+const description = cs.summary ?? s.projects.description(item)
+
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  caseStudyNode(lang, url, item, description, asset(item.image)?.src),
+  breadcrumbNode(url, [
+    { name: t.shared.name, url: absoluteUrl(lang, '/') },
+    { name: work.label, url: absoluteUrl(lang, '/projects') },
+    { name: item.title, url },
+  ]),
+])
+---
+
+{/* No `image`: item.image points at /projets/*, which only exists under
+    src/assets and is resolved to a hashed asset by lib/images.js. As an
+    og:image it was a 404 on all six case studies, so these use the locale
+    card instead. The real asset still reaches JSON-LD via caseStudyNode. */}
+<Article
+  lang={lang}
+  page={page}
+  seoTitle={s.titleTemplate(item.title)}
+  description={description}
+  type="article"
+  jsonLd={jsonLd}
+  backLabel={work.backToIndex}
+  backHref={localePath(lang, '/projects')}
+  sections={sections}
+  title={item.title}
+  meta={item.sector}
+  summary={cs.summary}
+>
+  {
+    cs.tech?.length > 0 && (
+      <Reveal delay={80}>
+        <h2 id="stack" class={styles.heading}>
+          {labels.techLabel}
+        </h2>
+        <ul class={styles.stack}>
+          {cs.tech.map((tech) => (
+            <li class={styles.chip}>
+              <TechIcon label={tech} size={13} strokeWidth={1.8} />
+              <span>{tech}</span>
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+    )
+  }
+
+  {
+    cs.methodology?.length > 0 && (
+      <Reveal delay={120}>
+        {cs.methodology.map((step, i) => (
+          <div class={styles.step}>
+            <h2 id={`step-${i}`} class={styles.heading}>
+              {step.title}
+            </h2>
+            <p class={styles.prose}>{step.body}</p>
+          </div>
+        ))}
+      </Reveal>
+    )
+  }
+
+  <Reveal delay={160}>
+    <h2 id="screens" class={styles.heading}>{labels.screenshotsLabel}</h2>
+    {
+      cs.screenshots?.length > 0 ? (
+        cs.screenshots.map((shot) => (
+          <figure class={styles.figure}>
+            <Screenshot src={shot.src} alt={shot.caption || ''} />
+            {shot.caption && <figcaption class={styles.caption}>{shot.caption}</figcaption>}
+          </figure>
+        ))
+      ) : (
+        <p class={styles.empty}>{labels.screenshotsEmpty}</p>
+      )
+    }
+  </Reveal>
+</Article>

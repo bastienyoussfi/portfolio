@@ -1,0 +1,36 @@
+---
+import InlineReveal from './InlineReveal.astro'
+import { content } from '../data/content.js'
+import styles from './Intro.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const { intro, shared } = content[lang]
+
+function hrefFor(social: string) {
+  if (social === 'email') return `mailto:${shared.email}`
+  return shared.socials.find((s) => s.name === social)?.url ?? '#'
+}
+---
+
+<header class={styles.intro}>
+  <h1 class={styles.name}>{intro.name}</h1>
+  <p class={styles.greeting}>{intro.greeting}</p>
+
+  <div class={styles.copy}>
+    <InlineReveal
+      prefix={intro.reveal.prefix}
+      trigger={intro.reveal.trigger}
+      original={intro.reveal.original}
+      revealed={intro.reveal.revealed}
+      glue={intro.reveal.glue}
+    />
+
+    {intro.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+
+    <p>{intro.contact.map((part) => part.link ? (<a class="link" href={hrefFor(part.social)} target={part.social === 'email' ? undefined : '_blank'} rel={part.social === 'email' ? undefined : 'noopener noreferrer'}>{part.link}</a>) : (<span>{part.text}</span>))}</p>
+  </div>
+</header>

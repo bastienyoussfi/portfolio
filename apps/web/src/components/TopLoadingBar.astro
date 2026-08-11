@@ -1,0 +1,64 @@
+---
+import styles from './TopLoadingBar.module.css'
+
+/**
+ * The hairline progress bar at the top of the viewport. It used to be driven by
+ * react-router's location changes; it now listens to Astro's view-transition
+ * lifecycle, so it reflects a real navigation instead of a simulated one.
+ *
+ * `transition:persist` keeps the same element across swaps — without it the bar
+ * would be replaced mid-animation and flicker.
+ */
+---
+
+<div class={styles.track} aria-hidden="true" transition:persist="loading-bar">
+  <div class={styles.bar} data-loading-bar style="transform:scaleX(0);opacity:0"></div>
+</div>
+
+<script>
+  const REDUCED = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+
+  let timers: Array<ReturnType<typeof setTimeout>> = []
+
+  const bar = () => document.querySelector<HTMLElement>('[data-loading-bar]')
+
+  function clear() {
+    timers.forEach(clearTimeout)
+    timers = []
+  }
+
+  function at(ms: number, fn: () => void) {
+    timers.push(setTimeout(fn, ms))
+  }
+
+  function set(progress: number, visible: boolean) {
+    const el = bar()
+    if (!el) return
+    el.style.transform = `scaleX(${progress / 100})`
+    el.style.opacity = visible ? '1' : '0'
+  }
+
+  function start() {
+    clear()
+    if (REDUCED) {
+      set(100, true)
+      return
+    }
+    set(0, true)
+    // Jump in fast so the bar reads as responsive, then stall near the edge —
+    // the same curve the react-router version used.
+    at(20, () => set(35, true))
+    at(180, () => set(70, true))
+    at(420, () => set(90, true))
+  }
+
+  function finish() {
+    clear()
+    set(100, true)
+    at(REDUCED ? 200 : 300, () => set(100, false))
+    at(REDUCED ? 400 : 500, () => set(0, false)) // reset off-screen after the fade
+  }
+
+  document.addEventListener('astro:before-preparation', start)
+  document.addEventListener('astro:page-load', finish)
+</script>

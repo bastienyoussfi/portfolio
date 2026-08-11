@@ -1,33 +1,25 @@
 {
   "name": "web",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
+  "description": "Personal portfolio of Bastien Youssfi — AI engineer, Paris.",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "typecheck": "tsc -b"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
-    "@paper-design/shaders-react": "^0.0.72",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.38.0",
-    "lucide-react": "^1.7.0",
-    "radix-ui": "^1.4.3",
-    "react": "^19",
-    "react-dom": "^19",
-    "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.14.0",
-    "remark-gfm": "^4.0.1",
-    "tailwind-merge": "^3.5.0"
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.0",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "vite": "^6"
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
   }
 }

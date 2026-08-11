@@ -1,0 +1,126 @@
+---
+import Base from '../../layouts/Base.astro'
+import Reveal from '../Reveal.astro'
+import WorldMap from '../WorldMap.astro'
+import HoverRows from '../HoverRows.astro'
+import Thumb from '../Thumb.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { listEntries } from '../../lib/collections.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { formatMonth } from '../../lib/date.js'
+import { graph, personNode, websiteNode, collectionPageNode, breadcrumbNode } from '../../lib/schema.js'
+import rows from '../RowList.module.css'
+import styles from '../Places.module.css'
+
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+
+const entries = await listEntries('places', lang)
+const places = entries.map((item) => ({
+  slug: item.slug,
+  title: item.data.title,
+  coords: item.data.coords,
+  country: item.data.country,
+  date: item.data.date,
+  image: item.data.image,
+}))
+
+const showThumbs = places.some((place) => place.image)
+const linkBase = localePath(lang, '/places')
+
+const url = absoluteUrl(lang, '/places')
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  collectionPageNode(
+    lang,
+    url,
+    s.titleTemplate(s.places.title),
+    s.places.description,
+    places.map((place) => ({ name: place.title, url: absoluteUrl(lang, `/places/${place.slug}`) })),
+  ),
+  breadcrumbNode(url, [
+    { name: t.shared.name, url: absoluteUrl(lang, '/') },
+    { name: t.places.label, url },
+  ]),
+])
+---
+
+<Base
+  lang={lang}
+  page="/places"
+  title={s.titleTemplate(s.places.title)}
+  description={s.places.description}
+  jsonLd={jsonLd}
+>
+  <div class="shell">
+    <main id="main">
+      <a href={localePath(lang, '/')} class={styles.back}>
+        <span aria-hidden="true">↩</span> {t.places.backLabel}
+      </a>
+
+      <Reveal>
+        <h1 class={styles.title}>{t.places.label}</h1>
+        <p class={styles.intro}>{t.places.intro}</p>
+      </Reveal>
+
+      <Reveal delay={80}>
+        <div class={styles.mapWrap}>
+          <WorldMap places={places} linkBase={linkBase} />
+        </div>
+      </Reveal>
+
+      <Reveal delay={140}>
+        {
+          places.length > 0 ? (
+            <HoverRows>
+              {places.map((place) => (
+                <li>
+                  <a
+                    href={`${linkBase}/${place.slug}`}
+                    class={rows.rowTall}
+                    data-place-row={place.slug}
+                  >
+                    {showThumbs && <Thumb src={place.image} />}
+                    <div class:list={[rows.lead, rows.grow]}>
+                      <span class={rows.title}>{place.title}</span>
+                      {place.country && <span class={rows.detail}>{place.country}</span>}
+                    </div>
+                    <span class={rows.meta}>{formatMonth(place.date, lang)}</span>
+                  </a>
+                </li>
+              ))}
+            </HoverRows>
+          ) : (
+            <p class={styles.empty}>{t.places.empty}</p>
+          )
+        }
+      </Reveal>
+    </main>
+  </div>
+</Base>
+
+<script>
+  /** Hovering a row lights up its marker on the map, and vice versa. */
+  function bind() {
+    const map = document.querySelector<HTMLElement>('[data-world-map]')
+    if (!map) return
+
+    for (const row of document.querySelectorAll<HTMLElement>('[data-place-row]')) {
+      const slug = row.dataset.placeRow ?? ''
+      row.addEventListener('pointerenter', () => (map.dataset.activeSlug = slug))
+      row.addEventListener('pointerleave', () => (map.dataset.activeSlug = ''))
+      row.addEventListener('focus', () => (map.dataset.activeSlug = slug))
+      row.addEventListener('blur', () => (map.dataset.activeSlug = ''))
+    }
+  }
+
+  bind()
+  document.addEventListener('astro:page-load', bind)
+</script>

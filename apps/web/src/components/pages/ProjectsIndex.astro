@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro'
+import Reveal from '../Reveal.astro'
+import HoverRows from '../HoverRows.astro'
+import Thumb from '../Thumb.astro'
+import { content } from '../../data/content.js'
+import { seo } from '../../data/seo.js'
+import { localePath, absoluteUrl } from '../../lib/i18n.js'
+import { graph, personNode, websiteNode, collectionPageNode, breadcrumbNode } from '../../lib/schema.js'
+import rows from '../RowList.module.css'
+import styles from '../Index.module.css'
+
+/**
+ * The work hub, and the parent every case-study breadcrumb was missing.
+ *
+ * The home page lists the same six projects in the same rows. That is ordinary
+ * site architecture — home teases, the hub collects — and the page stands on
+ * its own title, description, H1, intro and CollectionPage graph. Worth
+ * revisiting only if the work list grows past what home should show.
+ */
+interface Props {
+  lang: 'en' | 'fr'
+}
+
+const { lang } = Astro.props as Props
+const t = content[lang]
+const s = seo[lang]
+const { work } = t
+
+const url = absoluteUrl(lang, '/projects')
+const jsonLd = graph([
+  personNode(t.shared),
+  websiteNode(lang, t.shared),
+  collectionPageNode(
+    lang,
+    url,
+    s.titleTemplate(s.projects.title),
+    s.projects.indexDescription,
+    work.items.map((item) => ({
+      name: item.title,
+      url: absoluteUrl(lang, `/projects/${item.id}`),
+    })),
+  ),
+  breadcrumbNode(url, [
+    { name: t.shared.name, url: absoluteUrl(lang, '/') },
+    { name: work.label, url },
+  ]),
+])
+---
+
+<Base
+  lang={lang}
+  page="/projects"
+  title={s.titleTemplate(s.projects.title)}
+  description={s.projects.indexDescription}
+  jsonLd={jsonLd}
+>
+  <div class="shell">
+    <main id="main">
+      <a href={localePath(lang, '/')} class={styles.back}>
+        <span aria-hidden="true">↩</span> {work.caseStudy.backLabel}
+      </a>
+
+      <Reveal>
+        <h1 class={styles.title}>{work.label}</h1>
+        <p class={styles.intro}>{work.intro}</p>
+      </Reveal>
+
+      <Reveal delay={80}>
+        <HoverRows>
+          {
+            work.items.map((item) => (
+              <li>
+                <a href={localePath(lang, `/projects/${item.id}`)} class={rows.rowTall}>
+                  <Thumb src={item.image ?? undefined} />
+                  <div class:list={[rows.lead, rows.grow]}>
+                    <span class={rows.title}>{item.title}</span>
+                    <span class={rows.detail}>{item.sector}</span>
+                  </div>
+                  <span class={rows.meta}>{work.statusLabels[item.status]}</span>
+                </a>
+              </li>
+            ))
+          }
+        </HoverRows>
+      </Reveal>
+    </main>
+  </div>
+</Base>
